@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Nexsure</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../assets/css/fontawesome.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="../../assets/css/global_v2.css">
+    <style>
+        body {
+            background-color: var(--bs-light);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .success-card {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 40px rgba(22, 33, 62, 0.08);
+            padding: 4rem 3rem;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-circle {
+            width: 100px;
+            height: 100px;
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 2rem auto;
+            position: relative;
+        }
+        
+        .icon-circle::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid rgba(39, 174, 96, 0.2);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--dark-blue);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .details-box {
+            background: var(--bs-light);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            text-align: left;
+        }
+
+        .btn-green {
+            background-color: #27ae60;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-green:hover {
+            background-color: #219653;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(39, 174, 96, 0.2);
+        }
+    </style>
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="icon-circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <h2>Payment Successful!</h2>
+        <p>Your policy has been successfully issued. We have sent the documents to your registered email address.</p>
+        
+        <div class="details-box">
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted small fw-semibold">Policy No.</span>
+                <span class="fw-bold text-dark">NEX-9823-4567</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted small fw-semibold">Transaction ID</span>
+                <span class="fw-bold text-dark">TXN-49281745</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span class="text-muted small fw-semibold">Date</span>
+                <span class="fw-bold text-dark" id="currentDate">Today</span>
+            </div>
+        </div>
+
+        <button class="btn btn-green w-100 py-3 fw-bold fs-5 rounded-3" onclick="window.location.href='../customer-dashboard/home.html'">OK</button>
+    </div>
+
+    <script>
+        const dateOptions = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-US', dateOptions);
+    </script>
+    <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+
+    <!-- Google Calendar Integration -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnGroup = document.querySelector('.mt-5.d-flex');
+            if (btnGroup) {
+                // Next year
+                const date = new Date();
+                date.setFullYear(date.getFullYear() + 1);
+                const iso = date.toISOString().split('T')[0].replace(/-/g, '');
+                const start = iso + 'T090000Z';
+                const end = iso + 'T100000Z';
+                const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=NexSure+Policy+Renewal&dates=${start}/${end}&details=Reminder+to+renew+your+policy`;
+                
+                const btn = document.createElement('a');
+                btn.href = url;
+                btn.target = '_blank';
+                btn.className = 'btn btn-outline-dark px-4 py-2 fw-medium rounded-pill shadow-sm';
+                btn.innerHTML = '<i class="fa-regular fa-calendar-plus me-2"></i>Add to Calendar';
+                
+                btnGroup.appendChild(btn);
+            }
+        });
+    </script>
+
+</body>
+</html>

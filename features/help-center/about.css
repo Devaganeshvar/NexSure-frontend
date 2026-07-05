@@ -1,0 +1,151 @@
+/* Base colors and fonts inherited from bootstrap and variables, but we define specifics here */
+#1b2845: #1b2845;
+#10b981: #10b981;
+#f8f9fa: #f8f9fa;
+#6c757d: #6c757d;
+
+.bg-dark-blue {
+    background-color: #1b2845 !important;
+}
+.text-dark-blue {
+    color: #1b2845 !important;
+}
+.text-green {
+    color: #10b981 !important;
+}
+.playfair-font {
+    font-family: 'Playfair Display', serif;
+}
+.fs-7 {
+    font-size: 0.875rem;
+}
+
+.section-padding {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+/* Navbar (same style as landing page) */
+.navbar {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.navbar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: #fff;
+}
+.btn-green {
+    background-color: #10b981;
+    color: white;
+}
+
+/* Hero Section */
+.badge-subtitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #10b981;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    background: rgba(16, 185, 129, 0.08);
+    padding: 0.4rem 1.2rem;
+    border-radius: 2rem;
+}
+.badge-subtitle .dot {
+    width: 6px;
+    height: 6px;
+    background-color: #10b981;
+    border-radius: 50%;
+}
+
+.hero-img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+}
+.floating-stat-card {
+    position: absolute;
+    bottom: -2rem; /* Overhang bottom edge */
+    left: -3rem; /* Overhang left edge */
+    z-index: 2;
+    min-width: 250px;
+}
+
+/* Stats Section */
+.stat-col {
+    position: relative;
+}
+.stat-col:not(.border-0)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 15%;
+    height: 70%;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Team Section */
+.team-img {
+    height: 250px;
+    object-fit: cover;
+    object-position: top;
+    filter: grayscale(20%);
+    transition: filter 0.3s;
+}
+.team-card:hover .team-img {
+    filter: grayscale(0%);
+}
+.social-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.social-btn:hover {
+    background-color: #1b2845;
+    color: #fff;
+}
+
+/* Values Section */
+.value-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.value-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .floating-stat-card {
+        left: 1rem;
+        bottom: -1.5rem;
+    }
+    .stat-col::after {
+        display: none;
+    }
+    .stat-col {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .stat-col:nth-last-child(-n+2) {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+}
+

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Officer Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+        <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                Admin &rsaquo; Officers
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." onkeypress="handleGlobalSearch(event)">
+            <a href="javascript:void(0)" class="nav-icon" onclick="showAdminToast('No new messages', 'info')">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="fw-medium small">Admin User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Manage</div>
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link active">Officers</a>
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link">Claims & Refunds</a>
+            <a href="../../features/content-management/content.html" class="sidebar-link">Content Management</a>
+            
+            <div class="sidebar-section-title">Operations</div>
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link">Reports & Audit</a>
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link">System Settings</a>
+            <a href="../../features/system/backup.html" class="sidebar-link">Backup & Recovery</a>
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link">Help Center</a>
+            
+            <div class="sidebar-section-title">Account</div>
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="admin-page-title mb-0">Officer Management</h1>
+                <div class="d-flex gap-3">
+                    <button class="btn-admin-outline" onclick="window.location.href='../system/bulk-import.html'">Bulk Import</button>
+                    <button class="btn-admin-primary" onclick="openAddModal()">+ Onboard Officer</button>
+                </div>
+            </div>
+            
+            <div class="admin-tabs">
+                <a href="#" class="admin-tab active" onclick="switchTab(this, 'Active')">Active (198)</a>
+                <a href="#" class="admin-tab" onclick="switchTab(this, 'Suspended')">Suspended (6)</a>
+                <a href="#" class="admin-tab" onclick="switchTab(this, 'Expiring')">Expiring Licenses (10)</a>
+            </div>
+
+            <div class="bg-white p-4">
+                <div class="admin-filter-bar">
+                    <select class="admin-filter-select" id="branchFilter" onchange="renderTable()">
+                        <option value="All">Branch: All</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi</option>
+                    </select>
+                    <input type="text" class="admin-filter-search" id="searchFilter" placeholder="Search by name or ID..." style="width: 300px;" onkeyup="renderTable()">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Officer</th>
+                                <th>Email</th>
+                                <th>License No</th>
+                                <th>License Expiry</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="officerTable">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="admin-pagination" id="paginationControls">
+                    <!-- JS Populated -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Add/Edit Officer Modal -->
+    <div class="modal fade" id="addOfficerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--admin-bg); border: 1px solid var(--admin-border);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark" id="officerModalTitle">Onboard New Officer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <form id="addOfficerForm">
+                        <input type="hidden" id="editOriginalLicense">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-medium">Officer Name</label>
+                            <input type="text" class="form-control" id="newOfficerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-medium">Email Address</label>
+                            <input type="email" class="form-control" id="newOfficerEmail" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-medium">License No</label>
+                                <input type="text" class="form-control" id="newOfficerLicense" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-medium">License Expiry</label>
+                                <input type="text" class="form-control" id="newOfficerExpiry" placeholder="e.g. 10 Nov 2027" required>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-medium">Status</label>
+                                <select class="form-select" id="newOfficerStatus" required>
+                                    <option value="Active">Active</option>
+                                    <option value="Expiring Soon">Expiring Soon</option>
+                                    <option value="Suspended">Suspended</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-medium">Branch</label>
+                                <select class="form-select" id="newOfficerBranch" required>
+                                    <option value="Chennai">Chennai</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                    <option value="Delhi">Delhi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-admin-primary w-100 py-2" id="officerSubmitBtn">Onboard Officer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suspend Modal -->
+    <div class="modal fade" id="suspendModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--admin-bg); border: 1px solid var(--admin-border);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-danger">Confirm Suspension</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <form id="suspendForm">
+                        <input type="hidden" id="suspendTargetId">
+                        <p class="text-muted small mb-3">Please provide a reason for suspending this officer. This will be logged for auditing purposes.</p>
+                        <div class="mb-4">
+                            <label class="form-label text-muted small fw-medium">Reason for Suspension</label>
+                            <textarea class="form-control" id="suspendReason" rows="3" required placeholder="Enter description..."></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-outline-secondary flex-grow-1" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger flex-grow-1">Suspend</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        const initialOfficers = [
+            { name: 'Gokul K', email: 'gokul.k@nexsure.com', license: 'LIC-99281', expiry: '02 Jul 2026', status: 'Active', branch: 'Chennai' },
+            { name: 'Hephzibha A', email: 'hephzibha.a@nexsure.com', license: 'LIC-99282', expiry: '14 Aug 2026', status: 'Active', branch: 'Chennai' },
+            { name: 'Solai', email: 'solai@nexsure.com', license: 'LIC-99283', expiry: '05 Jul 2026', status: 'Expiring Soon', branch: 'Chennai' },
+            { name: 'Abishek S', email: 'abishek.s@nexsure.com', license: 'LIC-99284', expiry: '20 Jan 2027', status: 'Suspended', branch: 'Mumbai' },
+            { name: 'Meera R', email: 'meera.r@nexsure.com', license: 'LIC-99285', expiry: '18 Jun 2026', status: 'Expiring Soon', branch: 'Delhi' },
+            { name: 'Kavitha M', email: 'kavitha.m@nexsure.com', license: 'LIC-99286', expiry: '10 Nov 2027', status: 'Active', branch: 'Mumbai' },
+            { name: 'Rahul V', email: 'rahul.v@nexsure.com', license: 'LIC-99287', expiry: '22 Dec 2027', status: 'Active', branch: 'Delhi' }
+        ];
+
+        let officers = [];
+        const storedOfficers = localStorage.getItem('nexsure_officers');
+        if (storedOfficers) {
+            officers = JSON.parse(storedOfficers);
+        } else {
+            officers = [...initialOfficers];
+            localStorage.setItem('nexsure_officers', JSON.stringify(officers));
+        }
+
+        let currentTab = 'Active';
+        let currentPage = 1;
+        const rowsPerPage = 5;
+
+        function switchTab(el, tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            currentTab = tab;
+            currentPage = 1;
+            renderTable();
+        }
+
+        function renderTable() {
+            const branchFilter = document.getElementById('branchFilter').value;
+            const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+            
+            let filtered = officers.filter(o => {
+                let matchTab = true;
+                if (currentTab === 'Active') matchTab = (o.status === 'Active' || o.status === 'Expiring Soon');
+                if (currentTab === 'Suspended') matchTab = (o.status === 'Suspended');
+                if (currentTab === 'Expiring') matchTab = (o.status === 'Expiring Soon');
+                
+                const matchBranch = branchFilter === 'All' || o.branch === branchFilter;
+                const matchSearch = o.name.toLowerCase().includes(searchFilter) || o.license.toLowerCase().includes(searchFilter);
+                
+                return matchTab && matchBranch && matchSearch;
+            });
+
+            const totalPages = Math.ceil(filtered.length / rowsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginated = filtered.slice(start, end);
+
+            const tbody = document.getElementById('officerTable');
+            tbody.innerHTML = '';
+
+            if (paginated.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No officers found.</td></tr>`;
+            } else {
+                paginated.forEach(o => {
+                    let statusClass = 'status-success';
+                    if (o.status === 'Expiring Soon') statusClass = 'status-warning';
+                    if (o.status === 'Suspended') statusClass = 'status-secondary';
+                    
+                    const actionBtn = o.status === 'Suspended' 
+                        ? `<a href="#" class="text-success text-decoration-none ms-3" onclick="toggleStatus('${o.license}')">[Reactivate]</a>`
+                        : `<a href="#" class="text-danger text-decoration-none ms-3" onclick="toggleStatus('${o.license}')">[Deactivate]</a>`;
+                        
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="text-dark fw-medium">${o.name}</td>
+                            <td class="text-muted">${o.email}</td>
+                            <td>${o.license}</td>
+                            <td>${o.expiry}</td>
+                            <td><span class="status-badge ${statusClass}">${o.status}</span></td>
+                            <td>
+                                <a href="#" class="text-primary text-decoration-none" onclick="openEditModal('${o.license}')">[Edit]</a>
+                                ${actionBtn}
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const controls = document.getElementById('paginationControls');
+            let html = `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage - 1})">&lsaquo;</a>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<a href="javascript:void(0)" class="admin-page-link ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
+            }
+            html += `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage + 1}, ${totalPages})">&rsaquo;</a>`;
+            controls.innerHTML = html;
+        }
+
+        function changePage(page, maxPage = null) {
+            if (page < 1 || (maxPage && page > maxPage)) return;
+            currentPage = page;
+            renderTable();
+        }
+
+        function toggleStatus(license) {
+            const index = officers.findIndex(o => o.license === license);
+            if (index !== -1) {
+                if (officers[index].status !== 'Suspended') {
+                    // Open suspension modal
+                    document.getElementById('suspendTargetId').value = license;
+                    document.getElementById('suspendReason').value = '';
+                    const modal = new bootstrap.Modal(document.getElementById('suspendModal'));
+                    modal.show();
+                } else {
+                    // Reactivate instantly
+                    officers[index].status = 'Active';
+                    officers[index].suspendReason = null;
+                    localStorage.setItem('nexsure_officers', JSON.stringify(officers));
+                    showAdminToast(`Officer ${officers[index].name} reactivated.`, 'success');
+                    renderTable();
+                }
+            }
+        }
+
+        // Suspend Form Handler
+        document.getElementById('suspendForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const license = document.getElementById('suspendTargetId').value;
+            const reason = document.getElementById('suspendReason').value;
+            
+            const index = officers.findIndex(o => o.license === license);
+            if (index !== -1) {
+                officers[index].status = 'Suspended';
+                officers[index].suspendReason = reason;
+                localStorage.setItem('nexsure_officers', JSON.stringify(officers));
+                showAdminToast(`Officer ${officers[index].name} suspended: ${reason}`, 'warning');
+                renderTable();
+            }
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('suspendModal'));
+            modal.hide();
+        });
+
+        function openAddModal() {
+            document.getElementById('officerModalTitle').innerText = 'Onboard New Officer';
+            document.getElementById('officerSubmitBtn').innerText = 'Onboard Officer';
+            document.getElementById('addOfficerForm').reset();
+            document.getElementById('editOriginalLicense').value = '';
+            
+            const modal = new bootstrap.Modal(document.getElementById('addOfficerModal'));
+            modal.show();
+        }
+
+        function openEditModal(license) {
+            const officer = officers.find(o => o.license === license);
+            if (!officer) return;
+            
+            document.getElementById('officerModalTitle').innerText = 'Edit Officer Details';
+            document.getElementById('officerSubmitBtn').innerText = 'Save Changes';
+            document.getElementById('editOriginalLicense').value = officer.license;
+            
+            document.getElementById('newOfficerName').value = officer.name;
+            document.getElementById('newOfficerEmail').value = officer.email;
+            document.getElementById('newOfficerLicense').value = officer.license;
+            document.getElementById('newOfficerExpiry').value = officer.expiry;
+            document.getElementById('newOfficerStatus').value = officer.status;
+            document.getElementById('newOfficerBranch').value = officer.branch;
+            
+            const modal = new bootstrap.Modal(document.getElementById('addOfficerModal'));
+            modal.show();
+        }
+
+        // Add/Edit Officer Form Handler
+        document.getElementById('addOfficerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const originalLicense = document.getElementById('editOriginalLicense').value;
+            const name = document.getElementById('newOfficerName').value;
+            const email = document.getElementById('newOfficerEmail').value;
+            const license = document.getElementById('newOfficerLicense').value;
+            const expiry = document.getElementById('newOfficerExpiry').value;
+            const status = document.getElementById('newOfficerStatus').value;
+            const branch = document.getElementById('newOfficerBranch').value;
+            
+            if (originalLicense) {
+                // Edit existing
+                const index = officers.findIndex(o => o.license === originalLicense);
+                if (index !== -1) {
+                    officers[index].name = name;
+                    officers[index].email = email;
+                    officers[index].license = license;
+                    officers[index].expiry = expiry;
+                    officers[index].status = status;
+                    officers[index].branch = branch;
+                    showAdminToast(`${name} updated successfully!`, 'success');
+                }
+            } else {
+                // Add new
+                const newOfficer = {
+                    name: name,
+                    email: email,
+                    license: license,
+                    expiry: expiry,
+                    status: status,
+                    branch: branch
+                };
+                officers.unshift(newOfficer);
+                showAdminToast(`${name} onboarded successfully!`, 'success');
+            }
+            
+            localStorage.setItem('nexsure_officers', JSON.stringify(officers));
+            
+            // Switch to appropriate tab based on status
+            document.querySelectorAll('.admin-tab').forEach(t => {
+                if (status === 'Suspended' && t.innerText.includes('Suspended')) {
+                    switchTab(t, 'Suspended');
+                } else if (status === 'Expiring Soon' && t.innerText.includes('Expiring')) {
+                    switchTab(t, 'Expiring');
+                } else if (status === 'Active' && t.innerText.includes('Active')) {
+                    switchTab(t, 'Active');
+                }
+            });
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addOfficerModal'));
+            modal.hide();
+            this.reset();
+        });
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '/features/auth/login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', renderTable);
+    </script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

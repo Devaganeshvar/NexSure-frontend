@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Contact Us</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link href="../landing/landing-page.css?v=8" rel="stylesheet">
+    <link href="contact.css?v=1" rel="stylesheet">
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body class="bg-light-subtle">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 sticky-top" style="background-color: #0f172a !important;">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../landing/landing-page.html">
+                <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link" href="../landing/landing-page.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../help-center/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../plan-listings/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="#" class="nav-link text-white opacity-75 text-decoration-none fw-medium me-2">Help</a>
+                    <a href="../auth/login.html" class="btn btn-outline-light">Sign In</a>
+                    <a href="../auth/register.html" class="btn btn-green">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="section-padding py-5 mt-4">
+        <div class="container">
+            <div class="text-center mb-5 pb-2">
+                <span class="badge rounded-pill text-green bg-light-green mb-3 px-3 py-2 fw-semibold" style="color: #10b981; background-color: #e6f8f0; font-size: 0.8rem; letter-spacing: 0.5px;">
+                    <i class="fa-solid fa-circle text-green me-1" style="font-size: 0.5rem; vertical-align: middle;"></i> WE'RE HERE TO HELP
+                </span>
+                <h1 class="display-4 fw-bold text-dark-blue mb-3 playfair-font fst-italic">Get in Touch</h1>
+                <p class="text-muted mx-auto" style="max-width: 600px; font-size: 1.1rem;">
+                    Have a question about your policy, a claim, or anything else? We're here to help &mdash; 
+                    reach out through any channel that works for you.
+                </p>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row g-4 mb-5 pb-4">
+                <!-- Left Column (Contact Cards) -->
+                <div class="col-lg-5">
+                    <div class="d-flex flex-column gap-3">
+                        
+                        <!-- Phone Support -->
+                        <div class="card border border-light-subtle shadow-sm rounded-4 p-4 contact-card">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-light me-4 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    <i class="fa-solid fa-phone text-dark fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Phone Support</h6>
+                                    <div class="fw-bold text-dark fs-6">+91 12345 67890</div>
+                                    <div class="text-muted small mt-1">Mon - Sat, 9am - 6pm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="card border border-light-subtle shadow-sm rounded-4 p-4 contact-card">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-light me-4 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    <i class="fa-solid fa-envelope text-dark fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Email</h6>
+                                    <div class="fw-bold text-dark fs-6">support@ipms.com</div>
+                                    <div class="text-muted small mt-1">Response within 24 hours</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Head Office -->
+                        <div class="card border border-light-subtle shadow-sm rounded-4 p-4 contact-card">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-light me-4 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    <i class="fa-solid fa-location-dot text-danger fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Head Office</h6>
+                                    <div class="fw-bold text-dark fs-6">IPMS Tower, Anna Nagar</div>
+                                    <div class="text-muted small mt-1">Chennai, Tamil Nadu &mdash; 600 040</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Chat -->
+                        <div class="card border border-light-subtle shadow-sm rounded-4 p-4 contact-card">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-light me-4 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    <i class="fa-regular fa-comment-dots text-dark fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Live Chat</h6>
+                                    <div class="fw-bold text-dark fs-6">Available on Dashboard</div>
+                                    <div class="text-muted small mt-1">Mon - Fri, 9am - 5pm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right Column (Form) -->
+                <div class="col-lg-7">
+                    <div class="card border border-light-subtle shadow-sm rounded-4 p-4 p-md-5 h-100 bg-white">
+                        <h4 class="fw-bold mb-2 text-dark">Send Us a Message</h4>
+                        <p class="text-muted mb-4 fs-7">Fill in the form and our team will get back to you within 24 hours.</p>
+
+                        <form>
+                            <div class="mb-4">
+                                <label class="form-label text-dark small fw-semibold mb-2">Full Name</label>
+                                <input type="text" class="form-control form-control-lg bg-transparent fs-6 py-2" value="Rahul Mehta">
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-4 mb-md-0">
+                                    <label class="form-label text-dark small fw-semibold mb-2">Email Address</label>
+                                    <input type="email" class="form-control form-control-lg bg-transparent fs-6 py-2" value="rahul@gmail.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-dark small fw-semibold mb-2">Mobile Number</label>
+                                    <input type="tel" class="form-control form-control-lg bg-transparent fs-6 py-2" value="+91 98765 43210">
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label text-dark small fw-semibold mb-2">Subject</label>
+                                <select class="form-select form-select-lg bg-transparent fs-6 py-2">
+                                    <option selected>Claims & Refunds Support</option>
+                                    <option>Policy Renewal</option>
+                                    <option>General Inquiry</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4 pb-2">
+                                <label class="form-label text-dark small fw-semibold mb-2">Your Message</label>
+                                <textarea class="form-control form-control-lg bg-transparent fs-6 py-2" rows="4" placeholder="Describe your question or issue in detail..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-dark-blue w-100 py-3 rounded-3 fw-medium">
+                                Send Message <i class="fa-solid fa-arrow-right ms-2 fs-7"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="mt-5 pt-4 pb-4">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-dark-blue playfair-font fst-italic">Frequently Asked Questions</h2>
+                </div>
+                
+                <div class="accordion custom-accordion mx-auto" id="faqAccordion" style="max-width: 800px;">
+                    <!-- FAQ 1 -->
+                    <div class="accordion-item border rounded-3 mb-3 shadow-sm bg-white overflow-hidden">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button fw-bold text-dark bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                How do I file a claim?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted pt-0 border-0 fs-6">
+                                Log in to your dashboard, go to Claims & Refunds, and click 'File a Claim'. The FNOL wizard will guide you through each step.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ 2 -->
+                    <div class="accordion-item border rounded-3 mb-3 shadow-sm bg-white overflow-hidden">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed fw-bold text-dark bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                When will my KYC be verified?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted pt-0 border-0 fs-6">
+                                KYC verification typically takes 24-48 business hours after you upload all the required documents correctly.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="accordion-item border rounded-3 mb-3 shadow-sm bg-white overflow-hidden">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed fw-bold text-dark bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Can I change my nominee after policy issuance?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted pt-0 border-0 fs-6">
+                                Yes, you can update your nominee details from your dashboard under Policy Settings > Nominee Management.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simple Footer -->
+    <footer class="border-top py-4 bg-white mt-4">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center text-muted fs-7">
+            <div class="mb-3 mb-md-0">&copy; 2026 NexSure, All Rights Reserved.</div>
+            <div class="d-flex gap-3">
+                <a href="#" class="text-muted text-decoration-none hover-dark">Terms</a>
+                <span>&middot;</span>
+                <a href="#" class="text-muted text-decoration-none hover-dark">Privacy</a>
+                <span>&middot;</span>
+                <a href="#" class="text-muted text-decoration-none hover-dark">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

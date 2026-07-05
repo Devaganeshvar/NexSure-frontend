@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Profile & Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Base Styles -->
+    <link href="../landing/landing-page.css" rel="stylesheet">
+    <link href="../customer-dashboard/home.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+        }
+        
+        /* ── Page Header ── */
+        .page-header {
+            background-color: #16213e; /* Dark navy */
+            padding: 2rem 0 2rem;
+            color: #fff;
+            border-bottom: 3px solid #10b981; /* Green strip at bottom */
+        }
+        .page-header .breadcrumb {
+            margin-bottom: 0.5rem;
+        }
+        .page-header .breadcrumb-item a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .page-header .breadcrumb-item a:hover { color: #fff; }
+        .page-header .breadcrumb-item.active { color: #fff; font-size: 0.85rem; }
+        .page-header .breadcrumb-item + .breadcrumb-item::before { color: rgba(255,255,255,0.5); }
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0;
+            letter-spacing: -0.01em;
+        }
+
+        /* ── Sidebar Layout ── */
+        .sidebar-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding-top: 2rem;
+            padding-bottom: 1rem;
+        }
+        
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            background-color: #000;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+        }
+        
+        .profile-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0f172a;
+            text-align: center;
+            margin-bottom: 0.1rem;
+        }
+        
+        .profile-email {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0 1rem;
+            margin: 0;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 1rem;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 0.25rem;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #475569;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .sidebar-nav a i {
+            width: 24px;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+            color: #64748b;
+            text-align: center;
+        }
+        
+        .sidebar-nav a.active {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+        .sidebar-nav a.active i {
+            color: #3b82f6;
+        }
+        
+        .sidebar-nav a:hover:not(.active) {
+            background-color: #f8fafc;
+        }
+        
+        .sidebar-nav a.text-danger {
+            color: #ef4444 !important;
+            margin-top: 0.5rem;
+            border-top: 1px solid #f1f5f9;
+            border-radius: 0;
+            padding-top: 1rem;
+        }
+        .sidebar-nav a.text-danger i {
+            color: #ef4444 !important;
+        }
+
+        /* ── Main Content Card ── */
+        .content-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .content-header h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+        
+        .content-header p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .content-body {
+            padding: 2rem;
+            flex-grow: 1;
+        }
+        
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.4rem;
+        }
+        
+        .form-control {
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+            color: #1e293b;
+        }
+        
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        
+        .input-icon-wrapper {
+            position: relative;
+        }
+        
+        .input-icon-wrapper .icon-right {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+        
+        .input-icon-wrapper .icon-right.text-danger {
+            color: #ef4444;
+            cursor: pointer;
+        }
+        
+        textarea.form-control {
+            resize: none;
+            min-height: 80px;
+        }
+        
+        .content-footer {
+            padding: 1.25rem 2rem;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            background-color: #fff;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+        
+        .btn-cancel {
+            background-color: #fff;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.375rem;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #f8fafc;
+        }
+        
+        .btn-save {
+            background-color: #16213e;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.375rem;
+        }
+        
+        .btn-save:hover {
+            background-color: #1e293b;
+            color: #fff;
+        }
+
+        /* Floating Actions */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .fab-left { left: 20px; }
+        .fab-right { right: 20px; }
+        .fab i { color: #fff; font-size: 1.2rem; }
+
+        /* Payment Card Style */
+        .saved-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: #f8fafc;
+        }
+
+        /* Hide all tab contents by default */
+        .tab-pane-custom {
+            display: none;
+        }
+        .tab-pane-custom.active {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Authenticated Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 dashboard-nav sticky-top" style="background-color: #16213e;">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../customer-dashboard/home.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure" height="75">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link text-white" href="../customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../policy-management/my-policies.html">My Policies</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../plan-listings/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../policy-management/claims.html">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../payment/payments.html">Payments</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-white dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                        <ul class="dropdown-menu shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
+                            <li><a class="dropdown-item" href="../reports/reports-center.html">Reports Center</a></li>
+                            <li><a class="dropdown-item" href="../policy-management/policy-cancellation.html">Policy Cancellation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <!-- Notifications -->
+                    <div class="position-relative notification-bell">
+                        <a href="#" class="text-white text-decoration-none">
+                            <i class="fa-regular fa-bell fs-5 text-warning"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-dark" style="font-size: 0.6rem;">3</span>
+                        </a>
+                    </div>
+                    <!-- User Profile -->
+                    <div class="dropdown user-dropdown">
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" style="border: 1px solid rgba(255,255,255,0.2);" href="#" role="button" data-bs-toggle="dropdown">
+                            <div class="rounded-circle bg-black border border-light" style="width: 32px; height: 32px;"></div>
+                            <span class="fw-medium small pe-1">Rahul M.</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="../auth/login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container px-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item"><a href="../customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="#">Account</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Profile &amp; Settings</li>
+                </ol>
+            </nav>
+            <h1>Profile &amp; Settings</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container px-4 py-5 mb-5">
+        <div class="row g-4">
+            
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar-card">
+                    <label for="profilePhotoUpload" class="d-block mx-auto position-relative" style="width: 90px; height: 90px; cursor: pointer;" title="Click to upload new photo">
+                        <div class="profile-avatar mb-0" id="sidebarAvatar"></div>
+                        <div class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center border border-2 border-white" style="width: 28px; height: 28px;">
+                            <i class="fa-solid fa-camera fs-6"></i>
+                        </div>
+                    </label>
+                    <input type="file" id="profilePhotoUpload" accept="image/*" class="d-none">
+                    
+                    <div class="profile-name mt-3" id="sidebarName">Rahul M.</div>
+                    <div class="profile-email" id="sidebarEmail">rahul.m@example.com</div>
+                    
+                    <ul class="sidebar-nav" id="profile-tabs">
+                        <li>
+                            <a data-target="personal-info" class="tab-link active">
+                                <i class="fa-solid fa-user"></i> Personal Information
+                            </a>
+                        </li>
+                        <li>
+                            <a data-target="security" class="tab-link">
+                                <i class="fa-solid fa-lock"></i> Security &amp; Password
+                            </a>
+                        </li>
+                        <li>
+                            <a data-target="notifications" class="tab-link">
+                                <i class="fa-solid fa-bell"></i> Notifications
+                            </a>
+                        </li>
+                        <li>
+                            <a data-target="payment" class="tab-link">
+                                <i class="fa-solid fa-credit-card"></i> Payment Methods
+                            </a>
+                        </li>
+                        <li>
+                            <a data-target="preferences" class="tab-link">
+                                <i class="fa-solid fa-gear"></i> App Preferences
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../auth/login.html" class="text-danger">
+                                <i class="fa-solid fa-book"></i> Log Out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Content Area -->
+            <div class="col-lg-9">
+                <div class="content-card">
+                    
+                    <!-- TAB: Personal Information -->
+                    <div id="personal-info" class="tab-pane-custom active">
+                        <div class="content-header">
+                            <h4>Personal Information</h4>
+                            <p>Manage your personal details and contact information.</p>
+                        </div>
+                        <div class="content-body">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="profileName" value="Rahul M.">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Age</label>
+                                    <input type="number" class="form-control" id="profileAge" min="18" max="100" value="35">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Date of Birth</label>
+                                    <div class="input-icon-wrapper">
+                                        <input type="text" class="form-control" id="profileDob" value="15 Aug 1990">
+                                        <i class="fa-regular fa-calendar-days icon-right text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email Address</label>
+                                    <div class="input-icon-wrapper">
+                                        <input type="email" class="form-control" id="profileEmail" value="rahul.m@example.com">
+                                        <i class="fa-solid fa-envelope icon-right"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number</label>
+                                    <div class="input-icon-wrapper">
+                                        <input type="text" class="form-control" id="profilePhone" value="+91 98765 43210">
+                                        <i class="fa-solid fa-trash icon-right text-danger" title="Remove Phone Number"></i>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Residential Address</label>
+                                    <textarea class="form-control" id="profileAddress">123, Maple Street, Tech Park Area&#13;&#10;Bengaluru, Karnataka - 560001</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-footer">
+                            <button type="button" class="btn btn-cancel" onclick="loadProfileData()">Cancel</button>
+                            <button type="button" class="btn btn-save" onclick="saveProfileData()">Save Changes</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB: Security & Password -->
+                    <div id="security" class="tab-pane-custom">
+                        <div class="content-header">
+                            <h4>Security &amp; Password</h4>
+                            <p>Update your password and secure your account.</p>
+                        </div>
+                        <div class="content-body">
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-12">
+                                    <label class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="currPassword" placeholder="Enter current password">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword" placeholder="Enter new password">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confPassword" placeholder="Confirm new password">
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                            <h5 class="fw-bold mb-3" style="font-size: 1rem;">Two-Factor Authentication</h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-medium text-dark">Enable 2FA via SMS</div>
+                                    <div class="text-muted small">Receive a code on your mobile device when logging in.</div>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" checked>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-footer">
+                            <button type="button" class="btn btn-cancel" onclick="document.getElementById('currPassword').value='';document.getElementById('newPassword').value='';document.getElementById('confPassword').value='';">Cancel</button>
+                            <button type="button" class="btn btn-save" onclick="savePasswordData()">Update Password</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB: Notifications -->
+                    <div id="notifications" class="tab-pane-custom">
+                        <div class="content-header">
+                            <h4>Notifications</h4>
+                            <p>Choose what we get in touch with you about.</p>
+                        </div>
+                        <div class="content-body">
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <div class="fw-semibold text-dark">Policy Renewals &amp; Alerts</div>
+                                    <div class="text-muted small">Get notified before your policy expires or premium is due.</div>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" checked>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <div class="fw-semibold text-dark">Claims Updates</div>
+                                    <div class="text-muted small">Receive live updates when your claim status changes.</div>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" checked>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <div class="fw-semibold text-dark">Marketing &amp; Offers</div>
+                                    <div class="text-muted small">Hear about new products, plans, and exclusive discounts.</div>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch">
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-semibold text-dark">SMS Notifications</div>
+                                    <div class="text-muted small">Receive important alerts directly via SMS.</div>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" checked>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="content-footer">
+                            <button type="button" class="btn btn-cancel">Cancel</button>
+                            <button type="button" class="btn btn-save" onclick="showSaveToast()">Save Preferences</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB: Payment Methods -->
+                    <div id="payment" class="tab-pane-custom">
+                        <div class="content-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4>Payment Methods</h4>
+                                <p>Manage your saved credit cards and bank accounts.</p>
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold"><i class="fa-solid fa-plus me-1"></i> Add New</button>
+                        </div>
+                        <div class="content-body">
+                            <div class="saved-card mb-3">
+                                <div class="bg-light rounded p-2 text-primary">
+                                    <i class="fa-brands fa-cc-visa fa-2x"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold text-dark">Visa ending in 4242</div>
+                                    <div class="text-muted small">Expires 12/28</div>
+                                </div>
+                                <div>
+                                    <span class="badge bg-success me-3">Default</span>
+                                    <i class="fa-solid fa-trash text-danger" style="cursor:pointer;" title="Remove Card"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="saved-card">
+                                <div class="bg-light rounded p-2 text-warning">
+                                    <i class="fa-brands fa-cc-mastercard fa-2x"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold text-dark">Mastercard ending in 8899</div>
+                                    <div class="text-muted small">Expires 08/25</div>
+                                </div>
+                                <div>
+                                    <i class="fa-solid fa-trash text-danger" style="cursor:pointer;" title="Remove Card"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: App Preferences -->
+                    <div id="preferences" class="tab-pane-custom">
+                        <div class="content-header">
+                            <h4>App Preferences</h4>
+                            <p>Customize your experience within the application.</p>
+                        </div>
+                        <div class="content-body">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Language</label>
+                                    <select class="form-select" id="appLanguageSelect" onchange="changeAppLanguage(this.value)">
+                                        <option value="en">English</option>
+                                        <option value="ta">Tamil</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Timezone</label>
+                                    <select class="form-select">
+                                        <option value="ist" selected>(UTC+05:30) Indian Standard Time</option>
+                                        <option value="gmt">(UTC+00:00) Greenwich Mean Time</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-12 mt-4">
+                                    <label class="form-label mb-3">Theme</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="card flex-grow-1 text-center py-3 border-primary bg-light" style="cursor:pointer;" onclick="if(window.ThemeManager) window.ThemeManager.setTheme('light'); showSaveToast('Theme set to Light');">
+                                            <i class="fa-solid fa-sun fs-4 mb-2 text-warning"></i>
+                                            <div class="fw-medium">Light Mode</div>
+                                        </div>
+                                        <div class="card flex-grow-1 text-center py-3 border-secondary" style="cursor:pointer;" onclick="if(window.ThemeManager) window.ThemeManager.setTheme('dark'); showSaveToast('Theme set to Dark');">
+                                            <i class="fa-solid fa-moon fs-4 mb-2 text-secondary"></i>
+                                            <div class="fw-medium">Dark Mode</div>
+                                        </div>
+                                        <div class="card flex-grow-1 text-center py-3 border-secondary" style="cursor:pointer;" onclick="if(window.ThemeManager) window.ThemeManager.setTheme('system'); showSaveToast('Theme set to System Default');">
+                                            <i class="fa-solid fa-desktop fs-4 mb-2 text-secondary"></i>
+                                            <div class="fw-medium">System Default</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-footer">
+                            <button type="button" class="btn btn-cancel">Cancel</button>
+                            <button type="button" class="btn btn-save" onclick="showSaveToast()">Save Preferences</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab fab-left" title="Accessibility">
+        <i class="fa-solid fa-wheelchair"></i>
+    </div>
+    <div class="fab fab-right" title="Chat">
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+        <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fa-solid fa-circle-check me-2"></i> Settings saved successfully.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../shared/profile-sync.js"></script>
+    <script src="../shared/notifications.js"></script>
+    
+    <!-- Tab Switching & Profile Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabLinks = document.querySelectorAll('.tab-link');
+            const tabPanes = document.querySelectorAll('.tab-pane-custom');
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Remove active from all links and panes
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    tabPanes.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active to clicked link
+                    link.classList.add('active');
+                    
+                    // Show corresponding pane
+                    const targetId = link.getAttribute('data-target');
+                    const targetPane = document.getElementById(targetId);
+                    if (targetPane) {
+                        targetPane.classList.add('active');
+                    }
+                });
+            });
+
+            // Initialize profile data form
+            setTimeout(loadProfileData, 100);
+
+            // Handle Photo Upload
+            const photoUpload = document.getElementById('profilePhotoUpload');
+            if(photoUpload) {
+                photoUpload.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if(!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        // Downscale image to save storage space
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            const MAX_SIZE = 256;
+                            let width = img.width;
+                            let height = img.height;
+                            
+                            if (width > height) {
+                                if (width > MAX_SIZE) {
+                                    height *= MAX_SIZE / width;
+                                    width = MAX_SIZE;
+                                }
+                            } else {
+                                if (height > MAX_SIZE) {
+                                    width *= MAX_SIZE / height;
+                                    height = MAX_SIZE;
+                                }
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                            window.CustomerProfile.updateField('photoBase64', dataUrl);
+                            showSaveToast('Profile photo updated successfully.');
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
+
+        function loadProfileData() {
+            if(!window.CustomerProfile) return;
+            const profile = window.CustomerProfile.get();
+            document.getElementById('profileName').value = profile.name;
+            document.getElementById('profileEmail').value = profile.email;
+            document.getElementById('profilePhone').value = profile.phone;
+            document.getElementById('profileDob').value = profile.dob;
+            document.getElementById('profileAge').value = profile.age;
+            document.getElementById('profileAddress').value = profile.address;
+        }
+
+        function saveProfileData() {
+            if(!window.CustomerProfile) return;
+            const profile = window.CustomerProfile.get();
+            profile.name = document.getElementById('profileName').value;
+            profile.email = document.getElementById('profileEmail').value;
+            profile.phone = document.getElementById('profilePhone').value;
+            profile.dob = document.getElementById('profileDob').value;
+            profile.age = document.getElementById('profileAge').value;
+            profile.address = document.getElementById('profileAddress').value;
+            
+            window.CustomerProfile.set(profile);
+            window.CustomerProfile.syncUI();
+            
+            showSaveToast('Personal information saved successfully.');
+        }
+
+        function savePasswordData() {
+            if(!window.CustomerProfile) return;
+            const profile = window.CustomerProfile.get();
+            const curr = document.getElementById('currPassword').value;
+            const newP = document.getElementById('newPassword').value;
+            const conf = document.getElementById('confPassword').value;
+            
+            if (!curr || !newP || !conf) {
+                alert("Please fill in all password fields.");
+                return;
+            }
+            if (curr !== profile.password) {
+                alert("Current password is incorrect.");
+                return;
+            }
+            if (newP !== conf) {
+                alert("New passwords do not match.");
+                return;
+            }
+            
+            profile.password = newP;
+            window.CustomerProfile.set(profile);
+            
+            document.getElementById('currPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confPassword').value = '';
+            
+            showSaveToast('Password updated successfully.');
+        }
+
+        function showSaveToast(message = 'Settings saved successfully.') {
+            const toastEl = document.getElementById('saveToast');
+            const toastBody = toastEl.querySelector('.toast-body');
+            toastBody.innerHTML = '<i class="fa-solid fa-circle-check me-2"></i> ' + message;
+            const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        }
+    </script>
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+
+    <script>
+        // Set the initial dropdown value based on the cookie
+        document.addEventListener('DOMContentLoaded', () => {
+            const match = document.cookie.match(new RegExp('(^| )googtrans=([^;]+)'));
+            if (match) {
+                const lang = match[2].split('/').pop();
+                const select = document.getElementById('appLanguageSelect');
+                if (select) {
+                    select.value = lang === 'ta' ? 'ta' : 'en';
+                }
+            }
+        });
+
+        function changeAppLanguage(lang) {
+            // Setting cookie format: /pageLang/targetLang e.g., /en/ta
+            const cookieValue = lang === 'en' ? '/en/en' : '/en/ta';
+            document.cookie = "googtrans=" + cookieValue + "; path=/;";
+            document.cookie = "googtrans=" + cookieValue + "; path=/; domain=" + window.location.hostname;
+            location.reload();
+        }
+    </script>
+</body>
+</html>

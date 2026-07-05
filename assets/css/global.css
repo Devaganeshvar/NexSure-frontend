@@ -1,0 +1,72 @@
+/* 
+    global.css 
+    Contains resets, CSS variables, and shared styles across the application 
+*/
+
+:root {
+    /* Color Palette */
+    --brand-dark: #16213e;
+    --brand-dark-lighter: #1e2b4d;
+    --brand-green: #10b981;
+    --brand-green-hover: #0ea5e9;
+    --bg-light: #f4f7fb;
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+}
+/* Dynamic Font Sizes */
+html.font-size-sm { font-size: 14px !important; }
+html.font-size-lg { font-size: 18px !important; }
+/* Layout Density */
+body.layout-compact .p-4 { padding: 1rem !important; }
+body.layout-compact .py-4 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+body.layout-compact .mb-4 { margin-bottom: 1rem !important; }
+body.layout-compact .mb-5 { margin-bottom: 1.5rem !important; }
+
+
+/* Edge-style Scrollbars for Webkit browsers (Chrome/Safari) */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+[data-bs-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+[data-bs-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}

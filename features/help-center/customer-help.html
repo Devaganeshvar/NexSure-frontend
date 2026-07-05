@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Help Center</title>
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        
+        <link href="../../assets/css/global_v2.css" rel="stylesheet">
+    <script src="../../features/shared/auth-guard.js"></script>
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body class="bg-light">
+    
+    <nav class="navbar navbar-expand-lg py-1 dashboard-nav sticky-top bg-dark border-bottom border-secondary">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../../features/customer-dashboard/home.html">
+                <img src="../../assets/images/Logo.png" alt="Nexsure" height="50">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link text-white" href="../../features/customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../../features/policy-management/my-policies.html">My Policies</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../../features/plan-listings/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../../features/policy-management/claims.html">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../../features/payment/payments.html">Payments</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <div class="dropdown user-dropdown">
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="javascript:void(0)" role="button" data-bs-toggle="dropdown">
+                            <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                            <span class="fw-medium small pe-1">User</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../../features/profile/profile.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="../../features/profile/settings.html">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="window.logout()">Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main id="main-content">
+        <div class="container py-5"><h2>Customer Help Center</h2></div>
+    </main>
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

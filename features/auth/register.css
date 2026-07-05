@@ -1,0 +1,21 @@
+.auth-panel {
+    /* For smaller screens, ensure the form doesn't get cut off vertically */
+    height: 100%;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.custom-checkbox:checked {
+    background-color: #1e3a5f;
+    border-color: #1e3a5f;
+}
+
+/* Ensure smooth scrolling on smaller devices where height is small */
+@media (max-width: 991.98px) {
+    .auth-layout {
+        height: auto;
+        min-height: 100vh;
+    }
+}

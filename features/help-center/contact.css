@@ -1,0 +1,97 @@
+/* Custom properties */
+:root {
+    --primary-blue: #0f172a;
+    --primary-green: #10b981;
+    --light-green: #e6f8f0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fafafa !important;
+}
+
+/* Utilities */
+.text-dark-blue { color: var(--primary-blue) !important; }
+.bg-dark-blue { background-color: var(--primary-blue) !important; }
+.text-green { color: var(--primary-green) !important; }
+.bg-light-green { background-color: var(--light-green) !important; }
+.fs-7 { font-size: 0.875rem !important; }
+.hover-dark:hover { color: #000 !important; }
+.playfair-font { font-family: 'Playfair Display', serif; }
+
+/* Buttons */
+.btn-dark-blue {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-dark-blue:hover {
+    background-color: #1b2845;
+    color: white;
+}
+
+/* Contact Cards */
+.contact-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+    background-color: #ffffff;
+}
+
+.contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+}
+
+.icon-circle {
+    width: 45px !important;
+    height: 45px !important;
+}
+
+/* Form Styling */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    padding: 0.8rem 1rem;
+    border-color: #e5e7eb;
+}
+
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(15, 23, 42, 0.1);
+    border-color: var(--primary-blue);
+}
+
+.form-control-lg, .form-select-lg {
+    font-size: 1rem;
+}
+
+/* Accordion Styling overrides */
+.custom-accordion .accordion-item {
+    border-color: #e5e7eb !important;
+}
+
+.custom-accordion .accordion-button {
+    padding: 1.25rem;
+}
+
+.custom-accordion .accordion-button:not(.collapsed) {
+    background-color: #fff;
+    color: var(--primary-blue);
+    box-shadow: none;
+}
+
+.custom-accordion .accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+}
+
+/* Customize the accordion arrow to match + and x */
+.custom-accordion .accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230f172a'%3e%3cpath fill-rule='evenodd' d='M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z'/%3e%3c/svg%3e");
+    transition: none !important;
+}
+
+.custom-accordion .accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230f172a'%3e%3cpath d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    transform: none !important;
+}

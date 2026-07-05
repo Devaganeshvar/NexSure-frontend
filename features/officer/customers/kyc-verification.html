@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - KYC Verification</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/officer_v2.css" rel="stylesheet">
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <link href="../../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../../officer/dashboard/dashboard.html">
+                <img src="../../../assets/images/LandingPage/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                <a href="../../admin-dashboard/officer-dashboard.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Officer</a> &rsaquo; Customer Management &rsaquo; KYC
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" placeholder="Search...">
+            
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge rounded-pill bg-danger">3</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="../../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                    <span class="fw-medium small">Kavitha</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                    <li><a class="dropdown-item" href="#"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="officer-layout">
+        
+        <!-- Sidebar -->
+        <aside class="officer-sidebar">
+            <a href="../../officer/dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Customers</div>
+            <a href="#" class="sidebar-link">Customer Management</a>
+            <a href="kyc-verification.html" class="sidebar-link active">KYC Verification</a>
+            
+            <div class="sidebar-section-title">Policies</div>
+            <a href="../policy-management/search-policy.html" class="sidebar-link">Policy Details</a>
+            <a href="../../officer/policies/applications.html" class="sidebar-link">Policy Applications</a>
+            <div class="sidebar-section-title">Claims</div>
+            <a href="../../officer/claims/claims-processing.html" class="sidebar-link">Claims Processing</a>
+            
+            <div class="sidebar-section-title">More</div>
+            <a href="../../officer/reports/reports.html" class="sidebar-link">Reports & Renewals</a>
+            <a href="#" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="officer-content">
+            <h1 class="officer-page-title mb-4">Customer KYC Verification</h1>
+
+            <!-- Tab Pills -->
+            <div class="officer-tabs">
+                <a href="#" class="officer-tab active">Pending KYC (4)</a>
+                <a href="#" class="officer-tab">Verified</a>
+                <a href="#" class="officer-tab">Rejected</a>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="officer-filter-bar mt-2">
+                <input type="text" class="officer-filter-search w-auto flex-grow-1" style="max-width:300px;" placeholder="Search by name or ID...">
+                <select class="officer-filter-select w-auto" style="min-width:180px;">
+                    <option>Submitted Date</option>
+                    <option>Last 7 Days</option>
+                    <option>Last 30 Days</option>
+                </select>
+            </div>
+
+            <!-- Table -->
+            <div class="bg-white rounded-4 shadow-sm border overflow-hidden mt-4">
+                <table class="officer-table">
+                    <thead>
+                        <tr>
+                            <th>CUSTOMER</th>
+                            <th>POLICY</th>
+                            <th>DOCS SUBMITTED</th>
+                            <th>STATUS</th>
+                            <th>SUBMITTED ON</th>
+                            <th class="text-end">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Priya S.</td>
+                            <td>HLT-3321</td>
+                            <td>Aadhaar, PAN</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>14 Jun 2026</td>
+                            <td class="text-end"><button class="btn btn-officer-action px-4">Review</button></td>
+                        </tr>
+                        <tr>
+                            <td>Arjun K.</td>
+                            <td>MOT-5587</td>
+                            <td>Aadhaar, RC</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>15 Jun 2026</td>
+                            <td class="text-end"><button class="btn btn-officer-action px-4">Review</button></td>
+                        </tr>
+                        <tr>
+                            <td>Meera R.</td>
+                            <td>LIF-1190</td>
+                            <td>Aadhaar, PAN</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>16 Jun 2026</td>
+                            <td class="text-end"><button class="btn btn-officer-action px-4">Review</button></td>
+                        </tr>
+                        <tr>
+                            <td>Rahul M.</td>
+                            <td>PRO-2204</td>
+                            <td>Aadhaar, PAN, Sale Deed</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>17 Jun 2026</td>
+                            <td class="text-end"><button class="btn btn-officer-action px-4">Review</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="officer-pagination">
+                <a href="#" class="officer-page-link">&lsaquo;</a>
+                <a href="#" class="officer-page-link active">1</a>
+                <a href="#" class="officer-page-link">2</a>
+                <a href="#" class="officer-page-link">3</a>
+                <a href="#" class="officer-page-link">&rsaquo;</a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '../../../features/login/login.html';
+        }
+    </script>
+</body>
+</html>

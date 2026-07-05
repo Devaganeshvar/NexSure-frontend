@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Customer Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../assets/css/officer_v2.css" rel="stylesheet">
+    <script src="../../features/shared/auth-guard.js?v=2"></script>
+    
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                <a href="../admin-dashboard/officer-dashboard.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Officer</a> &rsaquo; Customers &rsaquo; Management
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" placeholder="Search...">
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge rounded-pill bg-danger">3</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                    <span class="fw-medium small">Gokul K &blacktriangledown;</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                    <li><a class="dropdown-item" href="../admin-dashboard/officer-profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="officer-layout">
+        
+        <!-- Sidebar -->
+        <aside class="officer-sidebar">
+            <a href="../admin-dashboard/officer-dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">CUSTOMERS</div>
+            <a href="customer-management.html" class="sidebar-link active">Customer Management</a>
+            <a href="kyc-verification.html" class="sidebar-link">KYC Verification</a>
+            
+            <div class="sidebar-section-title">POLICIES</div>
+            <a href="../policy-management/search-policy.html" class="sidebar-link">Policy Details</a>
+            <a href="../reports-and-policies/applications.html" class="sidebar-link">Policy Applications</a>
+            <div class="sidebar-section-title">CLAIMS</div>
+            <a href="../policy-management/claims-processing.html" class="sidebar-link">Claims Processing</a>
+            
+            <div class="sidebar-section-title">MORE</div>
+            <a href="../reports/reports.html" class="sidebar-link">Reports & Renewals</a>
+            <a href="../admin-dashboard/officer-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="officer-content p-5 w-100 bg-white">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="page-header m-0 fw-bold">Customer Management</h1>
+                <button class="btn btn-action-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal"><i class="fa-solid fa-plus me-2"></i>Add Customer</button>
+            </div>
+
+            <!-- Filters -->
+            <div class="d-flex gap-3 mb-4">
+                <input type="text" id="search-input" class="filter-input flex-grow-1" style="max-width: 400px;" placeholder="Search customers by name, email, or ID...">
+                <select id="filter-status" class="filter-select">
+                    <option value="">All Statuses &blacktriangledown;</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+                <select id="filter-type" class="filter-select">
+                    <option value="">All Types &blacktriangledown;</option>
+                    <option value="Individual">Individual</option>
+                    <option value="Corporate">Corporate</option>
+                </select>
+            </div>
+
+            <!-- Loading State -->
+            <div id="table-loader" class="text-center py-5 d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-3">Loading customers...</p>
+            </div>
+
+            <!-- Data Table -->
+            <div class="border rounded shadow-sm bg-white">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">CUST ID</th>
+                            <th style="width: 25%;">NAME</th>
+                            <th style="width: 25%;">EMAIL</th>
+                            <th style="width: 15%;">TYPE</th>
+                            <th style="width: 10%;">STATUS</th>
+                            <th style="width: 10%;">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination and Counts -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div id="records-count" class="text-muted fs-6 fw-medium">Loading records...</div>
+                <div id="pagination-controls" class="pagination-container mt-0">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../../features/shared/officer-table.js?v=clean"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show loader for a tiny bit to simulate fetching
+            document.getElementById('table-body').parentElement.classList.add('d-none');
+            document.getElementById('table-loader').classList.remove('d-none');
+            
+            setTimeout(() => {
+                document.getElementById('table-body').parentElement.classList.remove('d-none');
+                document.getElementById('table-loader').classList.add('d-none');
+
+                // Generate 35 mock customers
+                const mockData = [];
+                const firstNames = ['Rahul', 'Priya', 'Arjun', 'Meera', 'Vikram', 'Neha', 'Sanjay', 'Kavita', 'Rohan', 'Sneha', 'Aditya', 'Anjali', 'Karan', 'Pooja', 'Amit'];
+                const lastNames = ['Mehta', 'Sharma', 'Kumar', 'Raman', 'Singh', 'Patel', 'Gupta', 'Iyer', 'Joshi', 'Verma', 'Reddy', 'Nair', 'Das', 'Roy', 'Chauhan'];
+                const types = ['Individual', 'Individual', 'Individual', 'Corporate'];
+                const statuses = ['Active', 'Active', 'Active', 'Active', 'Inactive'];
+
+                for(let i=1; i<=35; i++) {
+                    const fname = firstNames[Math.floor(Math.random() * firstNames.length)];
+                    const lname = lastNames[Math.floor(Math.random() * lastNames.length)];
+                    const type = types[Math.floor(Math.random() * types.length)];
+                    const status = statuses[Math.floor(Math.random() * statuses.length)];
+                    
+                    mockData.push({
+                        id: `CST-90${i.toString().padStart(2, '0')}`,
+                        name: `${fname} ${lname}`,
+                        email: `${fname.toLowerCase()}.${lname.toLowerCase()}@example.com`,
+                        type: type,
+                        status: status
+                    });
+                }
+
+                // Initialize Engine
+                new OfficerTable({
+                    tableBodyId: 'table-body',
+                    paginationContainerId: 'pagination-controls',
+                    searchInputId: 'search-input',
+                    filterSelectIds: ['filter-status', 'filter-type'],
+                    itemsPerPage: 8,
+                    data: mockData,
+                    filterLogic: (item, selects) => {
+                        const statusFilter = selects[0].value;
+                        const typeFilter = selects[1].value;
+                        
+                        let pass = true;
+                        if(statusFilter && item.status !== statusFilter) pass = false;
+                        if(typeFilter && item.type !== typeFilter) pass = false;
+                        return pass;
+                    },
+                    columns: [
+                        { key: 'id' },
+                        { key: 'name', render: (row) => `<strong>${row.name}</strong>` },
+                        { key: 'email', render: (row) => `<a href="mailto:${row.email}" class="text-decoration-none">${row.email}</a>` },
+                        { key: 'type' },
+                        { key: 'status', render: (row) => {
+                            if(row.status === 'Active') return `<span class="pill-status pill-approved">Active</span>`;
+                            return `<span class="pill-status text-bg-secondary">Inactive</span>`;
+                        }},
+                        { key: 'actions', render: (row) => `
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-custom border-0" data-bs-toggle="dropdown"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                    <li><a class="dropdown-item" href="#"><i class="fa-regular fa-eye me-2"></i> View Details</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen me-2"></i> Edit</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fa-solid fa-trash me-2"></i> Deactivate</a></li>
+                                </ul>
+                            </div>
+                        `}
+                    ]
+                });
+            }, 400); // 400ms simulated network delay
+        });
+    </script>
+
+    <!-- Add Customer Modal -->
+    <div class="modal fade" id="addCustomerModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title fw-bold">Add Customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-bold small">NAME</label>
+                        <input type="text" class="form-control" placeholder="Full name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-bold small">EMAIL</label>
+                        <input type="email" class="form-control" placeholder="Email address">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-bold small">TYPE</label>
+                        <select class="form-select">
+                            <option>Individual</option>
+                            <option>Corporate</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-outline-custom" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-action-primary" data-bs-dismiss="modal">Add Customer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

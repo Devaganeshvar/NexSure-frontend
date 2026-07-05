@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Backup & Recovery</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+    <style>
+        .metric-box {
+            padding: 1rem 1.5rem;
+            border-right: 1px solid var(--admin-border);
+        }
+        .metric-box:last-child {
+            border-right: none;
+        }
+        .metric-title {
+            font-size: 0.8rem;
+            color: var(--admin-text-muted);
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+        }
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--admin-dark);
+            margin-bottom: 0.2rem;
+        }
+        .metric-sub {
+            font-size: 0.75rem;
+            color: var(--admin-text-muted);
+        }
+        .storage-bar-bg {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .storage-bar-fill {
+            height: 100%;
+            background: var(--admin-darker);
+            width: 37%;
+        }
+        
+        [data-theme="dark"] .storage-bar-bg { background-color: #334155; }
+        [data-theme="dark"] .storage-bar-fill { background-color: #cbd5e1; }
+        [data-theme="dark"] .metric-value { color: var(--admin-text); }
+        [data-theme="dark"] .metric-box { border-color: var(--admin-border); }
+    </style>
+        <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                Admin &rsaquo; Backup & Recovery
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." onkeypress="handleGlobalSearch(event)">
+            <a href="javascript:void(0)" class="nav-icon" onclick="showAdminToast('No new messages', 'info')">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="fw-medium small">Admin User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Manage</div>
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link">Officers</a>
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link">Claims & Refunds</a>
+            <a href="../../features/content-management/content.html" class="sidebar-link">Content Management</a>
+            
+            <div class="sidebar-section-title">Operations</div>
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link">Reports & Audit</a>
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link">System Settings</a>
+            <a href="../../features/system/backup.html" class="sidebar-link active">Backup & Recovery</a>
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link">Help Center</a>
+            
+            <div class="sidebar-section-title">Account</div>
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="admin-page-title mb-1">Backup & Recovery</h1>
+                    <p class="text-muted">Manage system backups and restore points</p>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn-admin-outline" onclick="editSchedule()">Schedule Backup</button>
+                    <button class="btn-admin-primary" id="createBackupBtn" onclick="createBackup()">+ Create Backup Now</button>
+                </div>
+            </div>
+            
+            <!-- Top Metrics Card -->
+            <div class="bg-white mb-4">
+                <div class="d-flex flex-wrap">
+                    <div class="col-md-3 metric-box">
+                        <div class="metric-title">Last Backup</div>
+                        <div class="metric-value" id="lastBackupVal">Today, 02:00 AM</div>
+                        <div class="metric-sub" id="lastBackupSub">Automatic • Success</div>
+                    </div>
+                    <div class="col-md-3 metric-box">
+                        <div class="metric-title">Backup Size</div>
+                        <div class="metric-value">2.4 GB</div>
+                        <div class="metric-sub">Compressed</div>
+                    </div>
+                    <div class="col-md-3 metric-box">
+                        <div class="metric-title">Storage Used</div>
+                        <div class="metric-value">18.6 GB / 50 GB</div>
+                        <div class="metric-sub">37% of quota</div>
+                    </div>
+                    <div class="col-md-3 metric-box">
+                        <div class="metric-title">Next Scheduled</div>
+                        <div class="metric-value" id="nextSchedVal">Tomorrow, 02:00 AM</div>
+                        <div class="metric-sub">Daily • Auto</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Storage Usage -->
+            <div class="mb-5 px-1">
+                <div class="d-flex justify-content-between align-items-end">
+                    <div>
+                        <h6 class="fw-bold mb-0 text-dark">Storage Usage</h6>
+                        <span class="text-muted small">12 backup snapshots stored</span>
+                    </div>
+                    <span class="text-muted small">18.6 GB of 50 GB used</span>
+                </div>
+                <div class="storage-bar-bg">
+                    <div class="storage-bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Backup History Table -->
+                <div class="col-lg-8">
+                    <div class="bg-white p-4 h-100">
+                        <h5 class="fw-bold mb-4 text-dark">Backup History</h5>
+                        <div class="admin-filter-bar mb-4">
+                            <select class="admin-filter-select" style="width: 150px;">
+                                <option>Type: All</option>
+                                <option>Automatic</option>
+                                <option>Manual</option>
+                            </select>
+                            <select class="admin-filter-select" style="width: 150px;">
+                                <option>Status: All</option>
+                                <option>Success</option>
+                                <option>Failed</option>
+                            </select>
+                            <select class="admin-filter-select" style="width: 150px;">
+                                <option>Date Range</option>
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                            </select>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Backup ID</th>
+                                        <th>Type</th>
+                                        <th>Created</th>
+                                        <th>Size</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="backupTable">
+                                    <!-- JS populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="admin-pagination pb-2" id="paginationControls"></div>
+                    </div>
+                </div>
+                
+                <!-- Side Panel (Schedule & Restore) -->
+                <div class="col-lg-4">
+                    <!-- Schedule -->
+                    <div class="bg-white p-4 mb-4">
+                        <h5 class="fw-bold mb-4 text-dark">Backup Schedule</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Frequency</span>
+                            <span class="fw-medium text-dark" id="lblFreq">Daily</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Time</span>
+                            <span class="fw-medium text-dark" id="lblTime">02:00 AM</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Retention</span>
+                            <span class="fw-medium text-dark" id="lblRet">30 days</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="text-muted">Storage</span>
+                            <span class="fw-medium text-dark">Local + Cloud</span>
+                        </div>
+                        <button class="btn-admin-outline w-100" onclick="editSchedule()">Edit Schedule</button>
+                    </div>
+                    
+                    <!-- Restore -->
+                    <div class="bg-white p-4">
+                        <h5 class="fw-bold mb-3 text-dark">Restore System</h5>
+                        <p class="text-muted small mb-4">Restore the system to a previous backup snapshot. This action cannot be undone.</p>
+                        
+                        <select class="form-select mb-3 text-dark" id="restoreSelect" style="background: var(--admin-bg); border-color: var(--admin-border);">
+                            <option>Select Backup Snapshot</option>
+                            <option value="BKP-0041">BKP-0041 (Today, 02:00)</option>
+                            <option value="BKP-0040">BKP-0040 (17 Jun, 02:00)</option>
+                            <option value="BKP-0039">BKP-0039 (16 Jun, 02:00)</option>
+                        </select>
+                        
+                        <div class="p-3 mb-4 rounded-3 d-flex gap-2" style="background: #f1f5f9; color: #64748b; font-size: 0.85rem; border: 1px solid #e2e8f0;" id="warningBox">
+                            <i class="fa-solid fa-triangle-exclamation mt-1"></i>
+                            <div>Warning: Restoring will overwrite all data after selected snapshot.</div>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button class="btn-admin-primary flex-grow-1" id="restoreBtn" onclick="startRestore()">Restore</button>
+                            <button class="btn-admin-outline flex-grow-1" onclick="document.getElementById('restoreSelect').selectedIndex=0;">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Backup Activity -->
+            <h5 class="fw-bold mt-5 mb-3 text-dark">Recent Backup Activity</h5>
+            <div class="bg-white">
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Actor</th>
+                                <th>Action</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentActivityTable">
+                            <tr>
+                                <td class="text-muted">2026-06-18 09:12:00</td>
+                                <td class="text-dark fw-medium">System</td>
+                                <td>Pre-import auto backup BKP-0042</td>
+                                <td><span class="status-badge status-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">2026-06-18 02:00:01</td>
+                                <td class="text-dark fw-medium">System</td>
+                                <td>Auto backup BKP-0041 created</td>
+                                <td><span class="status-badge status-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">2026-06-17 14:22:10</td>
+                                <td class="text-dark fw-medium">Admin</td>
+                                <td>Manual backup BKP-0040 triggered</td>
+                                <td><span class="status-badge status-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">2026-06-14 02:00:01</td>
+                                <td class="text-dark fw-medium">System</td>
+                                <td>Auto backup BKP-0037 failed</td>
+                                <td><span class="status-badge status-danger">Failed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Edit Schedule Modal -->
+    <div class="modal fade" id="scheduleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--admin-bg); border: 1px solid var(--admin-border);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark">Edit Backup Schedule</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Frequency</label>
+                        <select class="form-select bg-white" id="scheduleFreq">
+                            <option value="Daily">Daily</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Time</label>
+                        <input type="time" class="form-control bg-white" id="scheduleTime" value="02:00">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted small">Retention</label>
+                        <select class="form-select bg-white" id="scheduleRet">
+                            <option value="15 days">15 days</option>
+                            <option value="30 days" selected>30 days</option>
+                            <option value="90 days">90 days</option>
+                        </select>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary flex-grow-1" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary flex-grow-1" onclick="saveSchedule()">Save Schedule</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        const backups = [
+            { id: 'BKP-0041', type: 'Automatic', date: 'Today 02:00', size: '2.4 GB', status: 'Success' },
+            { id: 'BKP-0040', type: 'Manual', date: '17 Jun 02:00', size: '2.3 GB', status: 'Success' },
+            { id: 'BKP-0039', type: 'Automatic', date: '16 Jun 02:00', size: '2.3 GB', status: 'Success' },
+            { id: 'BKP-0038', type: 'Automatic', date: '15 Jun 02:00', size: '2.2 GB', status: 'Success' },
+            { id: 'BKP-0037', type: 'Automatic', date: '14 Jun 02:00', size: '2.2 GB', status: 'Failed' },
+            { id: 'BKP-0036', type: 'Manual', date: '12 Jun 10:30', size: '2.1 GB', status: 'Success' }
+        ];
+
+        let currentPage = 1;
+        const rowsPerPage = 5;
+
+        function renderTable() {
+            const totalPages = Math.ceil(backups.length / rowsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginated = backups.slice(start, end);
+
+            const tbody = document.getElementById('backupTable');
+            tbody.innerHTML = '';
+
+            paginated.forEach(b => {
+                const statusClass = b.status === 'Success' ? 'status-success' : 'status-danger';
+                const actionBtn = b.status === 'Success'
+                    ? `<a href="javascript:void(0)" class="text-primary text-decoration-none me-2" onclick="restoreFromTable('${b.id}')">[Restore]</a><a href="javascript:void(0)" class="text-primary text-decoration-none" onclick="showAdminToast('Downloading backup ${b.id}...', 'info')">[Download]</a>`
+                    : `<a href="javascript:void(0)" class="text-danger text-decoration-none" onclick="retryBackup('${b.id}')">[Retry]</a>`;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="text-dark fw-medium">${b.id}</td>
+                        <td class="text-muted">${b.type}</td>
+                        <td class="text-muted">${b.date}</td>
+                        <td>${b.size}</td>
+                        <td><span class="status-badge ${statusClass}">${b.status}</span></td>
+                        <td>${actionBtn}</td>
+                    </tr>
+                `;
+            });
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const controls = document.getElementById('paginationControls');
+            let html = `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage - 1})">&lsaquo;</a>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<a href="javascript:void(0)" class="admin-page-link ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
+            }
+            html += `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage + 1}, ${totalPages})">&rsaquo;</a>`;
+            controls.innerHTML = html;
+        }
+
+        function changePage(page, maxPage = null) {
+            if (page < 1 || (maxPage && page > maxPage)) return;
+            currentPage = page;
+            renderTable();
+        }
+
+        // Helper to simulate a real asynchronous API call
+        function simulateNetworkRequest(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function createBackup() {
+            const btn = document.getElementById('createBackupBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i>Creating Backup...';
+            btn.disabled = true;
+
+            // Wait asynchronously without blocking the UI thread
+            await simulateNetworkRequest(1500);
+
+            const now = new Date();
+            const id = 'BKP-00' + (42 + Math.floor(Math.random() * 50));
+            const dateStr = 'Today ' + now.toTimeString().substring(0, 5);
+            const newBackup = { id: id, type: 'Manual', date: dateStr, size: '2.4 GB', status: 'Success' };
+            backups.unshift(newBackup);
+            
+            const activityTbody = document.getElementById('recentActivityTable');
+            activityTbody.insertAdjacentHTML('afterbegin', `
+                <tr>
+                    <td class="text-muted">${now.toISOString().replace('T', ' ').substring(0, 19)}</td>
+                    <td class="text-dark fw-medium">Admin</td>
+                    <td>Manual backup ${id} created</td>
+                    <td><span class="status-badge status-success">Success</span></td>
+                </tr>
+            `);
+
+            document.getElementById('lastBackupVal').innerText = dateStr;
+            document.getElementById('lastBackupSub').innerText = 'Manual • Success';
+            
+            const select = document.getElementById('restoreSelect');
+            const opt = document.createElement('option');
+            opt.text = `${id} (${dateStr})`;
+            opt.value = id;
+            select.add(opt, 1);
+
+            renderTable();
+            
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            showAdminToast(`Backup ${id} created successfully!`, 'success');
+        }
+
+        async function retryBackup(id) {
+            const b = backups.find(x => x.id === id);
+            if (b) {
+                showAdminToast(`Retrying backup ${id}...`, 'info');
+                
+                // Asynchronous wait
+                await simulateNetworkRequest(1000);
+                
+                b.status = 'Success';
+                renderTable();
+                showAdminToast(`Backup ${id} retry successful!`, 'success');
+            }
+        }
+
+        function restoreFromTable(id) {
+            const select = document.getElementById('restoreSelect');
+            for(let i=0; i<select.options.length; i++) {
+                if(select.options[i].value === id || select.options[i].text.includes(id)) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+            window.scrollTo({ top: document.getElementById('restoreSelect').offsetTop - 100, behavior: 'smooth' });
+            showAdminToast(`Selected ${id} for restore.`, 'info');
+        }
+
+        async function startRestore() {
+            const select = document.getElementById('restoreSelect');
+            if(select.selectedIndex === 0) {
+                showAdminToast('Please select a snapshot first.', 'warning');
+                return;
+            }
+            const btn = document.getElementById('restoreBtn');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i>Restoring...';
+            btn.disabled = true;
+
+            // Simulate heavy asynchronous operation
+            await simulateNetworkRequest(2000);
+
+            btn.innerHTML = 'Restore';
+            btn.disabled = false;
+            showAdminToast('System restored successfully!', 'success');
+            select.selectedIndex = 0;
+        }
+
+        let scheduleModalObj;
+        function editSchedule() {
+            if(!scheduleModalObj) scheduleModalObj = new bootstrap.Modal(document.getElementById('scheduleModal'));
+            scheduleModalObj.show();
+        }
+
+        function saveSchedule() {
+            const freq = document.getElementById('scheduleFreq').value;
+            const time = document.getElementById('scheduleTime').value;
+            const ret = document.getElementById('scheduleRet').value;
+            
+            document.getElementById('lblFreq').innerText = freq;
+            
+            let h = parseInt(time.split(':')[0]);
+            let m = time.split(':')[1];
+            let ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12; 
+            const timeStr = (h < 10 ? '0'+h : h) + ':' + m + ' ' + ampm;
+            
+            document.getElementById('lblTime').innerText = timeStr;
+            document.getElementById('lblRet').innerText = ret;
+            document.getElementById('nextSchedVal').innerText = `Tomorrow, ${timeStr}`;
+            
+            scheduleModalObj.hide();
+            showAdminToast('Backup schedule updated.', 'success');
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '/features/auth/login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable();
+            // Dark theme specific tweaks
+            if(document.documentElement.getAttribute('data-theme') === 'dark') {
+                document.getElementById('warningBox').style.background = '#0f172a';
+                document.getElementById('warningBox').style.borderColor = '#334155';
+                document.getElementById('warningBox').style.color = '#94a3b8';
+            }
+        });
+    </script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

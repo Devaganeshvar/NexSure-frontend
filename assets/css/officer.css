@@ -1,0 +1,354 @@
+
+/* Restored Officer UI Styles */
+
+:root {
+    --officer-dark: #1e293b;
+    --officer-darker: #0f172a;
+    --officer-primary: #1890ff;
+    --officer-accent: #10b981;
+    --officer-bg: #f8fafc;
+    --officer-card-bg: #ffffff;
+    --officer-text: #334155;
+    --officer-text-muted: #64748b;
+    --officer-border: #e2e8f0;
+    --officer-sidebar-active: #1890ff;
+    --officer-table-header: #1c2833;
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: var(--officer-bg); 
+    color: var(--officer-text);
+    font-family: 'Inter', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Officer Top Navbar */
+.officer-navbar {
+    background-color: var(--officer-darker);
+    padding: 0.75rem 2rem;
+    color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 10;
+}
+
+.officer-navbar .navbar-brand img {
+    height: 40px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.officer-navbar .breadcrumb-text {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.officer-navbar .search-bar {
+    border-radius: 30px;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.9rem;
+    width: 280px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.officer-navbar .search-bar::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.officer-navbar .search-bar:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+    width: 320px;
+}
+
+.nav-icon {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.nav-icon:hover {
+    color: white;
+}
+
+.nav-icon .badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    font-size: 0.6rem;
+    padding: 0.25em 0.4em;
+}
+
+/* Layout */
+.officer-layout {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.officer-sidebar {
+    width: 260px;
+    background: white;
+    border-right: 1px solid var(--officer-border);
+    padding: 1.5rem 1rem;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.sidebar-section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--officer-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 1.5rem 0 0.75rem 1rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--officer-text);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    margin-bottom: 0.25rem;
+}
+
+.sidebar-link:hover {
+    background-color: var(--officer-bg);
+    color: var(--officer-primary);
+}
+
+.sidebar-link.active {
+    background-color: var(--officer-sidebar-active);
+    color: white;
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2);
+}
+
+/* Content Area */
+.officer-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: var(--officer-bg);
+}
+
+/* Cards */
+.officer-stat-card {
+    background: var(--officer-card-bg);
+    border: 1px solid var(--officer-border);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.officer-stat-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--officer-text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.officer-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--officer-text);
+}
+
+/* Tables */
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.data-table th {
+    background-color: var(--officer-table-header);
+    color: white;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem 1.5rem;
+    border: none;
+}
+
+.data-table th:first-child {
+    border-top-left-radius: 0.5rem;
+}
+
+.data-table th:last-child {
+    border-top-right-radius: 0.5rem;
+}
+
+.data-table td {
+    padding: 1.25rem 1.5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--officer-border);
+    color: var(--officer-text);
+    background-color: white;
+}
+
+.data-table tbody tr:hover td {
+    background-color: #f8fafc;
+}
+
+/* Badges / Pills */
+.pill-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.pill-approved { background-color: #dcfce7; color: #166534; }
+.pill-pending { background-color: #fef08a; color: #854d0e; }
+.pill-rejected { background-color: #fee2e2; color: #991b1b; }
+.pill-submitted { background-color: #e0f2fe; color: #0369a1; }
+
+/* Buttons */
+.btn-action-primary {
+    background-color: var(--officer-primary);
+    color: white;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    border: none;
+}
+.btn-action-primary:hover {
+    background-color: #096dd9;
+    color: white;
+}
+
+.btn-outline-custom {
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    color: var(--officer-text);
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+}
+.btn-outline-custom:hover {
+    border-color: var(--officer-primary);
+    color: var(--officer-primary);
+}
+
+.btn-outline-dark-custom {
+    background-color: transparent;
+    color: var(--officer-darker);
+    border: 1px solid var(--officer-darker);
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+/* FIX HOVER VISIBILITY ISSUE */
+.btn-outline-dark-custom:hover {
+    background-color: var(--officer-darker);
+    color: #ffffff !important;
+}
+
+.page-header {
+    font-weight: 700;
+    color: var(--officer-darker);
+}
+
+/* Inputs and Filters */
+.filter-input, .filter-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    outline: none;
+}
+.filter-input:focus, .filter-select:focus {
+    border-color: var(--officer-primary);
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* Typography fix for Inter everywhere */
+* {
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* Report tabs */
+.report-tab-card {
+    background-color: #f1f5f9;
+    border: 2px solid transparent;
+    color: #475569;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.report-tab-card.active {
+    background-color: white;
+    border-color: var(--officer-primary);
+    color: var(--officer-primary);
+}
+
+.btn-outline-dark-custom:hover { background-color: var(--officer-darker, #0f172a) !important; color: white !important; }
+
+
+/* DARK MODE SUPPORT */
+[data-bs-theme="dark"] {
+    --officer-dark: #0f172a;
+    --officer-darker: #020617;
+    --officer-bg: #0f172a;
+    --officer-card-bg: #1e293b;
+    --officer-text: #f1f5f9;
+    --officer-text-muted: #94a3b8;
+    --officer-border: rgba(255, 255, 255, 0.1);
+    --officer-table-header: #0f172a;
+}
+
+[data-bs-theme="dark"] .officer-sidebar,
+[data-bs-theme="dark"] .officer-stat-card,
+[data-bs-theme="dark"] .report-tab-card.active,
+[data-bs-theme="dark"] .data-table td,
+[data-bs-theme="dark"] .btn-outline-custom {
+    background-color: var(--officer-card-bg) !important;
+    color: var(--officer-text);
+}
+
+[data-bs-theme="dark"] .data-table tbody tr:hover td {
+    background-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-dark-custom {
+    border-color: #94a3b8;
+    color: #f1f5f9;
+}
+[data-bs-theme="dark"] .btn-outline-dark-custom:hover {
+    background-color: #334155 !important;
+    color: white !important;
+}
+
+[data-bs-theme="dark"] .filter-input, 
+[data-bs-theme="dark"] .filter-select {
+    background-color: var(--officer-card-bg);
+    color: var(--officer-text);
+    border-color: var(--officer-border);
+}

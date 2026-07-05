@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NexSure - Profile Settings</title>
+
+    <!-- Bootstrap CSS -->
+
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+
+    <script src="../../../features/shared/auth-guard.js"></script>
+
+    <script src="../../../assets/js/admin.js"></script>
+
+    <style>
+
+        .profile-avatar-large {
+
+            width: 100px;
+
+            height: 100px;
+
+            background-color: var(--admin-darker);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 3rem;
+
+            border-radius: 50%;
+
+            margin: 0 auto 1.5rem;
+
+        }
+
+        .security-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 1.5rem 0;
+
+            border-bottom: 1px solid var(--admin-border);
+
+        }
+
+        .security-row:last-child {
+
+            border-bottom: none;
+
+        }
+
+        .form-switch .form-check-input {
+
+            width: 3rem;
+
+            height: 1.5rem;
+
+            cursor: pointer;
+
+        }
+
+        .form-switch .form-check-input:checked {
+
+            background-color: var(--admin-darker);
+
+            border-color: var(--admin-darker);
+
+        }
+
+        
+
+        .privilege-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 0.75rem;
+
+            margin-bottom: 1rem;
+
+            color: var(--admin-text);
+
+            font-weight: 500;
+
+        }
+
+        .privilege-item i {
+
+            color: var(--admin-text-muted);
+
+        }
+
+        
+
+        .hover-primary:hover {
+
+            color: var(--admin-primary) !important;
+
+            background: #f8fafc;
+
+        }
+
+        
+
+        [data-theme="dark"] .hover-primary:hover { background: #1e293b; }
+
+        [data-theme="dark"] .form-control { background-color: #0f172a !important; color: #f1f5f9 !important; border-color: var(--admin-border) !important; }
+
+        [data-theme="dark"] .form-switch .form-check-input:checked { background-color: var(--admin-primary); border-color: var(--admin-primary); }
+
+    </style>
+
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+
+<body>
+
+
+
+    <!-- Top Navbar -->
+
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+
+        <div class="d-flex align-items-center gap-5">
+
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+
+            </a>
+
+            <div class="breadcrumb-text">
+
+                <a href="../../features/admin-dashboard/dashboard.html" class="text-white-50 text-decoration-none hover-white">Admin</a> &rsaquo; Profile Settings
+
+            </div>
+
+        </div>
+
+        
+
+        <div class="d-flex align-items-center gap-4">
+
+            <div class="dropdown">
+
+                <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." data-bs-toggle="dropdown" aria-expanded="false" onkeyup="performLiveSearch(this.value)">
+
+                <ul class="dropdown-menu shadow border-0 mt-2" id="searchResultsDropdown" style="border-radius: 8px; position: absolute; width: 300px;">
+
+                    <li class="px-3 py-2 text-muted small" id="searchState">Type to search...</li>
+
+                </ul>
+
+            </div>
+
+
+
+            <div class="dropdown">
+
+                <a href="#" class="nav-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="position: relative;">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.55rem; padding: 0.25em 0.4em;">
+
+                        3
+
+                    </span>
+
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="width: 320px; border-radius: 8px;">
+
+                    <li class="px-3 py-2 border-bottom fw-bold text-dark">Messages (3 New)</li>
+
+                    <li>
+
+                        <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3" href="javascript:void(0)" onclick="showAdminToast('Message opened')">
+
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">GK</div>
+
+                            <div style="white-space: normal;">
+
+                                <div class="fw-bold small text-dark mb-1">Gokul K</div>
+
+                                <div class="small text-muted">Requested approval for policy APP-2281 override.</div>
+
+                            </div>
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3" href="javascript:void(0)" onclick="showAdminToast('Message opened')">
+
+                            <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">S</div>
+
+                            <div style="white-space: normal;">
+
+                                <div class="fw-bold small text-dark mb-1">System</div>
+
+                                <div class="small text-muted">Batch import completed with 3 warnings.</div>
+
+                            </div>
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a class="dropdown-item py-3 d-flex align-items-start gap-3" href="javascript:void(0)" onclick="showAdminToast('Message opened')">
+
+                            <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">HA</div>
+
+                            <div style="white-space: normal;">
+
+                                <div class="fw-bold small text-dark mb-1">Hephzibha A</div>
+
+                                <div class="small text-muted">Can you check the KYC for Priya S?</div>
+
+                            </div>
+
+                        </a>
+
+                    </li>
+
+                    <li class="text-center py-2 bg-light rounded-bottom" style="border-radius: 0 0 8px 8px;">
+
+                        <a href="javascript:void(0)" class="small fw-bold text-decoration-none" onclick="showAdminToast('Opening all messages...')">View All Messages</a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="dropdown">
+
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+                    <span class="fw-medium small">Admin User</span>
+
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+
+                    <li><a class="dropdown-item py-2 active" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- Layout -->
+
+    <div class="admin-layout">
+
+        
+
+        <!-- Sidebar -->
+
+        <aside class="admin-sidebar">
+
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+
+            
+
+            <div class="sidebar-section-title">Manage</div>
+
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link">Officers</a>
+
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link">Claims & Refunds</a>
+
+            <a href="../../features/content-management/content.html" class="sidebar-link">Content Management</a>
+
+            
+
+            <div class="sidebar-section-title">Operations</div>
+
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link">Reports & Audit</a>
+
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link">System Settings</a>
+
+            <a href="../../features/system/backup.html" class="sidebar-link">Backup & Recovery</a>
+
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link">Help Center</a>
+
+            
+
+            <div class="sidebar-section-title">Account</div>
+
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link active">Profile</a>
+
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+
+        </aside>
+
+
+
+        <!-- Main Content -->
+
+        <main class="admin-content">
+
+            <div class="mb-5">
+
+                <h1 class="admin-page-title mb-1">Profile Settings</h1>
+
+                <p class="text-muted">Manage your personal details, security settings, active sessions, and permissions.</p>
+
+            </div>
+
+            
+
+            <div class="row g-5">
+
+                <!-- Left Column: Forms -->
+
+                <div class="col-lg-8">
+
+                    <!-- Personal Information -->
+
+                    <h5 class="fw-bold mb-4 text-dark text-primary">Personal Information</h5>
+
+                    <div class="row g-4 mb-4">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-muted small fw-medium">Full Name</label>
+
+                            <input type="text" class="form-control" value="Solai">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-muted small fw-medium">Email Address</label>
+
+                            <input type="email" class="form-control" value="solai@nexsure.com">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-muted small fw-medium">Mobile Number</label>
+
+                            <input type="text" class="form-control" value="+91 98765 43210">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-muted small fw-medium">Designation</label>
+
+                            <input type="text" class="form-control" value="Administrator" readonly>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-muted small fw-medium">Department</label>
+
+                            <input type="text" class="form-control" value="IT Operations" readonly>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label text-muted small fw-medium">Joining Date</label>
+
+                            <input type="text" class="form-control" value="14 Jan 2024" readonly>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    <div class="d-flex gap-3 mb-5 pb-4 border-bottom">
+
+                        <button class="btn-admin-primary px-4 py-2" onclick="showAdminToast('Profile updated successfully!', 'success')">Save Changes</button>
+
+                        <button class="btn-admin-outline px-4 py-2" onclick="showAdminToast('Changes discarded.', 'info')">Cancel</button>
+
+                    </div>
+
+
+
+                    <!-- Security & Auth -->
+
+                    <h5 class="fw-bold mb-3 text-dark text-primary">Security & Authentication</h5>
+
+                    
+
+                    <div class="security-row">
+
+                        <div>
+
+                            <div class="fw-bold text-dark mb-1">Two-Factor Authentication (2FA)</div>
+
+                            <div class="text-muted small">Secure your account with an OTP sent to your registered mobile number</div>
+
+                        </div>
+
+                        <div class="form-check form-switch">
+
+                            <input class="form-check-input" type="checkbox" checked onchange="showAdminToast(this.checked ? '2FA Enabled successfully.' : '2FA Disabled. Your account is less secure.', this.checked ? 'success' : 'warning')">
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    <div class="security-row">
+
+                        <div>
+
+                            <div class="fw-bold text-dark mb-1">Change Password</div>
+
+                            <div class="text-muted small">Update your account password regularly to keep it secure</div>
+
+                        </div>
+
+                        <button class="btn-admin-outline bg-light" onclick="openPasswordModal()">Change Password</button>
+
+                    </div>
+
+                    
+
+                    <div class="security-row">
+
+                        <div>
+
+                            <div class="fw-bold text-dark mb-1">API Access Token</div>
+
+                            <div class="text-muted small">Generate authentication tokens for remote API access</div>
+
+                        </div>
+
+                        <button class="btn-admin-outline bg-light" onclick="generateToken()">Generate Token</button>
+
+                    </div>
+
+                    
+
+                    <div class="security-row mb-5">
+
+                        <div>
+
+                            <div class="fw-bold text-dark mb-1">Login Alert Notifications</div>
+
+                            <div class="text-muted small">Receive email alerts whenever a new login is detected</div>
+
+                        </div>
+
+                        <div class="form-check form-switch">
+
+                            <input class="form-check-input" type="checkbox" checked onchange="showAdminToast(this.checked ? 'Login alerts enabled.' : 'Login alerts disabled.', 'success')">
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Active Sessions -->
+
+                    <h5 class="fw-bold mb-4 text-dark text-primary">Active Login Sessions</h5>
+
+                    <div class="table-responsive">
+
+                        <table class="admin-table bg-white">
+
+                            <thead>
+
+                                <tr class="bg-primary text-white">
+
+                                    <th class="bg-transparent text-white border-0">Device & Browser</th>
+
+                                    <th class="bg-transparent text-white border-0">IP Address</th>
+
+                                    <th class="bg-transparent text-white border-0">Location</th>
+
+                                    <th class="bg-transparent text-white border-0">Last Active</th>
+
+                                    <th class="bg-transparent text-white border-0">Actions</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr id="session-1">
+
+                                    <td class="text-dark fw-medium">Chrome on Windows 11</td>
+
+                                    <td class="text-muted">192.168.1.45</td>
+
+                                    <td class="text-muted">Chennai, India</td>
+
+                                    <td><span class="status-badge status-success">Active</span></td>
+
+                                    <td><a href="javascript:void(0)" class="text-danger text-decoration-none fw-medium" onclick="showAdminToast('Cannot revoke current active session', 'warning')">[Revoke]</a></td>
+
+                                </tr>
+
+                                <tr id="session-2">
+
+                                    <td class="text-dark fw-medium">Safari on iPhone 15</td>
+
+                                    <td class="text-muted">192.168.1.102</td>
+
+                                    <td class="text-muted">Chennai, India</td>
+
+                                    <td class="text-muted">2 hours ago</td>
+
+                                    <td><a href="javascript:void(0)" class="text-danger text-decoration-none fw-medium" onclick="revokeSession('session-2')">[Revoke]</a></td>
+
+                                </tr>
+
+                                <tr id="session-3">
+
+                                    <td class="text-dark fw-medium">Firefox on macOS Sonoma</td>
+
+                                    <td class="text-muted">103.45.12.8</td>
+
+                                    <td class="text-muted">Mumbai, India</td>
+
+                                    <td class="text-muted">12 Jun 2026</td>
+
+                                    <td><a href="javascript:void(0)" class="text-danger text-decoration-none fw-medium" onclick="revokeSession('session-3')">[Revoke]</a></td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Right Column: Avatar & Privileges -->
+
+                <div class="col-lg-4">
+
+                    <div class="bg-white p-4 mb-4 text-center">
+
+                        <div class="profile-avatar-large">
+
+                            <i class="fa-solid fa-user"></i>
+
+                        </div>
+
+                        <h4 class="fw-bold text-dark mb-1">Solai</h4>
+
+                        <div class="text-muted mb-1">Administrator</div>
+
+                        <div class="small text-muted mb-4">ID: NS-ADMIN-001</div>
+
+                        
+
+                        <div class="d-flex gap-2">
+
+                            <input type="file" id="photoUpload" class="d-none" accept="image/*" onchange="uploadPhoto(this)">
+
+                            <button class="btn-admin-primary flex-grow-1" style="background: var(--admin-darker);" onclick="document.getElementById('photoUpload').click()">Upload Photo</button>
+
+                            <button class="btn-admin-outline flex-grow-1" onclick="removePhoto()">Remove</button>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    <div class="bg-white p-4 mb-4">
+
+                        <h5 class="fw-bold mb-2 text-dark"><i class="fa-solid fa-tags text-danger me-2"></i> Admin Privileges</h5>
+
+                        <p class="text-muted small mb-4">Modules you have full access to:</p>
+
+                        
+
+                        <div class="privilege-item"><i class="fa-solid fa-check text-dark"></i> Product Catalog & Pricing</div>
+
+                        <div class="privilege-item"><i class="fa-solid fa-check text-dark"></i> Officer Onboarding & Licensing</div>
+
+                        <div class="privilege-item"><i class="fa-solid fa-check text-dark"></i> Policyholder Register & KYC</div>
+
+                        <div class="privilege-item"><i class="fa-solid fa-check text-dark"></i> Claims Settlement & Refunds</div>
+
+                        <div class="privilege-item"><i class="fa-solid fa-check text-dark"></i> System Settings & Integrations</div>
+
+                        <div class="privilege-item"><i class="fa-solid fa-check text-dark"></i> Backup Snapshots & Recovery</div>
+
+                        <div class="privilege-item"><i class="fa-solid fa-check text-dark"></i> Audit Logs & Export Reports</div>
+
+                    </div>
+
+                    
+
+                    <div class="p-4 rounded border d-flex gap-3" style="background: #f1f5f9; border-color: #e2e8f0;">
+
+                        <i class="fa-solid fa-circle-info text-primary fs-4 mt-1"></i>
+
+                        <div>
+
+                            <h6 class="fw-bold text-dark mb-1">Need Help?</h6>
+
+                            <p class="text-muted small mb-0">If you need to change your admin privileges or request access to other modules, please contact the System Owner or file a ticket in the Help Center.</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            
+
+        </main>
+
+    </div>
+
+
+
+    <!-- Change Password Modal -->
+
+    <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content" style="background: var(--admin-bg); border: 1px solid var(--admin-border);">
+
+                <div class="modal-header border-0 pb-0">
+
+                    <h5 class="modal-title fw-bold text-dark">Change Password</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+
+                <div class="modal-body py-4">
+
+                    <div class="mb-3">
+
+                        <label class="form-label text-muted small">Current Password</label>
+
+                        <input type="password" class="form-control bg-white" id="currentPwd">
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label text-muted small">New Password</label>
+
+                        <input type="password" class="form-control bg-white" id="newPwd">
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label text-muted small">Confirm New Password</label>
+
+                        <input type="password" class="form-control bg-white" id="confirmPwd">
+
+                    </div>
+
+                    <div class="d-flex gap-2">
+
+                        <button type="button" class="btn btn-outline-secondary flex-grow-1" data-bs-dismiss="modal">Cancel</button>
+
+                        <button type="button" class="btn btn-primary flex-grow-1" onclick="savePassword()">Update Password</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Bootstrap JS -->
+
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+
+    <script>
+
+        function logout() {
+
+            localStorage.removeItem('isAuthenticated');
+
+            localStorage.removeItem('userRole');
+
+            window.location.href = '/features/auth/login.html';
+
+        }
+
+
+
+        let pwdModalObj;
+
+        function openPasswordModal() {
+
+            if(!pwdModalObj) pwdModalObj = new bootstrap.Modal(document.getElementById('passwordModal'));
+
+            document.getElementById('currentPwd').value = '';
+
+            document.getElementById('newPwd').value = '';
+
+            document.getElementById('confirmPwd').value = '';
+
+            pwdModalObj.show();
+
+        }
+
+
+
+        function savePassword() {
+
+            const newP = document.getElementById('newPwd').value;
+
+            const confP = document.getElementById('confirmPwd').value;
+
+            if(!newP || newP !== confP) {
+
+                showAdminToast('Passwords do not match.', 'danger');
+
+                return;
+
+            }
+
+            pwdModalObj.hide();
+
+            showAdminToast('Password updated successfully!', 'success');
+
+        }
+
+
+
+        function generateToken() {
+
+            const token = 'NEX-' + Math.random().toString(36).substring(2, 15).toUpperCase();
+
+            showAdminToast(`New API Token generated: ${token}`, 'success');
+
+        }
+
+
+
+        function revokeSession(id) {
+
+            const row = document.getElementById(id);
+
+            if(row) {
+
+                row.remove();
+
+                showAdminToast('Session successfully revoked.', 'info');
+
+            }
+
+        }
+
+
+
+        function uploadPhoto(input) {
+
+            if(input.files && input.files[0]) {
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+
+                    document.querySelector('.profile-avatar-large').innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+
+                    showAdminToast('Profile photo updated!', 'success');
+
+                };
+
+                reader.readAsDataURL(input.files[0]);
+
+            }
+
+        }
+
+
+
+        function removePhoto() {
+
+            document.querySelector('.profile-avatar-large').innerHTML = '<i class="fa-solid fa-user"></i>';
+
+            document.getElementById('photoUpload').value = '';
+
+            showAdminToast('Profile photo removed.', 'info');
+
+        }
+
+
+
+        let searchTimeout;
+
+        function performLiveSearch(query) {
+
+            const dropdown = new bootstrap.Dropdown(document.getElementById('globalSearch'));
+
+            const menu = document.getElementById('searchResultsDropdown');
+
+            
+
+            if(!query.trim()) {
+
+                menu.innerHTML = '<li class="px-3 py-2 text-muted small">Type to search...</li>';
+
+                dropdown.show();
+
+                return;
+
+            }
+
+            
+
+            menu.innerHTML = '<li class="px-3 py-2 text-muted small"><i class="fa-solid fa-circle-notch fa-spin me-2"></i>Searching...</li>';
+
+            dropdown.show();
+
+            
+
+            clearTimeout(searchTimeout);
+
+            searchTimeout = setTimeout(() => {
+
+                menu.innerHTML = `
+
+                    <li class="px-3 py-2 border-bottom">
+
+                        <div class="fw-bold text-dark small mb-1">Users</div>
+
+                        <a href="javascript:void(0)" class="text-decoration-none text-muted small d-block py-1 hover-primary" onclick="showAdminToast('Navigating to user ${query}')">
+
+                            <i class="fa-solid fa-user me-2"></i>${query} (Policyholder)
+
+                        </a>
+
+                    </li>
+
+                    <li class="px-3 py-2 border-bottom">
+
+                        <div class="fw-bold text-dark small mb-1">Policies</div>
+
+                        <a href="javascript:void(0)" class="text-decoration-none text-muted small d-block py-1 hover-primary" onclick="showAdminToast('Opening policy')">
+
+                            <i class="fa-solid fa-file-contract me-2"></i>POL-${query.substring(0,3).toUpperCase()}123
+
+                        </a>
+
+                    </li>
+
+                    <li class="px-3 py-2">
+
+                        <div class="fw-bold text-dark small mb-1">Help Center</div>
+
+                        <a href="javascript:void(0)" class="text-decoration-none text-muted small d-block py-1 hover-primary" onclick="showAdminToast('Opening ticket')">
+
+                            <i class="fa-solid fa-ticket me-2"></i>Ticket referencing "${query}"
+
+                        </a>
+
+                    </li>
+
+                    <li class="text-center py-2 bg-light rounded-bottom border-top" style="border-radius: 0 0 8px 8px;">
+
+                        <a href="javascript:void(0)" class="small fw-bold text-decoration-none" onclick="showAdminToast('View all results')">View all results for "${query}"</a>
+
+                    </li>
+
+                `;
+
+            }, 600);
+
+        }
+
+        
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Dark mode tweaks
+
+            if(document.documentElement.getAttribute('data-theme') === 'dark') {
+
+                const infoBox = document.querySelector('.fa-circle-info').parentElement;
+
+                infoBox.style.background = '#0f172a';
+
+                infoBox.style.borderColor = '#334155';
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
+

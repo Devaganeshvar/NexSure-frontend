@@ -1,0 +1,176 @@
+/* Dark Theme Overrides for NexSure Custom Components */
+
+[data-bs-theme="dark"] body {
+    background-color: #0f172a !important; /* Deep dark slate */
+    color: #f8fafc !important;
+}
+
+/* Hardcoded White Backgrounds */
+[data-bs-theme="dark"] .card,
+[data-bs-theme="dark"] .bg-white,
+[data-bs-theme="dark"] .bg-light,
+[data-bs-theme="dark"] .kpi-card,
+[data-bs-theme="dark"] .list-card,
+[data-bs-theme="dark"] .summary-card,
+[data-bs-theme="dark"] .content-card,
+[data-bs-theme="dark"] .profile-sidebar,
+[data-bs-theme="dark"] .claim-card,
+[data-bs-theme="dark"] .officer-sidebar,
+[data-bs-theme="dark"] .officer-stat-card,
+[data-bs-theme="dark"] .report-tab-card.active,
+[data-bs-theme="dark"] .data-table td {
+
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+/* Navbars */
+[data-bs-theme="dark"] .navbar,
+[data-bs-theme="dark"] .officer-navbar {
+    background-color: #0f172a !important;
+    border-bottom: 1px solid #334155 !important;
+}
+[data-bs-theme="dark"] .navbar .nav-link {
+    color: #cbd5e1 !important;
+}
+[data-bs-theme="dark"] .navbar .nav-link:hover,
+[data-bs-theme="dark"] .navbar .nav-link.active {
+    color: #3b82f6 !important;
+}
+
+/* Modals */
+[data-bs-theme="dark"] .modal-content {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+/* Page Headers (Custom Gradients) */
+[data-bs-theme="dark"] .page-header {
+    background: linear-gradient(135deg, #090e17 0%, #0f172a 100%) !important;
+    border-bottom-color: #3b82f6 !important; /* Glow accent */
+}
+
+/* Typography and Accents */
+[data-bs-theme="dark"] .text-dark,
+[data-bs-theme="dark"] .text-muted,
+[data-bs-theme="dark"] .text-body {
+    color: #cbd5e1 !important;
+}
+[data-bs-theme="dark"] .fw-bold.text-dark,
+[data-bs-theme="dark"] .text-dark-blue,
+[data-bs-theme="dark"] .kpi-value {
+    color: #f8fafc !important;
+}
+[data-bs-theme="dark"] .btn-light.text-dark-blue {
+    color: #0f172a !important; /* Keep it dark on light buttons */
+}
+[data-bs-theme="dark"] h1, 
+[data-bs-theme="dark"] h2, 
+[data-bs-theme="dark"] h3, 
+[data-bs-theme="dark"] h4, 
+[data-bs-theme="dark"] h5, 
+[data-bs-theme="dark"] h6 {
+    color: #f8fafc !important;
+}
+
+/* Inputs and Forms */
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+[data-bs-theme="dark"] .form-control:focus,
+[data-bs-theme="dark"] .form-select:focus {
+    background-color: #0f172a !important;
+    border-color: #3b82f6 !important;
+    color: #f8fafc !important;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Dropdowns */
+[data-bs-theme="dark"] .dropdown-menu {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+[data-bs-theme="dark"] .dropdown-item {
+    color: #cbd5e1 !important;
+}
+[data-bs-theme="dark"] .dropdown-item:hover,
+[data-bs-theme="dark"] .dropdown-item:focus {
+    background-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+/* Badges and Subtle Accents */
+[data-bs-theme="dark"] .bg-success.bg-opacity-10 {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+}
+[data-bs-theme="dark"] .bg-warning.bg-opacity-10 {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+/* Primary Button color shift in dark mode for better contrast */
+[data-bs-theme="dark"] .btn-dark-blue,
+[data-bs-theme="dark"] .btn-primary {
+    background-color: #3b82f6 !important; /* Brighter blue */
+    border-color: #3b82f6 !important;
+    color: white !important;
+}
+[data-bs-theme="dark"] .btn-dark-blue:hover,
+[data-bs-theme="dark"] .btn-primary:hover {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+/* Fix Tables */
+[data-bs-theme="dark"] .table {
+    --bs-table-bg: transparent;
+    color: #cbd5e1;
+}
+[data-bs-theme="dark"] .table th {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #94a3b8 !important;
+}
+[data-bs-theme="dark"] .table td {
+    border-color: #334155 !important;
+}
+
+/* Custom Claim & Detailed Components */
+[data-bs-theme="dark"] .detail-label,
+[data-bs-theme="dark"] .claim-step-label {
+    color: #94a3b8 !important;
+}
+[data-bs-theme="dark"] .detail-value,
+[data-bs-theme="dark"] .claim-step.active .claim-step-label {
+    color: #f8fafc !important;
+}
+[data-bs-theme="dark"] .detail-value.text-success { color: #10b981 !important; }
+[data-bs-theme="dark"] .detail-value.text-danger { color: #ef4444 !important; }
+[data-bs-theme="dark"] .claim-stepper::before {
+    background: #334155 !important;
+}
+[data-bs-theme="dark"] .claim-step-icon {
+    background: #1e293b !important;
+    border-color: #475569 !important;
+}
+[data-bs-theme="dark"] .claim-step.completed .claim-step-icon {
+    background: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: #fff !important;
+}
+[data-bs-theme="dark"] .claim-step.active .claim-step-icon {
+    border-color: #3b82f6 !important;
+}
+
+[data-bs-theme="dark"] .officer-content { background-color: #0f172a !important; color: #f1f5f9 !important; }
+
+[data-bs-theme="dark"] .data-table th, [data-bs-theme="dark"] .data-table thead { background-color: #0f172a !important; color: #cbd5e1 !important; border-bottom: 2px solid #334155 !important; }
+
+[data-bs-theme="dark"] .data-table tbody tr:hover td { background-color: #334155 !important; }
+
+[data-bs-theme="dark"] .form-check-input { background-color: #1e293b !important; border-color: #334155 !important; }
+[data-bs-theme="dark"] .form-check-input:checked { background-color: #3b82f6 !important; border-color: #3b82f6 !important; }

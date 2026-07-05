@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - All Insurance Plans</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Reuse Landing Page CSS for shared components -->
+    <link href="../landing/landing-page.css" rel="stylesheet">
+    <style>
+        .page-header {
+            background-color: #1b2845;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        .page-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+    </style>
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../landing/landing-page.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure" height="45">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link" href="../landing/landing-page.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="#" class="nav-link text-white opacity-75 text-decoration-none fw-medium me-2">Help</a>
+                    <a href="../auth/login.html" class="btn btn-outline-light">Sign In</a>
+                    <a href="../auth/register.html" class="btn btn-green">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Explore All Insurance Plans</h1>
+            <p>Comprehensive protection tailored to every aspect of your life.</p>
+        </div>
+    </header>
+
+    <!-- All Plans Grid -->
+    <section class="section-padding bg-white min-vh-100">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Plan 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Life</span>
+                            <img src="../../assets/images/LandingPage/landing4.png" class="card-img-top" alt="Life Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Life Insurance</h3>
+                            <div class="price">Starting <span>₹4,999</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Comprehensive life cover</li>
+                                <li><i class="fa-solid fa-check"></i> Nominee protection guarantee</li>
+                                <li><i class="fa-solid fa-check"></i> Critical illness add-on</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plan 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Health</span>
+                            <img src="../../assets/images/LandingPage/landing5.png" class="card-img-top" alt="Health Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Health Insurance</h3>
+                            <div class="price">Starting <span>₹6,500</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Cashless hospitalization</li>
+                                <li><i class="fa-solid fa-check"></i> 500+ network hospitals</li>
+                                <li><i class="fa-solid fa-check"></i> Free annual checkup</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plan 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Motor</span>
+                            <img src="../../assets/images/LandingPage/landing6.png" class="card-img-top" alt="Motor Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Motor Insurance</h3>
+                            <div class="price">Starting <span>₹2,200</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Third-party + own damage</li>
+                                <li><i class="fa-solid fa-check"></i> Zero depreciation cover</li>
+                                <li><i class="fa-solid fa-check"></i> 24x7 roadside assistance</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plan 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Property</span>
+                            <img src="../../assets/images/LandingPage/landing7.png" class="card-img-top" alt="Property Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Property Insurance</h3>
+                            <div class="price">Starting <span>₹1,800</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Home structure cover</li>
+                                <li><i class="fa-solid fa-check"></i> Burglary & flood protection</li>
+                                <li><i class="fa-solid fa-check"></i> Contents coverage</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plan 5: Travel -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Travel</span>
+                            <img src="../../assets/images/LandingPage/landing8.png" class="card-img-top" alt="Travel Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Travel Insurance</h3>
+                            <div class="price">Starting <span>₹1,500</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Global medical cover</li>
+                                <li><i class="fa-solid fa-check"></i> Flight delay & cancellation</li>
+                                <li><i class="fa-solid fa-check"></i> Loss of baggage protection</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 pe-lg-5">
+                    <img src="../../assets/images/Logo.png" alt="NexSure" class="footer-logo">
+                    <p>Protecting what matters most — from policy to claim, we're with you every step of the way.</p>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4">
+                    <h6>INFORMATION</h6>
+                    <ul class="footer-links">
+                        <li><a href="../landing/landing-page.html">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Plans</a></li>
+                        <li><a href="#">Claim</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6>CONTACT</h6>
+                    <p>Have any questions? Feel free to contact our administration team.</p>
+                    <ul class="contact-info">
+                        <li><i class="fa-solid fa-envelope"></i> support@nexsure.com</li>
+                        <li><i class="fa-solid fa-phone"></i> +91 12345 67890</li>
+                        <li><i class="fa-solid fa-location-dot"></i> India</li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6>QUICK HELP</h6>
+                    <div class="quick-help">
+                        <div class="help-card text-center">
+                            <img src="../../assets/images/LandingPage/landing19.png" alt="Support">
+                            <a href="#" class="btn btn-sm"><i class="fa-solid fa-headset me-2"></i> Speak to an Officer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>&copy; 2026 NexSure, All Rights Reserved.</div>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            const actionButtons = document.querySelectorAll('.plan-card .btn');
+            
+            let toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                toastContainer.style.zIndex = '1055';
+                document.body.appendChild(toastContainer);
+            }
+
+            actionButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const toastId = 'toast-' + Date.now();
+                    const toastHTML = `
+                        <div id="${toastId}" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    <i class="fa-solid fa-circle-check me-2"></i> Action processed successfully! Redirecting...
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    `;
+                    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+                    
+                    const toastEl = document.getElementById(toastId);
+                    const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+                    toast.show();
+                    
+                    toastEl.addEventListener('hidden.bs.toast', () => {
+                        toastEl.remove();
+                    });
+                    
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+                    btn.classList.add('disabled');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.remove('disabled');
+                    }, 1000);
+                });
+            });
+        });
+    </script>
+    <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+</body>
+</html>

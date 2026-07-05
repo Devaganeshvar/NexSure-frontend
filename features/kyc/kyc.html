@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NexSure - KYC Verification</title>
+
+    <!-- Bootstrap CSS -->
+
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Base Styles -->
+
+    <link href="../landing-page/landing-page.css?v=2" rel="stylesheet">
+
+    <link href="../home/home.css?v=3" rel="stylesheet">
+
+    <style>
+
+        .page-header {
+
+            background: linear-gradient(135deg, #16213e 0%, #1a2a4f 100%);
+
+            padding: 3rem 0;
+
+            color: #fff;
+
+            margin-bottom: 3rem;
+
+            border-bottom: 4px solid #10b981;
+
+        }
+
+        .stat-card {
+
+            background: #fff;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 1rem;
+
+            padding: 1.25rem;
+
+            height: 100%;
+
+        }
+
+        .stat-label {
+
+            font-size: 0.7rem;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.05em;
+
+            color: #64748b;
+
+            font-weight: 700;
+
+            margin-bottom: 0.5rem;
+
+        }
+
+        .stat-value {
+
+            font-size: 1.25rem;
+
+            font-weight: 700;
+
+            color: #1e293b;
+
+            margin-bottom: 0.25rem;
+
+        }
+
+        .stat-subtext {
+
+            font-size: 0.8rem;
+
+            color: #64748b;
+
+        }
+
+        .content-card {
+
+            background: #fff;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 1rem;
+
+            padding: 1.5rem;
+
+            margin-bottom: 1.5rem;
+
+        }
+
+        .upload-zone {
+
+            border: 2px dashed #cbd5e1;
+
+            border-radius: 1rem;
+
+            padding: 3rem 2rem;
+
+            text-align: center;
+
+            background-color: #f8fafc;
+
+            cursor: pointer;
+
+            transition: all 0.2s ease;
+
+        }
+
+        .upload-zone:hover {
+
+            border-color: #0284c7;
+
+            background-color: #f0f9ff;
+
+        }
+
+        .doc-item {
+
+            padding: 1.25rem;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 0.75rem;
+
+            margin-bottom: 1rem;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 1rem;
+
+        }
+
+        .badge-verified { background-color: #ecfdf5; color: #10b981; border: 1px solid #a7f3d0; }
+
+        .badge-pending { background-color: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+
+        .badge-rejected { background-color: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+
+        .progress-bar-custom {
+
+            height: 10px;
+
+            border-radius: 5px;
+
+            background-color: #e2e8f0;
+
+            overflow: hidden;
+
+            margin: 1rem 0;
+
+        }
+
+        .progress-fill {
+
+            height: 100%;
+
+            background-color: #16213e;
+
+            width: 33%;
+
+        }
+
+        .guide-list li {
+
+            font-size: 0.85rem;
+
+            color: #475569;
+
+            margin-bottom: 0.5rem;
+
+        }
+
+    </style>
+
+
+
+    <script src="../shared/auth-guard.js"></script>
+
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+
+
+    <!-- Authenticated Navbar -->
+
+    <nav class="navbar navbar-expand-lg py-1 dashboard-nav sticky-top">
+
+        <div class="container-fluid px-4 px-xl-5">
+
+            <a class="navbar-brand" href="../home/home.html">
+
+                <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
+
+            </a>
+
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav mx-auto gap-4">
+
+                    <li class="nav-item"><a class="nav-link" href="../home/home.html">Dashboard</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="../my-policies/my-policies.html">My Policies</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="../dashboard-plans/dashboard-plans.html">Plans</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="../claims/claims.html">Claims</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="../payments/payments.html">Payments</a></li>
+
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle active" href="javascript:void(0)" role="button" data-bs-toggle="dropdown">More</a>
+
+                        <ul class="dropdown-menu shadow border-0 mt-2">
+
+                            <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
+
+                            <li><a class="dropdown-item" href="../reports/reports-center.html">Reports Center</a></li>
+
+                            <li><a class="dropdown-item" href="../policy-cancellation/policy-cancellation.html">Policy Cancellation</a></li>
+
+                        </ul>
+
+                    </li>
+
+                </ul>
+
+                <div class="d-flex align-items-center gap-4 ms-auto">
+
+                    <!-- Notifications -->
+
+                    <div class="dropdown notification-bell">
+
+                        <a href="javascript:void(0)" class="text-white text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+
+                            <i class="fa-regular fa-bell fs-5"></i>
+
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-dark" style="font-size: 0.6rem;">
+
+                                3
+
+                            </span>
+
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-0" style="width: 320px; max-height: 400px; overflow-y: auto;">
+
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-light">
+
+                                <h6 class="mb-0 fw-bold">Notifications</h6>
+
+                                <span class="text-decoration-none small">Mark all as read</span>
+
+                            </div>
+
+                            <div class="list-group list-group-flush">
+
+                                <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 border-0 border-bottom">
+
+                                    <div class="d-flex align-items-start gap-3">
+
+                                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+
+                                            <i class="fa-solid fa-file-invoice"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <h6 class="mb-1 fw-semibold" style="font-size: 0.9rem;">Policy Renewed</h6>
+
+                                            <p class="mb-1 small text-muted">Your health insurance policy has been successfully renewed.</p>
+
+                                            <small class="text-primary fw-medium" style="font-size: 0.75rem;">Just now</small>
+
+                                        </div>
+
+                                    </div>
+
+                                </a>
+
+                                <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 border-0 border-bottom">
+
+                                    <div class="d-flex align-items-start gap-3">
+
+                                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+
+                                            <i class="fa-solid fa-check-circle"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <h6 class="mb-1 fw-semibold" style="font-size: 0.9rem;">Claim Approved</h6>
+
+                                            <p class="mb-1 small text-muted">Your recent claim CLM-9021 has been approved.</p>
+
+                                            <small class="text-muted" style="font-size: 0.75rem;">2 hours ago</small>
+
+                                        </div>
+
+                                    </div>
+
+                                </a>
+
+                                <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 border-0">
+
+                                    <div class="d-flex align-items-start gap-3">
+
+                                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <h6 class="mb-1 fw-semibold" style="font-size: 0.9rem;">KYC Pending</h6>
+
+                                            <p class="mb-1 small text-muted">Please complete your KYC verification to avoid interruption.</p>
+
+                                            <small class="text-muted" style="font-size: 0.75rem;">1 day ago</small>
+
+                                        </div>
+
+                                    </div>
+
+                                </a>
+
+                            </div>
+
+                            <div class="p-2 border-top text-center bg-light">
+
+                                <span class="text-decoration-none small fw-medium">View All Notifications</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- User Profile -->
+
+                    <div class="dropdown user-dropdown">
+
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="javascript:void(0)" role="button" data-bs-toggle="dropdown">
+
+                            <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light profile-sync-img" width="32" height="32" style="object-fit: cover;">
+
+                            <span class="fw-medium small pe-1">Rahul M.</span>
+
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+
+                            <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+
+                            <li><a class="dropdown-item" href="../settings/settings.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li><a class="dropdown-item text-danger" href="../login/login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- Page Header -->
+
+    <header class="page-header">
+
+        <div class="container-fluid px-4 px-xl-5">
+
+            <nav aria-label="breadcrumb">
+
+                <ol class="breadcrumb mb-2">
+
+                    <li class="breadcrumb-item"><a href="../home/home.html" class="text-white-50 text-decoration-none">Dashboard</a></li>
+
+                    <li class="breadcrumb-item"><span class="text-white-50 text-decoration-none">Account</span></li>
+
+                    <li class="breadcrumb-item active text-white" aria-current="page">KYC Verification</li>
+
+                </ol>
+
+            </nav>
+
+            <h1 class="display-5 fw-bold font-playfair mb-0">KYC Verification</h1>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- Main Content -->
+
+    <main class="container-fluid px-4 px-xl-5 pb-5 max-w-1200 mx-auto ms-xl-0">
+
+        
+
+        <div class="alert bg-warning bg-opacity-25 border border-warning border-opacity-50 d-flex justify-content-between align-items-center p-3 rounded-3 mb-4" role="alert">
+
+            <div class="d-flex align-items-center text-dark fw-medium">
+
+                <i class="fa-solid fa-triangle-exclamation text-warning fs-5 me-3"></i>
+
+                KYC Partially Complete &mdash; 2 documents pending verification. Please upload the required files to activate claims.
+
+            </div>
+
+            <span class="small fw-bold text-muted text-uppercase tracking-wider">Pending</span>
+
+        </div>
+
+
+
+        <!-- KPI Row -->
+
+        <div class="row g-4 mb-4">
+
+            <div class="col-sm-6 col-lg-3">
+
+                <div class="stat-card shadow-sm">
+
+                    <div class="stat-label">1 / 3 VERIFIED</div>
+
+                    <div class="stat-value">Aadhaar Card</div>
+
+                    <div class="stat-subtext">Approved on 24 June</div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+
+                <div class="stat-card shadow-sm">
+
+                    <div class="stat-label">2 DOCS PENDING</div>
+
+                    <div class="stat-value">PAN & Address</div>
+
+                    <div class="stat-subtext">Upload needed</div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+
+                <div class="stat-card shadow-sm">
+
+                    <div class="stat-label">KYC STATUS</div>
+
+                    <div class="stat-value">In Progress</div>
+
+                    <div class="stat-subtext">Verification active</div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+
+                <div class="stat-card shadow-sm">
+
+                    <div class="stat-label">TURNAROUND</div>
+
+                    <div class="stat-value">2-3 Days</div>
+
+                    <div class="stat-subtext">Standard processing time</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="row g-4">
+
+            <!-- Left Column -->
+
+            <div class="col-lg-8">
+
+                <div class="content-card shadow-sm">
+
+                    <h5 class="fw-bold text-dark mb-4">Document Verification Status</h5>
+
+                    
+
+                    <!-- Aadhaar -->
+
+                    <div class="doc-item">
+
+                        <div class="fw-bold text-dark">Aadhaar Card</div>
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <button id="viewAadhaarBtn" class="btn btn-sm border bg-white px-3 fw-medium">View Doc</button>
+
+                            <span class="badge badge-verified px-3 py-2 rounded-pill fw-medium">Verified</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="doc-item" id="panDocItem">
+
+                        <div class="fw-bold text-dark">PAN Card</div>
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <button id="reuploadPanBtn" class="btn btn-sm btn-dark-blue px-3 fw-medium">Re-upload</button>
+
+                            <span class="badge badge-pending px-3 py-2 rounded-pill fw-medium" id="panBadge">Pending</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="doc-item mb-2 border-danger border-opacity-50" id="addressDocItem">
+
+                        <div class="fw-bold text-dark">Address Proof (Utility Bill)</div>
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <button id="reuploadAddressBtn" class="btn btn-sm btn-dark-blue px-3 fw-medium">Re-upload</button>
+
+                            <span class="badge badge-rejected px-3 py-2 rounded-pill fw-medium" id="addressBadge">Rejected</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-danger bg-danger bg-opacity-10 border-0 text-danger p-2 small rounded-2 mb-4 d-flex align-items-center">
+
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i> Reason for rejection: Document details do not match profile details.
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="content-card shadow-sm">
+
+                    <div class="upload-zone" id="uploadZone" style="cursor: pointer;">
+
+                        <input type="file" id="fileInput" style="display: none;" accept=".pdf,.png,.jpg,.jpeg">
+
+                        <div class="mb-3">
+
+                            <img src="../../assets/images/LandingPage/landing7.png" alt="Upload" width="48" class="opacity-75" style="filter: grayscale(1);">
+
+                        </div>
+
+                        <h6 class="fw-bold text-dark mb-1">Click to upload files or drag and drop</h6>
+
+                        <p class="text-muted small mb-0">PDF, PNG, JPG files up to 5MB are accepted.</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Right Column -->
+
+            <div class="col-lg-4">
+
+                <div class="content-card shadow-sm mb-4">
+
+                    <div class="d-flex justify-content-between align-items-end mb-2">
+
+                        <h6 class="fw-bold text-dark mb-0">KYC Completion Progress</h6>
+
+                        <span class="fs-4 fw-bold text-dark-blue">33%</span>
+
+                    </div>
+
+                    <div class="progress-bar-custom">
+
+                        <div class="progress-fill"></div>
+
+                    </div>
+
+                    <p class="text-muted small mb-0">1 of 3 required documents verified successfully.</p>
+
+                </div>
+
+
+
+                <div class="content-card shadow-sm mb-4">
+
+                    <h6 class="fw-bold text-dark mb-3">Verification Guidelines</h6>
+
+                    <ul class="guide-list ps-3 mb-0">
+
+                        <li>Scanned documents must be clear and legible.</li>
+
+                        <li>File size should not exceed 5MB.</li>
+
+                        <li>Full name on documents must match profile name.</li>
+
+                        <li>Expiry date of the documents must be valid.</li>
+
+                        <li>Ensure both front and back sides are uploaded.</li>
+
+                        <li>Accepted formats: PDF, JPEG, PNG.</li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <div class="content-card shadow-sm mb-0">
+
+                    <h6 class="fw-bold text-dark mb-3">What happens after submission?</h6>
+
+                    <ul class="guide-list ps-3 mb-0" style="list-style-type: decimal;">
+
+                        <li>Document submission (Done)</li>
+
+                        <li>Verification by our compliance team (Takes 24-48 hrs)</li>
+
+                        <li>Full access to instant claim processing activated</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </main>
+
+
+
+    <!-- Document View Modal -->
+
+    <div class="modal fade" id="viewDocModal" tabindex="-1" aria-labelledby="viewDocModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content border-0 rounded-4 shadow">
+
+                <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
+
+                    <h5 class="modal-title fw-bold text-dark" id="viewDocModalLabel">View Document</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+
+                <div class="modal-body p-4 text-center">
+
+                    <img src="../../assets/images/KYC/aadhaar_mockup.png" class="img-fluid border rounded" alt="Document Preview" style="max-height: 300px; object-fit: contain; width: 100%;">
+
+                    <p class="text-muted small mt-3 mb-0">Aadhaar Card Front.jpg</p>
+
+                </div>
+
+                <div class="modal-footer border-top-0 px-4 pb-4">
+
+                    <button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Bootstrap JS -->
+
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+
+    <!-- Authentication Logic -->
+
+    <script src="../auth.js"></script>
+
+    <!-- Custom KYC Logic -->
+
+    <script src="kyc.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    document.querySelectorAll('.notification-bell').forEach(bell => {
+
+        bell.addEventListener('click', (e) => {
+
+            const link = e.target.closest('a');
+
+            if (link && link.textContent && link.textContent.includes('Mark all')) {
+
+                e.preventDefault();
+
+                e.stopPropagation();
+
+                const listGroup = bell.querySelector('.list-group');
+
+                if (listGroup) {
+
+                    listGroup.innerHTML = '<div class="p-4 text-center text-muted"><i class="fa-regular fa-bell-slash fs-3 mb-2 opacity-50"></i><p class="mb-0 small">No new notifications</p></div>';
+
+                }
+
+                const badge = bell.querySelector('.badge');
+
+                if (badge) {
+
+                    badge.style.display = 'none';
+
+                }
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+    <!-- Toasts -->
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-4" style="z-index: 1090;">
+
+        <div id="authToast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+
+            <div class="d-flex">
+
+                <div class="toast-body d-flex align-items-center gap-2">
+
+                    <i class="fa-solid fa-circle-check text-success fs-5"></i>
+
+                    <span>Success!</span>
+
+                </div>
+
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<script src="../auth.js"></script>
+
+<script src="../shared/profile-sync.js"></script>
+
+
+
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

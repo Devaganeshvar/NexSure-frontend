@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Help Center</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link href="../landing/landing-page.css" rel="stylesheet">
+    <link href="help.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body class="bg-white">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 sticky-top" style="background-color: #16213e !important;">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../landing/landing-page.html">
+                <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link" href="../landing/landing-page.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../plan-listings/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="#" class="nav-link text-white opacity-100 text-decoration-none fw-semibold me-2">Help</a>
+                    <a href="../auth/login.html" class="btn btn-outline-light">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="help-hero-section position-relative py-5">
+        <div class="container py-5 text-center position-relative z-1">
+            <span class="badge rounded-pill border border-secondary text-light px-3 py-2 fw-medium mb-4" style="background-color: rgba(255,255,255,0.1); font-size: 0.75rem; letter-spacing: 0.5px;">
+                <i class="fa-solid fa-circle text-info me-2" style="font-size: 0.4rem; vertical-align: middle;"></i> HELP & SUPPORT
+            </span>
+            <h1 class="display-4 fw-bold text-white mb-3 playfair-font fst-italic">Find answers instantly</h1>
+            <p class="text-light opacity-75 mb-5 fs-5">Search our knowledge base or reach our team if you need more help.</p>
+
+            <div class="search-box mx-auto bg-white rounded-pill d-flex align-items-center p-2 shadow" style="max-width: 600px;">
+                <input type="text" class="form-control border-0 bg-transparent ps-4 fs-6" placeholder="Search articles, FAQs, topics..." style="box-shadow: none;">
+                <button class="btn btn-dark-blue rounded-pill px-4 py-2 ms-2 fw-medium">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="section-padding py-5 mt-4">
+        <div class="container">
+            <h2 class="text-center fw-bold text-dark-blue playfair-font fst-italic mb-5">What do you need help with?</h2>
+
+            <!-- Category Grid -->
+            <div class="row g-4 mb-5 pb-5 border-bottom border-light-subtle">
+                <!-- Claims & Refunds -->
+                <div class="col-md-4">
+                    <div class="card help-card h-100 border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="help-card-img-wrapper position-relative">
+                            <img src="../../assets/images/help/claims.png" class="w-100 object-fit-cover" alt="Claims" style="height: 180px;">
+                            <div class="help-card-gradient position-absolute bottom-0 w-100 p-3">
+                                <h4 class="text-white mb-0 playfair-font fst-italic">Claims & Refunds</h4>
+                            </div>
+                        </div>
+                        <div class="card-body p-4 bg-white d-flex flex-column">
+                            <p class="text-muted fs-6 mb-4">Filing, tracking and settling your insurance claims step by step.</p>
+                            <div class="mt-auto fw-bold text-teal small">14 articles</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments -->
+                <div class="col-md-4">
+                    <div class="card help-card h-100 border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="help-card-img-wrapper position-relative">
+                            <img src="../../assets/images/help/payments.png" class="w-100 object-fit-cover" alt="Payments" style="height: 180px;">
+                            <div class="help-card-gradient position-absolute bottom-0 w-100 p-3">
+                                <h4 class="text-white mb-0 playfair-font fst-italic">Payments</h4>
+                            </div>
+                        </div>
+                        <div class="card-body p-4 bg-white d-flex flex-column">
+                            <p class="text-muted fs-6 mb-4">Premium payments, receipts, due dates and payment methods.</p>
+                            <div class="mt-auto fw-bold text-teal small">9 articles</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KYC & Documents -->
+                <div class="col-md-4">
+                    <div class="card help-card h-100 border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="help-card-img-wrapper position-relative">
+                            <img src="../../assets/images/help/kyc.png" class="w-100 object-fit-cover" alt="KYC" style="height: 180px;">
+                            <div class="help-card-gradient position-absolute bottom-0 w-100 p-3">
+                                <h4 class="text-white mb-0 playfair-font fst-italic">KYC & Documents</h4>
+                            </div>
+                        </div>
+                        <div class="card-body p-4 bg-white d-flex flex-column">
+                            <p class="text-muted fs-6 mb-4">Uploading and verifying your identity documents for policy issuance.</p>
+                            <div class="mt-auto fw-bold text-teal small">11 articles</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Policy Management -->
+                <div class="col-md-4">
+                    <div class="card help-card h-100 border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="help-card-img-wrapper position-relative">
+                            <img src="../../assets/images/help/policy.png" class="w-100 object-fit-cover" alt="Policy Management" style="height: 180px;">
+                            <div class="help-card-gradient position-absolute bottom-0 w-100 p-3">
+                                <h4 class="text-white mb-0 playfair-font fst-italic">Policy Management</h4>
+                            </div>
+                        </div>
+                        <div class="card-body p-4 bg-white d-flex flex-column">
+                            <p class="text-muted fs-6 mb-4">Creating, viewing, renewing and managing your insurance policies.</p>
+                            <div class="mt-auto fw-bold text-teal small">18 articles</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account & Profile -->
+                <div class="col-md-4">
+                    <div class="card help-card h-100 border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="help-card-img-wrapper position-relative">
+                            <img src="../../assets/images/help/account.png" class="w-100 object-fit-cover" alt="Account & Profile" style="height: 180px;">
+                            <div class="help-card-gradient position-absolute bottom-0 w-100 p-3">
+                                <h4 class="text-white mb-0 playfair-font fst-italic">Account & Profile</h4>
+                            </div>
+                        </div>
+                        <div class="card-body p-4 bg-white d-flex flex-column">
+                            <p class="text-muted fs-6 mb-4">Password resets, nominees, profile settings and communication preferences.</p>
+                            <div class="mt-auto fw-bold text-teal small">7 articles</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="col-md-4">
+                    <div class="card help-card h-100 border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="help-card-img-wrapper position-relative">
+                            <img src="../../assets/images/help/security.png" class="w-100 object-fit-cover" alt="Security" style="height: 180px;">
+                            <div class="help-card-gradient position-absolute bottom-0 w-100 p-3">
+                                <h4 class="text-white mb-0 playfair-font fst-italic">Security</h4>
+                            </div>
+                        </div>
+                        <div class="card-body p-4 bg-white d-flex flex-column">
+                            <p class="text-muted fs-6 mb-4">Login, sessions, two-factor authentication and personal data protection.</p>
+                            <div class="mt-auto fw-bold text-teal small">6 articles</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lower Section -->
+            <div class="row pt-2">
+                <!-- Left Column (Popular Articles) -->
+                <div class="col-lg-7 pe-lg-5 mb-5 mb-lg-0">
+                    <h3 class="fw-bold text-dark-blue playfair-font fst-italic mb-4 pb-2">Popular Articles</h3>
+
+                    <div class="article-item border-bottom border-light-subtle py-3">
+                        <a href="#" class="text-decoration-none">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="text-teal fw-bold" style="font-size: 0.7rem;">KYC & DOCUMENTS</span>
+                                <span class="mx-2 text-muted" style="font-size: 0.7rem;">&middot;</span>
+                                <span class="text-muted" style="font-size: 0.8rem;">2 min read</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold text-dark-blue mb-0 article-title">Why is my KYC still pending?</h5>
+                                <i class="fa-solid fa-arrow-right text-muted article-arrow"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="article-item border-bottom border-light-subtle py-3">
+                        <a href="#" class="text-decoration-none">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="text-teal fw-bold" style="font-size: 0.7rem;">PAYMENTS</span>
+                                <span class="mx-2 text-muted" style="font-size: 0.7rem;">&middot;</span>
+                                <span class="text-muted" style="font-size: 0.8rem;">1 min read</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold text-dark-blue mb-0 article-title">How to download my premium receipt</h5>
+                                <i class="fa-solid fa-arrow-right text-muted article-arrow"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="article-item border-bottom border-light-subtle py-3">
+                        <a href="#" class="text-decoration-none">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="text-teal fw-bold" style="font-size: 0.7rem;">CLAIMS & REFUNDS</span>
+                                <span class="mx-2 text-muted" style="font-size: 0.7rem;">&middot;</span>
+                                <span class="text-muted" style="font-size: 0.8rem;">4 min read</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold text-dark-blue mb-0 article-title">What is the claim settlement timeline?</h5>
+                                <i class="fa-solid fa-arrow-right text-muted article-arrow"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column (Support Boxes) -->
+                <div class="col-lg-5">
+                    <div class="d-flex flex-column gap-3">
+                        
+                        <!-- Call Support -->
+                        <div class="card border border-light-subtle shadow-sm rounded-4 p-4 help-contact-card bg-light-gray">
+                            <div class="d-flex">
+                                <div class="me-3 mt-1">
+                                    <i class="fa-solid fa-phone text-muted fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Call Support</h6>
+                                    <div class="text-muted fs-6">Talk to our support officers directly: +91 12345 67890</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email Support -->
+                        <div class="card border border-light-subtle shadow-sm rounded-4 p-4 help-contact-card bg-light-gray">
+                            <div class="d-flex">
+                                <div class="me-3 mt-1">
+                                    <i class="fa-solid fa-envelope text-muted fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Email Support</h6>
+                                    <div class="text-muted fs-6 mb-2">Send us a message and we'll get back within 24 hours.</div>
+                                    <div class="fw-bold text-dark-blue">support@ipms.com</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Chat -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 help-contact-card bg-dark-blue mt-2">
+                            <div class="d-flex">
+                                <div class="me-3 mt-1">
+                                    <i class="fa-solid fa-comment-dots text-white fs-5 opacity-75"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-white">Live Chat</h6>
+                                    <div class="text-white opacity-75 fs-6">Chat in real-time from your dashboard. Mon-Fri, 9am-5pm.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

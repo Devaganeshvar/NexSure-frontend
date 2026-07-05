@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - About Us</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link href="../landing/landing-page.css?v=8" rel="stylesheet">
+    <link href="about.css?v=3" rel="stylesheet">
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-blue sticky-top py-3" style="background-color: #1b2845 !important;">
+        <div class="container">
+            <a class="navbar-brand" href="../landing/landing-page.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-3">
+                    <li class="nav-item"><a class="nav-link" href="../landing/landing-page.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../plan-listings/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="#" class="nav-link text-white opacity-75 text-decoration-none fw-medium me-4">Help</a>
+                    <a href="../auth/login.html" class="btn btn-outline-light px-4 py-2 fw-medium rounded-pill">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero section-padding pb-5">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <div class="badge-subtitle mb-4">
+                            <span class="dot"></span> TRUSTED &middot; SECURE &middot; SIMPLIFIED
+                        </div>
+                        <h1 class="display-3 fw-bold text-dark-blue mb-4 playfair-font">Who We Are</h1>
+                        <p class="lead text-muted mb-5">
+                            IPMS is India's trusted digital insurance platform — connecting policyholders, insurance officers, and administrators in one secure, transparent system built around simplicity and trust.
+                        </p>
+                        
+                        <h3 class="fw-bold text-dark-blue mb-3 playfair-font fst-italic">Our Story</h3>
+                        <p class="text-muted mb-4">
+                            Founded with a single belief — that insurance should be accessible, understandable, and stress-free — IPMS was built to eliminate the paperwork, confusion, and delays that have long defined the insurance industry in India.
+                        </p>
+                        <p class="text-muted mb-0">
+                            From a first-time policyholder applying for life cover to a seasoned officer processing hundreds of claims a month, IPMS serves every actor in the insurance lifecycle with equal care and precision.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image-wrapper position-relative">
+                        <img src="../../assets/images/about/wallet.png" alt="Wallet with cards" class="img-fluid rounded-4 shadow-lg hero-img">
+                        
+                        <!-- Floating Badge -->
+                        <div class="floating-stat-card p-4 rounded-3 shadow-lg" style="background-color: #1b2845; position: absolute; bottom: -30px; left: -30px; z-index: 10;">
+                            <h4 class="fw-bold mb-1 text-white">10+ Years</h4>
+                            <p class="mb-0 text-white-50 fs-7">Trusted by families across India</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section bg-dark-blue text-white py-5" style="background-color: #1b2845 !important;">
+        <div class="container py-3">
+            <div class="row text-center g-4">
+                <div class="col-6 col-md-3 stat-col">
+                    <h2 class="display-5 fw-bold mb-2 text-white">50,000+</h2>
+                    <p class="mb-0 text-white-50">Policies Issued</p>
+                </div>
+                <div class="col-6 col-md-3 stat-col">
+                    <h2 class="display-5 fw-bold mb-2 text-white">1,20,000+</h2>
+                    <p class="mb-0 text-white-50">Claims Settled</p>
+                </div>
+                <div class="col-6 col-md-3 stat-col">
+                    <h2 class="display-5 fw-bold mb-2 text-white">800+</h2>
+                    <p class="mb-0 text-white-50">Verified Officers</p>
+                </div>
+                <div class="col-6 col-md-3 stat-col border-0">
+                    <h2 class="display-5 fw-bold mb-2 text-white">98%</h2>
+                    <p class="mb-0 text-white-50">Customer Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="officers-section section-padding">
+        <div class="container">
+            <div class="text-center mb-5 pb-3">
+                <div class="section-subtitle text-green text-uppercase fs-7 mb-3">THE PEOPLE BEHIND IPMS</div>
+                <h2 class="section-title text-white display-4 fw-bold playfair-font fst-italic mb-4">Meet Our Team</h2>
+                <p class="text-light opacity-75 mx-auto" style="max-width: 700px;">
+                    Our certified officers and relationship managers bring expertise, empathy, and speed to every policy and claim they handle.
+                </p>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="officer-card">
+                        <img src="../../assets/images/LandingPage/landing11.png" alt="Gokul K" class="officer-img">
+                        <h5>Gokul K</h5>
+                        <p>Insurance Officer</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="officer-card">
+                        <img src="../../assets/images/LandingPage/landing12.png" alt="Hephzibha A" class="officer-img">
+                        <h5>Hephzibha A</h5>
+                        <p>Claims Officer</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="officer-card">
+                        <img src="../../assets/images/LandingPage/landing13.png" alt="Solai" class="officer-img">
+                        <h5>Solai</h5>
+                        <p>Branch Manager</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="officer-card">
+                        <img src="../../assets/images/LandingPage/landing14.png" alt="Abishek S" class="officer-img">
+                        <h5>Abishek S</h5>
+                        <p>Customer Relations</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section section-padding bg-light pb-5 mb-5">
+        <div class="container">
+            <div class="text-center mb-5 pb-3">
+                <div class="section-subtitle fw-bold mb-3 text-green text-uppercase fs-7">WHAT WE STAND FOR</div>
+                <h2 class="display-4 fw-bold text-dark-blue mb-5 playfair-font fst-italic">Our Values</h2>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Value 1 -->
+                <div class="col-lg-4">
+                    <div class="value-card card border-0 shadow-sm h-100 p-4 p-md-5 rounded-4 bg-white">
+                        <div class="value-icon-wrapper bg-success bg-opacity-10 text-success mb-4 d-flex align-items-center justify-content-center rounded-circle" style="width: 50px; height: 50px;">
+                            <i class="fa-solid fa-leaf fs-5"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark-blue mb-3 playfair-font fst-italic">Transparency</h4>
+                        <p class="text-muted mb-0">
+                            No hidden charges, no fine print surprises. We believe in absolute clarity at every stage of the policy cycle, always.
+                        </p>
+                    </div>
+                </div>
+                <!-- Value 2 -->
+                <div class="col-lg-4">
+                    <div class="value-card card border-0 shadow-sm h-100 p-4 p-md-5 rounded-4 bg-white">
+                        <div class="value-icon-wrapper text-warning mb-4 d-flex align-items-center justify-content-center rounded-circle" style="width: 50px; height: 50px; background-color: #fff3cd;">
+                            <i class="fa-solid fa-bolt fs-5"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark-blue mb-3 playfair-font fst-italic">Speed</h4>
+                        <p class="text-muted mb-0">
+                            Claim settlements in days, not months. We respect your time and urgency when it matters most, making sure we value speed as much as your money.
+                        </p>
+                    </div>
+                </div>
+                <!-- Value 3 -->
+                <div class="col-lg-4">
+                    <div class="value-card card border-0 shadow-sm h-100 p-4 p-md-5 rounded-4 bg-white">
+                        <div class="value-icon-wrapper text-dark mb-4 d-flex align-items-center justify-content-center rounded-circle" style="width: 50px; height: 50px; background-color: #e2e3e5;">
+                            <i class="fa-solid fa-lock fs-5"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark-blue mb-3 playfair-font fst-italic">Security</h4>
+                        <p class="text-muted mb-0">
+                            SHA-256 encrypted data, role-based access control, and absolute bank-grade privacy standards ensure your details are always safe.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer from Landing Page -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 pe-lg-5">
+                    <img src="../../assets/images/Logo.png" alt="NexSure" class="footer-logo mb-3" height="40">
+                    <p class="text-muted fs-7">Protecting what matters most - from policy to claim, we're with you every step of the way.</p>
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="#" class="btn btn-outline-secondary rounded-circle text-dark" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="btn btn-outline-secondary rounded-circle text-dark" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="btn btn-outline-secondary rounded-circle text-dark" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-outline-secondary rounded-circle text-dark" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="fw-bold text-dark-blue mb-3 fs-7">INFORMATION</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 fs-7">
+                        <li><a href="../landing/landing-page.html" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">About</a></li>
+                        <li><a href="../plan-listings/dashboard-plans.html" class="text-muted text-decoration-none">Plans</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Claim</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-dark-blue mb-3 fs-7">CONTACT</h6>
+                    <p class="text-muted fs-7 mb-3">Have any questions? Feel free to contact our administration team.</p>
+                    <ul class="list-unstyled d-flex flex-column gap-2 fs-7 text-muted">
+                        <li><i class="fa-solid fa-envelope me-2"></i> support@nexsure.com</li>
+                        <li><i class="fa-solid fa-phone me-2"></i> +91 12345 67890</li>
+                        <li><i class="fa-solid fa-location-dot me-2"></i> India</li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-dark-blue mb-3 fs-7">QUICK HELP</h6>
+                    <div class="card border-0 bg-light rounded-4 overflow-hidden">
+                        <div class="card-body text-center p-3">
+                            <img src="../../assets/images/LandingPage/landing19.png" alt="Support" class="img-fluid mb-3 rounded-3">
+                            <a href="#" class="btn btn-sm btn-dark w-100 rounded-pill"><i class="fa-solid fa-headset me-2"></i> Speak to an Officer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center border-top pt-4 mt-4 text-muted fs-7">
+                <div class="mb-2 mb-md-0">&copy; 2026 NexSure, All Rights Reserved.</div>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-muted text-decoration-none">Terms</a>
+                    <a href="#" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="#" class="text-muted text-decoration-none">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

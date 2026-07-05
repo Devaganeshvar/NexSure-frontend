@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - My Policies</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Base Styles -->
+    <link href="../landing/landing-page.css" rel="stylesheet">
+    <link href="../customer-dashboard/home.css" rel="stylesheet">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #16213e 0%, #1a2a4f 100%);
+            padding: 3rem 0;
+            color: #fff;
+            margin-bottom: 3rem;
+            border-bottom: 4px solid #10b981;
+        }
+        .policy-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+            overflow: hidden;
+        }
+        .policy-card:hover {
+            box-shadow: 0 10px 25px rgba(22, 33, 62, 0.08);
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+        .nav-pills .nav-link {
+            color: #475569;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #16213e;
+            color: #fff;
+        }
+        .detail-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.1rem;
+        }
+    </style>
+    
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Authenticated Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 dashboard-nav sticky-top">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../customer-dashboard/home.html">
+                <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link" href="../customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">My Policies</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../plan-listings/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="claims.html">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../payment/payments.html">Payments</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                        <ul class="dropdown-menu shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
+                            <li><a class="dropdown-item" href="../reports/reports-center.html">Reports Center</a></li>
+                            <li><a class="dropdown-item" href="#">Policy Cancellation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <!-- Notifications -->
+                    <div class="position-relative notification-bell"></div>
+                    <!-- User Profile -->
+                    <div class="dropdown user-dropdown">
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                            <span class="fw-medium small pe-1">Rahul M.</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container-fluid px-4 px-xl-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item"><a href="../customer-dashboard/home.html" class="text-white-50 text-decoration-none">NexSure</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-white-50 text-decoration-none">Insurance</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">My Policies</li>
+                </ol>
+            </nav>
+            <h1 class="display-5 fw-bold font-playfair mb-0">My Policies</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container-fluid px-4 px-xl-5 pb-5">
+        
+        <!-- Tabs -->
+        <ul class="nav nav-pills mb-4 gap-2 border-bottom pb-3">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active Policies</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border bg-white text-dark" href="#">Expired Policies</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border bg-white text-dark" href="#">Nominee Details</a>
+            </li>
+        </ul>
+
+        <!-- Policy List -->
+        <div class="row g-4 max-w-1000 mx-auto ms-xl-0">
+            
+            <!-- Health Insurance Card -->
+            <div class="col-12">
+                <div class="policy-card p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; font-size: 1.5rem;">
+                                <i class="fa-solid fa-heart-pulse"></i>
+                            </div>
+                            <h4 class="fw-bold mb-0 text-dark-blue">Health Insurance (HLT-3321)</h4>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">Active</span>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Policyholder</div>
+                            <div class="detail-value">Rahul Mehta</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Sum Insured</div>
+                            <div class="detail-value">₹5,00,000</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Base Premium</div>
+                            <div class="detail-value">₹8,450/yr</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Next Due Date</div>
+                            <div class="detail-value text-danger">30 June 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 pt-4 border-top">
+                        <button class="btn btn-dark-blue px-4 py-2 fw-medium rounded-3">Renew Policy</button>
+                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">File Claim</button>
+                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Download Certificate</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Motor Insurance Card -->
+            <div class="col-12">
+                <div class="policy-card p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; font-size: 1.5rem;">
+                                <i class="fa-solid fa-car"></i>
+                            </div>
+                            <h4 class="fw-bold mb-0 text-dark-blue">Motor Insurance (Private Car) (MOT-5587)</h4>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">Active</span>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Policyholder</div>
+                            <div class="detail-value">Rahul Mehta</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Insured Declared Value (IDV)</div>
+                            <div class="detail-value">₹4,20,000</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Annual Premium</div>
+                            <div class="detail-value">₹12,300</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Next Due Date</div>
+                            <div class="detail-value">12 Sept 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 pt-4 border-top">
+                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">File Claim</button>
+                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Download Certificate</button>
+                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Term Life Insurance Card -->
+            <div class="col-12">
+                <div class="policy-card p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; font-size: 1.5rem;">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h4 class="fw-bold mb-0 text-dark-blue">Term Life Insurance (LIF-1190)</h4>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">Active</span>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Policyholder</div>
+                            <div class="detail-value">Rahul Mehta</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Sum Assured</div>
+                            <div class="detail-value">₹1,00,00,000</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Annual Premium</div>
+                            <div class="detail-value">₹18,200</div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="detail-label">Next Due Date</div>
+                            <div class="detail-value">15 Oct 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 pt-4 border-top">
+                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Edit Nominee</button>
+                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Download Receipt</button>
+                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/notifications.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+
+    <!-- Google Calendar Integration -->
+    <script>
+        function generateGoogleCalendarUrl(title, dateStr) {
+            // Very simple parser for dd MMMM yyyy
+            const date = new Date(dateStr);
+            if (isNaN(date.getTime())) return '#';
+            
+            // Format to YYYYMMDD
+            const iso = date.toISOString().split('T')[0].replace(/-/g, '');
+            const start = iso + 'T090000Z';
+            const end = iso + 'T100000Z';
+            
+            return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=${encodeURIComponent('Reminder from NexSure.')}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Find labels
+            const labels = document.querySelectorAll('.detail-label');
+            labels.forEach(label => {
+                const text = label.textContent.trim();
+                if (text === 'Next Due Date' || text === 'Expiry Date') {
+                    const valueDiv = label.nextElementSibling;
+                    if (valueDiv && valueDiv.classList.contains('detail-value')) {
+                        const dateStr = valueDiv.textContent.trim();
+                        const title = text === 'Next Due Date' ? 'NexSure Premium Due' : 'NexSure Policy Expiry';
+                        const url = generateGoogleCalendarUrl(title, dateStr);
+                        
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.target = '_blank';
+                        a.title = 'Add to Google Calendar';
+                        a.innerHTML = '<i class="fa-regular fa-calendar-plus ms-2 text-primary" style="cursor:pointer;"></i>';
+                        
+                        valueDiv.appendChild(a);
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

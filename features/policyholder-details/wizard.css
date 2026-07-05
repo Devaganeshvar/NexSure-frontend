@@ -1,0 +1,116 @@
+/* Buy Policy Wizard Specific CSS */
+
+.max-w-1000 {
+    max-width: 1000px;
+}
+
+/* Typography */
+.font-playfair {
+    font-family: 'Playfair Display', serif;
+}
+.text-dark-blue {
+    color: #16213e !important;
+}
+.bg-dark-blue {
+    background-color: #16213e !important;
+}
+.btn-dark-blue {
+    background-color: #16213e;
+    color: #fff;
+    border: none;
+}
+.btn-dark-blue:hover {
+    background-color: #0f172a;
+    color: #fff;
+}
+.btn-green {
+    background-color: #10b981;
+    color: #fff;
+    border: none;
+}
+.btn-green:hover {
+    background-color: #059669;
+    color: #fff;
+}
+
+/* Stepper */
+.wizard-stepper .step {
+    width: 60px;
+}
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid #e2e8f0;
+    color: #94a3b8;
+    transition: all 0.3s ease;
+}
+.step-active {
+    background-color: #16213e;
+    border-color: #16213e;
+    color: #fff;
+}
+.step-completed {
+    background-color: #fff;
+    border-color: #12b09a;
+    color: #12b09a;
+}
+
+/* Selection Cards */
+.select-card {
+    transition: all 0.2s ease;
+}
+.select-card:hover {
+    border-color: #cbd5e1 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.select-card.active-select {
+    border-color: #0ea5e9 !important;
+    background-color: rgba(14, 165, 233, 0.05);
+}
+.select-card.active-select .icon-circle {
+    background-color: #0ea5e9 !important;
+    color: #fff;
+}
+
+.tracking-wider {
+    letter-spacing: 0.05em;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Rider Tabs */
+.custom-rider-tabs .nav-link {
+    color: #475569;
+    border-color: #e2e8f0 !important;
+}
+.custom-rider-tabs .nav-link.active {
+    background-color: #16213e !important;
+    color: #fff !important;
+    border-color: #16213e !important;
+}
+
+/* Payment Tabs */
+.payment-tabs .nav-link {
+    color: #64748b;
+    border-color: #e2e8f0 !important;
+}
+.payment-tabs .nav-link.active {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    color: #0f172a !important;
+}
+
+/* Form inputs */
+.form-control:focus, .form-select:focus {
+    border-color: #94a3b8;
+    box-shadow: none;
+}
+.hover-bg-light:hover {
+    background-color: #f8fafc !important;
+}

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - All Insurance Plans</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Base Styles -->
+    <link href="../landing/landing-page.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        
+
+        /* ── Hero Section ── */
+        .plans-hero {
+            background-color: #16213e;
+            color: #fff;
+            padding: 4rem 0 5rem;
+            text-align: center;
+        }
+        .plans-hero h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .plans-hero p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* ── Plan Cards ── */
+        .plan-card {
+            background-color: #fff;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        
+        .plan-image-wrapper {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+        .plan-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .plan-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            background-color: #fff;
+            color: #1e293b;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .plan-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .plan-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+        
+        .plan-price {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1.25rem;
+        }
+        .plan-price strong {
+            font-size: 1.1rem;
+            color: #0f172a;
+        }
+        
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+            flex-grow: 1;
+        }
+        .plan-features li {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        .plan-features li i {
+            color: #64748b;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .btn-quote {
+            background-color: #16213e;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.6rem;
+            border-radius: 0.375rem;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+            width: 100%;
+            border: none;
+            transition: background-color 0.2s;
+        }
+        .btn-quote:hover {
+            background-color: #0f172a;
+            color: #fff;
+        }
+
+        /* ── Floating Action Button ── */
+        .fab-chat {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #16213e;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        
+        /* ── Footer ── */
+        .site-footer {
+            background-color: #16213e;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 4rem 0 2rem;
+            font-size: 0.85rem;
+        }
+        .site-footer h6 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .footer-logo {
+            margin-bottom: 1rem;
+        }
+        .footer-desc {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .social-icons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .social-icons a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: #fff;
+        }
+        
+        .contact-info p {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+        .contact-info i {
+            width: 20px;
+            color: #ef4444; /* red icon for phone/email like screenshot */
+        }
+        
+        .quick-help-card {
+            background-color: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .quick-help-card img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+        }
+        .quick-help-action {
+            display: block;
+            width: 100%;
+            background-color: rgba(255,255,255,0.08);
+            border: none;
+            color: #fff;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .quick-help-action:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-bottom-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+        .footer-bottom-links a:hover {
+            color: #fff;
+        }
+    </style>
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Authenticated Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 dashboard-nav sticky-top">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../customer-dashboard/home.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure" height="75">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link" href="../customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../policy-management/my-policies.html">My Policies</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../policy-management/claims.html">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../payment/payments.html">Payments</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                        <ul class="dropdown-menu shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
+                            <li><a class="dropdown-item" href="../reports/reports.html">Report Management</a></li>
+                            <li><a class="dropdown-item" href="../policy-management/policy-cancellation.html">Policy Cancellation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <!-- Notifications -->
+                    <div class="position-relative notification-bell"></div>
+                    <!-- User Profile -->
+                    <div class="dropdown user-dropdown">
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                            <span class="fw-medium small pe-1">Rahul M.</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="../profile/settings.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="../auth/login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="plans-hero">
+        <div class="container">
+            <h1>Explore All Insurance Plans</h1>
+            <p>Comprehensive protection tailored to every aspect of your life.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container px-4 py-5 mb-5">
+        <div class="row g-4 justify-content-center">
+            
+            <!-- Life Insurance -->
+            <div class="col-md-6 col-lg-4">
+                <div class="plan-card">
+                    <div class="plan-image-wrapper">
+                        <img src="../../assets/images/LandingPage/landing1.png" alt="Life Insurance">
+                        <span class="plan-badge">Life</span>
+                    </div>
+                    <div class="plan-content">
+                        <div class="plan-title">Life Insurance</div>
+                        <div class="plan-price">Starting <strong>₹4,999</strong> /yr</div>
+                        
+                        <ul class="plan-features">
+                            <li><i class="fa-solid fa-check"></i> Comprehensive life cover</li>
+                            <li><i class="fa-solid fa-check"></i> Nominee protection guarantee</li>
+                            <li><i class="fa-solid fa-check"></i> Critical illness add-on</li>
+                        </ul>
+                        
+                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Health Insurance -->
+            <div class="col-md-6 col-lg-4">
+                <div class="plan-card">
+                    <div class="plan-image-wrapper">
+                        <img src="../../assets/images/LandingPage/landing2.png" alt="Health Insurance">
+                        <span class="plan-badge">Health</span>
+                    </div>
+                    <div class="plan-content">
+                        <div class="plan-title">Health Insurance</div>
+                        <div class="plan-price">Starting <strong>₹6,500</strong> /yr</div>
+                        
+                        <ul class="plan-features">
+                            <li><i class="fa-solid fa-check"></i> Cashless hospitalization</li>
+                            <li><i class="fa-solid fa-check"></i> 500+ network hospitals</li>
+                            <li><i class="fa-solid fa-check"></i> Free annual checkup</li>
+                        </ul>
+                        
+                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Motor Insurance -->
+            <div class="col-md-6 col-lg-4">
+                <div class="plan-card">
+                    <div class="plan-image-wrapper">
+                        <img src="../../assets/images/LandingPage/landing3.png" alt="Motor Insurance">
+                        <span class="plan-badge">Motor</span>
+                    </div>
+                    <div class="plan-content">
+                        <div class="plan-title">Motor Insurance</div>
+                        <div class="plan-price">Starting <strong>₹2,200</strong> /yr</div>
+                        
+                        <ul class="plan-features">
+                            <li><i class="fa-solid fa-check"></i> Third-party + own damage</li>
+                            <li><i class="fa-solid fa-check"></i> Zero depreciation cover</li>
+                            <li><i class="fa-solid fa-check"></i> 24x7 roadside assistance</li>
+                        </ul>
+                        
+                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Property Insurance -->
+            <div class="col-md-6 col-lg-4">
+                <div class="plan-card">
+                    <div class="plan-image-wrapper">
+                        <img src="../../assets/images/LandingPage/landing4.png" alt="Property Insurance">
+                        <span class="plan-badge">Property</span>
+                    </div>
+                    <div class="plan-content">
+                        <div class="plan-title">Property Insurance</div>
+                        <div class="plan-price">Starting <strong>₹1,800</strong> /yr</div>
+                        
+                        <ul class="plan-features">
+                            <li><i class="fa-solid fa-check"></i> Home structure cover</li>
+                            <li><i class="fa-solid fa-check"></i> Contents protection</li>
+                            <li><i class="fa-solid fa-check"></i> Natural disaster cover</li>
+                        </ul>
+                        
+                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Travel Insurance -->
+            <div class="col-md-6 col-lg-4">
+                <div class="plan-card">
+                    <div class="plan-image-wrapper">
+                        <img src="../../assets/images/LandingPage/landing5.png" alt="Travel Insurance">
+                        <span class="plan-badge">Travel</span>
+                    </div>
+                    <div class="plan-content">
+                        <div class="plan-title">Travel Insurance</div>
+                        <div class="plan-price">Starting <strong>₹1,500</strong> /yr</div>
+                        
+                        <ul class="plan-features">
+                            <li><i class="fa-solid fa-check"></i> Global medical cover</li>
+                            <li><i class="fa-solid fa-check"></i> Trip cancellation protection</li>
+                            <li><i class="fa-solid fa-check"></i> Lost baggage assistance</li>
+                        </ul>
+                        
+                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <div class="fab-chat" title="Chat with us">
+        <i class="fa-solid fa-comment-dots fs-5"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container px-4 px-xl-5">
+            <div class="row g-5">
+                
+                <!-- Brand & Social -->
+                <div class="col-lg-3 col-md-6">
+                    <img src="../../assets/images/Logo.png" alt="NexSure" height="40" class="footer-logo">
+                    <p class="footer-desc mt-3">Protecting what matters most — from policy to claim, we're with you every step of the way.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Information Links -->
+                <div class="col-lg-2 col-md-6 offset-lg-1">
+                    <h6>Information</h6>
+                    <ul class="footer-links">
+                        <li><a href="../customer-dashboard/home.html">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="dashboard-plans.html">Plans</a></li>
+                        <li><a href="../policy-management/claims.html">Claim</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="col-lg-3 col-md-6 contact-info">
+                    <h6>Contact</h6>
+                    <p class="mb-2 text-white-50">Have any questions? Feel free to contact our administration team.</p>
+                    <p class="mt-4"><i class="fa-regular fa-envelope text-white-50 me-2"></i> support@nexsure.com</p>
+                    <p><i class="fa-solid fa-phone text-danger me-2"></i> +91 12345 67890</p>
+                    <p><i class="fa-solid fa-location-dot text-white-50 me-2"></i> India</p>
+                </div>
+                
+                <!-- Quick Help -->
+                <div class="col-lg-3 col-md-6">
+                    <h6>Quick Help</h6>
+                    <div class="quick-help-card">
+                        <img src="../../assets/images/LandingPage/landing8.png" alt="Support Team">
+                        <button class="quick-help-action">
+                            <i class="fa-solid fa-headset text-danger me-2"></i> Speak to an Officer
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="footer-bottom">
+                <div>&copy; 2026 NexSure. All Rights Reserved.</div>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../../features/shared/notifications.js"></script>
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+</body>
+</html>

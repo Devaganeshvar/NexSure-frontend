@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Plan Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Base Styles (from Landing Page) -->
+    <link href="../landing/landing-page.css?v=2" rel="stylesheet">
+    <!-- Dashboard Specific CSS -->
+    <link href="../customer-dashboard/home.css" rel="stylesheet">
+    <!-- Plan Details Specific CSS -->
+    <link href="plan-details.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Authenticated Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 dashboard-nav sticky-top">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../customer-dashboard/home.html">
+                <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link" href="../customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../policy-management/my-policies.html">My Policies</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="../plan-listings/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../policy-management/claims.html">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../payment/payments.html">Payments</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                        <ul class="dropdown-menu shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
+                            <li><a class="dropdown-item" href="../reports/reports-center.html">Reports Center</a></li>
+                            <li><a class="dropdown-item" href="../policy-management/policy-cancellation.html">Policy Cancellation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <!-- Notifications -->
+                    <div class="position-relative notification-bell"></div>
+                    <!-- User Profile Dropdown -->
+                    <div class="dropdown user-dropdown">
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                            <span class="fw-medium small pe-1">Rahul M.</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="../auth/login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Plan Hero Section -->
+    <section class="plan-hero dashboard-hero position-relative overflow-hidden py-4">
+        <div class="hero-bg-circle"></div>
+        <div class="container-fluid px-4 px-xl-5 position-relative z-1 py-4">
+            
+            <!-- Breadcrumbs -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../customer-dashboard/home.html" class="text-white-50 text-decoration-none"><i class="fa-solid fa-house me-1"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="../plan-listings/dashboard-plans.html" class="text-white-50 text-decoration-none">Plans</a></li>
+                    <li class="breadcrumb-item active text-white fw-medium" aria-current="page">Standard Health Plan</li>
+                </ol>
+            </nav>
+
+            <div class="row align-items-center">
+                <!-- Left Content -->
+                <div class="col-lg-7 pe-lg-5 mb-5 mb-lg-0">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <span class="badge bg-success bg-opacity-25 text-success px-3 py-2 rounded-pill fw-semibold border border-success"><i class="fa-solid fa-star me-1 text-warning"></i> Best Seller</span>
+                        <span class="badge bg-info bg-opacity-25 text-info px-3 py-2 rounded-pill fw-semibold border border-info"><i class="fa-solid fa-shield-heart me-1"></i> Health</span>
+                    </div>
+                    <h1 class="display-4 text-white fw-bold mb-3">Standard Health Plan</h1>
+                    <p class="text-white-50 fs-5 mb-4 max-w-75">Comprehensive health coverage for you and your family, designed to provide peace of mind with cashless treatments at 10,000+ network hospitals.</p>
+                    
+                    <div class="d-flex flex-wrap gap-3">
+                        <span class="badge glass-badge text-white fw-normal py-2 px-3 border border-light border-opacity-25"><i class="fa-solid fa-check text-green me-2"></i> Cashless Treatment</span>
+                        <span class="badge glass-badge text-white fw-normal py-2 px-3 border border-light border-opacity-25"><i class="fa-solid fa-check text-green me-2"></i> Zero Copay</span>
+                        <span class="badge glass-badge text-white fw-normal py-2 px-3 border border-light border-opacity-25"><i class="fa-solid fa-check text-green me-2"></i> Free Annual Checkups</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="container-fluid px-4 px-xl-5 py-5">
+        <div class="row g-4">
+            
+            <!-- Left Column (Details) -->
+            <div class="col-xl-8 pe-xl-4">
+                
+                <!-- Custom Navigation Tabs -->
+                <ul class="nav nav-pills custom-pills mb-4 overflow-auto flex-nowrap pb-2" id="planTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="overview-tab" data-bs-toggle="pill" data-bs-target="#overview" type="button" role="tab">Overview & Coverage</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="benefits-tab" data-bs-toggle="pill" data-bs-target="#benefits" type="button" role="tab">Benefits & Exclusions</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="claims-tab" data-bs-toggle="pill" data-bs-target="#claims" type="button" role="tab">Claim Process</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reviews-tab" data-bs-toggle="pill" data-bs-target="#reviews" type="button" role="tab">Reviews & FAQs</button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content" id="planTabsContent">
+                    
+                    <!-- Overview & Coverage Tab -->
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" tabindex="0">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4">
+                            <h4 class="fw-bold mb-4">What's Covered?</h4>
+                            <p class="text-muted mb-4">This plan provides extensive coverage for medical emergencies and planned hospitalizations. Below is a detailed breakdown of the coverage limits and inclusions.</p>
+                            
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <div class="d-flex gap-3">
+                                        <div class="icon-circle bg-primary bg-opacity-10 text-primary flex-shrink-0" style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa-solid fa-bed-pulse"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">In-Patient Hospitalization</h6>
+                                            <p class="text-muted small mb-0">Covered up to the Sum Insured. Includes room rent, ICU, nursing, and doctor fees.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex gap-3">
+                                        <div class="icon-circle bg-success bg-opacity-10 text-success flex-shrink-0" style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa-solid fa-truck-medical"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Ambulance Cover</h6>
+                                            <p class="text-muted small mb-0">Up to ₹3,000 per hospitalization for road ambulance services.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex gap-3">
+                                        <div class="icon-circle bg-info bg-opacity-10 text-info flex-shrink-0" style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa-solid fa-stethoscope"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Pre & Post Hospitalization</h6>
+                                            <p class="text-muted small mb-0">60 days pre-hospitalization and 90 days post-hospitalization medical expenses covered.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex gap-3">
+                                        <div class="icon-circle bg-purple-light text-purple flex-shrink-0" style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa-solid fa-child-reaching"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Day Care Procedures</h6>
+                                            <p class="text-muted small mb-0">All day care procedures (surgeries requiring <24 hrs stay) are fully covered.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr class="text-muted opacity-25 my-4">
+                            
+                            <h5 class="fw-bold mb-3">Coverage Limits Table</h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover border">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Benefit / Feature</th>
+                                            <th>Limit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-medium">Room Rent</td>
+                                            <td class="text-muted">Single Private AC Room (Up to 1% of Sum Insured)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-medium">ICU Charges</td>
+                                            <td class="text-muted">No capping (Subject to Sum Insured)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-medium">AYUSH Treatment</td>
+                                            <td class="text-muted">Covered up to 50% of Sum Insured</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-medium">Maternity Cover</td>
+                                            <td class="text-muted">Not Covered in Base Plan (Available as Add-on)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Benefits & Exclusions Tab -->
+                    <div class="tab-pane fade" id="benefits" role="tabpanel" tabindex="0">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4">
+                            
+                            <div class="row g-5">
+                                <div class="col-md-6">
+                                    <h4 class="fw-bold mb-4 text-success"><i class="fa-regular fa-circle-check me-2"></i> Key Benefits</h4>
+                                    <ul class="list-unstyled d-flex flex-column gap-3">
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-check text-success mt-1"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">No Claim Bonus</h6>
+                                                <p class="text-muted small mb-0">Increase your sum insured by 20% for every claim-free year, up to a maximum of 100%.</p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-check text-success mt-1"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Restoration Benefit</h6>
+                                                <p class="text-muted small mb-0">100% automatic restoration of sum insured if exhausted during the policy year.</p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-check text-success mt-1"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Free Annual Checkup</h6>
+                                                <p class="text-muted small mb-0">Free preventive health checkup for all insured members once a year.</p>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-check text-success mt-1"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Tax Benefits</h6>
+                                                <p class="text-muted small mb-0">Save tax under Section 80D of the Income Tax Act.</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 border-start-md border-light">
+                                    <h4 class="fw-bold mb-4 text-danger"><i class="fa-regular fa-circle-xmark me-2"></i> Exclusions</h4>
+                                    <p class="text-muted small mb-3">Things that are not covered under this plan to keep premiums affordable:</p>
+                                    <ul class="list-unstyled d-flex flex-column gap-3">
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-xmark text-danger mt-1"></i>
+                                            <span class="text-muted small">Pre-existing diseases (covered only after 36 months waiting period).</span>
+                                        </li>
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-xmark text-danger mt-1"></i>
+                                            <span class="text-muted small">Initial 30-day waiting period for any illness (except accidental injuries).</span>
+                                        </li>
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-xmark text-danger mt-1"></i>
+                                            <span class="text-muted small">Cosmetic or plastic surgery unless necessitated by an accident or cancer.</span>
+                                        </li>
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-xmark text-danger mt-1"></i>
+                                            <span class="text-muted small">Dental treatment or surgery unless requiring hospitalization.</span>
+                                        </li>
+                                        <li class="d-flex gap-3">
+                                            <i class="fa-solid fa-xmark text-danger mt-1"></i>
+                                            <span class="text-muted small">Self-inflicted injuries or conditions arising from substance abuse.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 p-4 bg-light rounded-3 border">
+                                <h6 class="fw-bold"><i class="fa-solid fa-users me-2 text-primary"></i> Eligibility Criteria</h6>
+                                <div class="row mt-3 text-muted small">
+                                    <div class="col-6 col-md-3 mb-2"><strong>Entry Age (Adults):</strong><br>18 to 65 Years</div>
+                                    <div class="col-6 col-md-3 mb-2"><strong>Entry Age (Kids):</strong><br>90 Days to 25 Years</div>
+                                    <div class="col-6 col-md-3 mb-2"><strong>Renewability:</strong><br>Lifetime</div>
+                                    <div class="col-6 col-md-3 mb-2"><strong>Family Size:</strong><br>Max 2 Adults + 4 Kids</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claim Process Tab -->
+                    <div class="tab-pane fade" id="claims" role="tabpanel" tabindex="0">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4">
+                            <h4 class="fw-bold mb-2">How to Claim</h4>
+                            <p class="text-muted mb-5">Our claims process is fully digital, fast, and transparent. Follow these simple steps.</p>
+                            
+                            <div class="position-relative">
+                                <!-- Vertical Line -->
+                                <div class="position-absolute h-100 border-start border-2 border-primary border-opacity-25" style="left: 24px; top: 0;"></div>
+                                
+                                <div class="d-flex gap-4 mb-4 position-relative">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 z-1" style="width: 50px; height: 50px; font-weight: bold;">1</div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Intimate Claim</h5>
+                                        <p class="text-muted">Notify us within 24 hours of hospitalization (for emergencies) or 48 hours prior (for planned admissions) via the app or toll-free number.</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-4 mb-4 position-relative">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 z-1" style="width: 50px; height: 50px; font-weight: bold;">2</div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Submit Documents</h5>
+                                        <p class="text-muted">Upload digital copies of your medical bills, discharge summary, and KYC documents through our portal.</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-4 mb-4 position-relative">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 z-1" style="width: 50px; height: 50px; font-weight: bold;">3</div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Review & Approval</h5>
+                                        <p class="text-muted">Our dedicated claims team will review your submission. For cashless network hospitals, approval takes less than 2 hours.</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-4 position-relative">
+                                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 z-1" style="width: 50px; height: 50px; font-weight: bold;"><i class="fa-solid fa-check"></i></div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1">Settlement</h5>
+                                        <p class="text-muted">For reimbursement claims, the approved amount will be directly credited to your registered bank account within 7 working days.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews & FAQs Tab -->
+                    <div class="tab-pane fade" id="reviews" role="tabpanel" tabindex="0">
+                        <div class="row g-4">
+                            <!-- FAQs -->
+                            <div class="col-md-7">
+                                <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4 h-100">
+                                    <h4 class="fw-bold mb-4">Frequently Asked Questions</h4>
+                                    
+                                    <div class="accordion custom-accordion" id="faqAccordion">
+                                        <div class="accordion-item border-0 mb-3 bg-light rounded-3">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button bg-transparent fw-semibold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                                    Can I add my parents to this plan?
+                                                </button>
+                                            </h2>
+                                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                                <div class="accordion-body text-muted small">
+                                                    Yes, you can add dependent parents to this plan. However, the premium will be calculated based on the age of the eldest member in the family floater policy.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item border-0 mb-3 bg-light rounded-3">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed bg-transparent fw-semibold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                                    Is there a copay applied to this plan?
+                                                </button>
+                                            </h2>
+                                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                                <div class="accordion-body text-muted small">
+                                                    No, this base plan comes with zero copayment for individuals under 60 years of age. For those above 60, a mandatory 20% copay applies unless a specific waiver add-on is purchased.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item border-0 bg-light rounded-3">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed bg-transparent fw-semibold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                                    What is the waiting period for pre-existing diseases?
+                                                </button>
+                                            </h2>
+                                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                                <div class="accordion-body text-muted small">
+                                                    The standard waiting period for declared pre-existing diseases is 36 months of continuous coverage.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Reviews -->
+                            <div class="col-md-5">
+                                <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 mb-4 h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h4 class="fw-bold mb-0">Reviews</h4>
+                                        <div class="text-warning">
+                                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                                            <span class="text-dark fw-bold ms-1">4.8</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex flex-column gap-4">
+                                        <div class="review-card">
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <div class="text-warning small"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                                                <span class="fw-bold small">Aarav Patel</span>
+                                                <span class="text-success small ms-auto"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                                            </div>
+                                            <p class="text-muted small fst-italic mb-0">"Excellent coverage and very affordable. Claim settlement was surprisingly smooth when my wife was hospitalized."</p>
+                                        </div>
+                                        <hr class="text-muted opacity-25 my-0">
+                                        <div class="review-card">
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <div class="text-warning small"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+                                                <span class="fw-bold small">Priya Sharma</span>
+                                                <span class="text-success small ms-auto"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                                            </div>
+                                            <p class="text-muted small fst-italic mb-0">"Good plan with great network hospitals. Only wish the maternity cover was included in the base plan."</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Right Column (Sticky Pricing/CTA) -->
+            <div class="col-xl-4">
+                <div class="position-sticky" style="top: 100px;">
+                    <div class="card border-0 shadow rounded-4 overflow-hidden mb-4">
+                        <div class="bg-dark-blue text-white p-4 text-center">
+                            <div class="text-uppercase small tracking-wider text-white-50 fw-semibold mb-2">Starting From</div>
+                            <h2 class="display-5 fw-bold mb-0">₹9,999<span class="fs-5 fw-normal text-white-50"> / yr</span></h2>
+                        </div>
+                        <div class="card-body p-4">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold text-muted">Select Sum Insured</label>
+                                    <select class="form-select form-select-lg bg-light border-0 custom-select">
+                                        <option value="5">₹5,00,000</option>
+                                        <option value="10" selected>₹10,00,000 (Recommended)</option>
+                                        <option value="25">₹25,00,000</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label small fw-semibold text-muted">Plan Type</label>
+                                    <div class="d-flex gap-2">
+                                        <input type="radio" class="btn-check" name="planType" id="individual" autocomplete="off" checked>
+                                        <label class="btn btn-outline-primary flex-grow-1" for="individual">Individual</label>
+
+                                        <input type="radio" class="btn-check" name="planType" id="family" autocomplete="off">
+                                        <label class="btn btn-outline-primary flex-grow-1" for="family">Family Floater</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-3 bg-success bg-opacity-10 text-success rounded-3 mb-4 small fw-medium d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-gift"></i> Save 10% by opting for a 2-year term.
+                                </div>
+
+                                <a href="../policyholder-details/wizard.html" class="btn btn-green btn-lg w-100 fw-bold rounded-3 shadow-sm mb-3">Buy Now &rarr;</a>
+                                <button type="button" class="btn btn-outline-secondary w-100 fw-medium rounded-3">Download Brochure</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0 bg-transparent shadow-none text-center p-3">
+                        <div class="d-flex justify-content-center gap-4 text-muted small">
+                            <span><i class="fa-solid fa-lock me-1"></i> Secure Payment</span>
+                            <span><i class="fa-solid fa-rotate-left me-1"></i> 15-Day Free Look</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- Related Plans -->
+        <div class="mt-5 pt-4">
+            <h4 class="fw-bold mb-4">Related Plans</h4>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card bg-white border-0 shadow-sm rounded-4 h-100 p-4 transition-card">
+                        <div class="text-uppercase small text-muted fw-bold mb-1">Basic Plan</div>
+                        <h3 class="fw-bold mb-3">₹4,999<span class="fs-6 text-muted fw-normal">/yr</span></h3>
+                        <p class="text-muted small mb-4">Essential coverage for individuals looking for affordable protection.</p>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-pill w-100 mt-auto fw-medium">View Plan</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-dark-blue border-0 shadow rounded-4 h-100 text-white p-4 transition-card position-relative">
+                        <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-3 rounded-pill">Top Premium</span>
+                        <div class="text-uppercase small text-white-50 fw-bold mb-1">Premium Plan</div>
+                        <h3 class="fw-bold mb-3 text-white">₹17,999<span class="fs-6 text-white-50 fw-normal">/yr</span></h3>
+                        <p class="text-white-50 small mb-4">Unlimited coverage with global hospital access and zero waiting periods.</p>
+                        <a href="#" class="btn btn-light btn-sm rounded-pill w-100 mt-auto fw-semibold text-dark">View Plan</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid px-4 px-xl-5">
+            <div class="row g-4">
+                <div class="col-lg-4 pe-lg-5">
+                    <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
+                    <p>Protecting what matters most — from policy to claim, we're with you every step of the way.</p>
+                    <div class="d-flex gap-2">
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4">
+                    <h6>INFORMATION</h6>
+                    <ul class="footer-links">
+                        <li><a href="../landing/landing-page.html">Home</a></li>
+                        <li><a href="../help-center/about.html">About</a></li>
+                        <li><a href="../plan-listings/dashboard-plans.html">Plans</a></li>
+                        <li><a href="../policy-management/claims.html">Claim</a></li>
+                        <li><a href="../help-center/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6>CONTACT</h6>
+                    <p>Have any questions? Feel free to contact our administration team.</p>
+                    <ul class="contact-info">
+                        <li><i class="fa-solid fa-envelope"></i> support@nexsure.com</li>
+                        <li><i class="fa-solid fa-phone"></i> +91 12345 67890</li>
+                        <li><i class="fa-solid fa-location-dot"></i> India</li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6>QUICK HELP</h6>
+                    <div class="quick-help">
+                        <div class="help-card text-center">
+                            <img src="../../assets/images/LandingPage/landing19.png" alt="Support">
+                            <a href="../help-center/contact.html" class="btn btn-sm"><i class="fa-solid fa-headset me-2"></i> Speak to an Officer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>&copy; 2026 NexSure, All Rights Reserved.</div>
+                <div class="footer-bottom-links">
+                    <a href="javascript:void(0)">Terms</a>
+                    <a href="javascript:void(0)">Privacy</a>
+                    <a href="javascript:void(0)">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="plan-details.js"></script>
+    <script src="../../features/shared/notifications.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+</body>
+</html>

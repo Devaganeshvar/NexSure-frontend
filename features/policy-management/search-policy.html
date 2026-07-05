@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Policy Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link href="../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../assets/css/officer_v2.css" rel="stylesheet">
+    <script src="../../features/shared/auth-guard.js"></script>
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                <a href="../admin-dashboard/officer-dashboard.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Officer</a> &rsaquo; Policy Details
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" placeholder="Search...">
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none gap-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                    <span class="fw-medium small">Gokul K</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="officer-layout">
+        
+        <!-- Sidebar -->
+        <aside class="officer-sidebar">
+            <a href="../admin-dashboard/officer-dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">CUSTOMERS</div>
+            <a href="../people-and-audit/customer-management.html" class="sidebar-link">Customer Management</a>
+            <a href="../people-and-audit/kyc-verification.html" class="sidebar-link">KYC Verification</a>
+            
+            <div class="sidebar-section-title">POLICIES</div>
+            <a href="../policy-management/search-policy.html" class="sidebar-link active">Policy Details</a>
+            <a href="../reports-and-policies/applications.html" class="sidebar-link">Policy Applications</a>
+            
+            <div class="sidebar-section-title">CLAIMS</div>
+            <a href="../policy-management/claims-processing.html" class="sidebar-link">Claims Processing</a>
+            
+            <div class="sidebar-section-title">MORE</div>
+            <a href="../reports/reports.html" class="sidebar-link">Reports & Renewals</a>
+            <a href="../admin-dashboard/officer-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link text-danger mt-4">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="officer-content p-5 w-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="page-header m-0 fw-bold">Policy Details (Read-Only)</h1>
+            </div>
+
+            <!-- Filters -->
+            <div class="d-flex gap-3 mb-4">
+                <select id="filter-type" class="filter-select">
+                    <option value="">All Types</option>
+                    <option value="Motor">Motor</option>
+                    <option value="Health">Health</option>
+                    <option value="Life">Life</option>
+                </select>
+                <input type="text" id="search-input" class="filter-input" placeholder="Search policies...">
+            </div>
+
+            <!-- Data Table -->
+            <div class="border rounded shadow-sm bg-white">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>POLICY ID</th>
+                            <th>NAME</th>
+                            <th>TYPE</th>
+                            <th>COVERAGE</th>
+                            <th>PREMIUM</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Loaded via JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div id="records-count" class="text-muted fs-6 fw-medium">Loading records...</div>
+                <div id="pagination-controls" class="pagination-container mt-0"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/officer-table.js?v=clean"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mockPolicies = [
+                { id: 'POL-1001', name: 'Comprehensive Auto', type: 'Motor', coverage: '$50,000', premium: '$1,200/yr', status: 'Active' },
+                { id: 'POL-1002', name: 'Basic Health', type: 'Health', coverage: '$100,000', premium: '$800/yr', status: 'Active' },
+                { id: 'POL-1003', name: 'Term Life 20', type: 'Life', coverage: '$500,000', premium: '$450/yr', status: 'Active' },
+                { id: 'POL-1004', name: 'Property Plus', type: 'Property', coverage: '$300,000', premium: '$1,500/yr', status: 'Active' },
+                { id: 'POL-1005', name: 'Travel Safe', type: 'Travel', coverage: '$25,000', premium: '$150/yr', status: 'Inactive' },
+            ];
+            
+            new OfficerTable({
+                tableBodyId: 'table-body',
+                paginationContainerId: 'pagination-controls',
+                searchInputId: 'search-input',
+                filterSelectIds: ['filter-type'],
+                itemsPerPage: 5,
+                data: mockPolicies,
+                filterLogic: (item, selects) => {
+                    const typeFilter = selects[0].value;
+                    if(typeFilter && item.type !== typeFilter) return false;
+                    return true;
+                },
+                columns: [
+                    { key: 'id' },
+                    { key: 'name', render: row => `<strong>${row.name}</strong>` },
+                    { key: 'type' },
+                    { key: 'coverage' },
+                    { key: 'premium' },
+                    { key: 'status', render: row => {
+                        return row.status === 'Active' ? `<span class="pill-status pill-approved">Active</span>` : `<span class="pill-status text-bg-secondary">Inactive</span>`;
+                    }},
+                    { key: 'actions', render: () => `
+                        <button class="btn btn-sm btn-outline-custom border-0"><i class="fa-regular fa-eye me-2"></i> View</button>
+                    `}
+                ]
+            });
+        });
+    </script>
+</body>
+</html>

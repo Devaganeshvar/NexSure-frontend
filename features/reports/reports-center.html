@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Reports Center</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Base Styles -->
+    <link href="../landing/landing-page.css?v=2" rel="stylesheet">
+    <link href="../customer-dashboard/home.css?v=3" rel="stylesheet">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #16213e 0%, #1a2a4f 100%);
+            padding: 3rem 0;
+            color: #fff;
+            margin-bottom: 3rem;
+            border-bottom: 4px solid #10b981;
+        }
+        .report-type-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            height: 100%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .report-type-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transform: translateY(-2px);
+        }
+        .report-type-card.active {
+            border-color: #16213e;
+            border-width: 2px;
+            background-color: #f8fafc;
+        }
+        .report-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        .report-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0;
+        }
+        .preview-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+        .table th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 1rem;
+        }
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+            color: #1e293b;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .badge-active { background-color: #ecfdf5; color: #10b981; border: 1px solid #a7f3d0; }
+        .export-btn {
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            color: #475569;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        .export-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            border-color: #cbd5e1;
+        }
+    </style>
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Authenticated Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 dashboard-nav sticky-top">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../customer-dashboard/home.html">
+                <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link" href="../customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../policy-management/my-policies.html">My Policies</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../plan-listings/plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../claims/claims.html">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../payment/payments.html">Payments</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                        <ul class="dropdown-menu shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
+                            <li><a class="dropdown-item active bg-dark-blue text-white" href="#">Reports Center</a></li>
+                            <li><a class="dropdown-item" href="../policy-management/policy-cancellation.html">Policy Cancellation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <!-- Notifications -->
+                    <div class="position-relative notification-bell">
+                        <a href="#" class="text-white text-decoration-none">
+                            <i class="fa-regular fa-bell fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-dark" style="font-size: 0.6rem;">3</span>
+                        </a>
+                    </div>
+                    <!-- User Profile -->
+                    <div class="dropdown user-dropdown">
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                            <span class="fw-medium small pe-1">Rahul M.</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container-fluid px-4 px-xl-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item"><a href="../customer-dashboard/home.html" class="text-white-50 text-decoration-none">NexSure</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-white-50 text-decoration-none">Account</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Reports Center</li>
+                </ol>
+            </nav>
+            <h1 class="display-5 fw-bold font-playfair mb-0">Reports Center</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container-fluid px-4 px-xl-5 pb-5 max-w-1200 mx-auto ms-xl-0">
+        
+        <!-- Report Types -->
+        <div class="row g-4 mb-5">
+            <div class="col-sm-6 col-lg-3">
+                <div class="report-type-card shadow-sm active">
+                    <div class="report-title">Policy Report</div>
+                    <p class="report-desc">Detailed status of all active & expired policies</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="report-type-card shadow-sm">
+                    <div class="report-title">Payment Report</div>
+                    <p class="report-desc">Transaction history, invoices & premium logs</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="report-type-card shadow-sm">
+                    <div class="report-title">Claim Report</div>
+                    <p class="report-desc">Claim submission details, timeline & payout stats</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="report-type-card shadow-sm">
+                    <div class="report-title">Renewal Report</div>
+                    <p class="report-desc">Expiring policies, next due dates & grace status</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-card shadow-sm">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                <h5 class="fw-bold text-dark mb-0">Policy Report Preview</h5>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary px-4 fw-medium bg-white">Preview Online</button>
+                    <button class="btn btn-dark-blue px-4 fw-medium">Download PDF</button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="d-flex flex-wrap gap-3 mb-4 pb-4 border-bottom report-filters">
+                <select class="form-select w-auto border-0 bg-light fw-medium shadow-none filter-policy-type">
+                    <option value="All">Policy Type: All</option>
+                    <option value="Health">Policy Type: Health</option>
+                    <option value="Motor">Policy Type: Motor</option>
+                    <option value="Life">Policy Type: Life</option>
+                </select>
+                <select class="form-select w-auto border-0 bg-light fw-medium shadow-none filter-year">
+                    <option value="All">Year: All</option>
+                    <option value="2026">Year: 2026</option>
+                    <option value="2025">Year: 2025</option>
+                </select>
+                <select class="form-select w-auto border-0 bg-light fw-medium shadow-none filter-status">
+                    <option value="All">Status: All</option>
+                    <option value="Active">Status: Active</option>
+                    <option value="Expired">Status: Expired</option>
+                </select>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive mb-4">
+                <table class="table table-borderless mb-0">
+                    <thead>
+                        <tr>
+                            <th>POLICY NO</th>
+                            <th>PRODUCT</th>
+                            <th>SUM INSURED</th>
+                            <th>PREMIUM</th>
+                            <th>STATUS</th>
+                            <th>EXPIRY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">HLT-3321</td>
+                            <td>Health Insurance Standard</td>
+                            <td class="fw-medium">₹5,00,000</td>
+                            <td>₹8,450</td>
+                            <td><span class="badge badge-active px-3 py-2 rounded-pill">Active</span></td>
+                            <td>30 Jun 2026</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">MOT-5587</td>
+                            <td>Motor Private Car</td>
+                            <td class="fw-medium">₹4,20,000</td>
+                            <td>₹12,300</td>
+                            <td><span class="badge badge-active px-3 py-2 rounded-pill">Active</span></td>
+                            <td>12 Sep 2026</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">LIF-1190</td>
+                            <td>Term Life Protection</td>
+                            <td class="fw-medium">₹1,00,00,000</td>
+                            <td>₹18,200</td>
+                            <td><span class="badge badge-active px-3 py-2 rounded-pill">Active</span></td>
+                            <td>15 Oct 2026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center border-top pt-4 flex-wrap gap-3">
+                <div class="text-muted small fw-medium" id="records-matched-text">Showing 3 active records matched</div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted small fw-medium">Export as:</span>
+                    <div class="d-flex gap-2">
+                        <button class="export-btn">CSV</button>
+                        <button class="export-btn">TXT</button>
+                        <button class="export-btn">Excel</button>
+                        <button class="export-btn">PDF</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <!-- Custom JS for Reports -->
+    <script src="reports-center.js"></script>
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+</body>
+</html>

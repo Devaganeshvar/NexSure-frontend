@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Preferences & Configuration</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+        }
+        
+        /* ── Navbar ── */
+        .dashboard-nav {
+            background-color: #16213e;
+        }
+        .nav-link.text-white {
+            color: #fff !important;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        .nav-link.text-white:hover { opacity: 1; }
+        
+        /* ── Page Header ── */
+        .page-header {
+            background-color: #16213e; /* Dark navy */
+            padding: 2.5rem 0 2.5rem;
+            color: #fff;
+            border-bottom: 4px solid #10b981; /* Green strip at bottom */
+        }
+        .page-header .breadcrumb {
+            margin-bottom: 0.75rem;
+            font-size: 0.8rem;
+        }
+        .page-header .breadcrumb-item a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+        }
+        .page-header .breadcrumb-item a:hover { color: #fff; }
+        .page-header .breadcrumb-item.active { color: rgba(255,255,255,0.7); }
+        .page-header .breadcrumb-item + .breadcrumb-item::before { color: rgba(255,255,255,0.4); }
+        
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.01em;
+        }
+        .page-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* ── Main Layout ── */
+        .settings-container {
+            padding-top: 3rem;
+            padding-bottom: 5rem;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* ── Form Elements ── */
+        .form-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .form-select {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            color: #1e293b;
+            font-weight: 500;
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            cursor: pointer;
+        }
+        .form-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+
+        /* ── Custom Toggles (iOS style) ── */
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 0;
+        }
+        .settings-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #334155;
+        }
+        
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #e2e8f0;
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #0f172a; /* Black thumb */
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .switch-slider {
+            background-color: #dbeafe; /* Light blue track */
+        }
+        input:checked + .switch-slider:before {
+            transform: translateX(20px);
+        }
+        
+        /* ── Theme Cards ── */
+        .theme-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .theme-card.active {
+            background-color: #f0f7ff;
+            border-color: #bfdbfe;
+        }
+        .theme-card-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #0f172a;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+        }
+        .theme-card-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* ── Action Cards / Buttons ── */
+        .action-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .action-card-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #0f172a;
+            margin-bottom: 0.2rem;
+        }
+        .action-card-desc {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin: 0;
+        }
+        .btn-outline-custom {
+            border: 1px solid #e2e8f0;
+            background-color: #fff;
+            color: #3b82f6; /* light blue text */
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.4rem 1.2rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s;
+        }
+        .btn-outline-custom:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        
+        .btn-outline-danger-custom {
+            border: 1px solid #fca5a5;
+            background-color: #fff;
+            color: #ef4444;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s;
+        }
+        .btn-outline-danger-custom:hover {
+            background-color: #fef2f2;
+        }
+
+        /* ── Floating Actions ── */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .fab-left { left: 20px; }
+        .fab-right { right: 20px; }
+        .fab i { color: #fff; font-size: 1.2rem; }
+    </style>
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+    <link href="../shared/a11y-core.css" rel="stylesheet">
+    <link href="../../assets/css/chatbot.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Authenticated Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 dashboard-nav sticky-top">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand" href="../customer-dashboard/home.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure" height="60" style="object-fit: contain;">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link text-white fw-medium" href="../customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-medium" href="../policy-management/my-policies.html">My Policies</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-medium" href="../plan-listings/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-medium" href="../policy-management/claims.html">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-medium" href="../payment/payments.html">Payments</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-white fw-medium dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                        <ul class="dropdown-menu shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
+                            <li><a class="dropdown-item" href="../reports/reports-center.html">Reports Center</a></li>
+                            <li><a class="dropdown-item" href="../policy-management/policy-cancellation.html">Policy Cancellation</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <!-- Notifications -->
+                    <div class="position-relative notification-bell">
+                        <a href="#" class="text-white text-decoration-none">
+                            <i class="fa-solid fa-bell fs-5 text-warning"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-dark" style="font-size: 0.55rem;">3</span>
+                        </a>
+                    </div>
+                    <!-- User Profile -->
+                    <div class="dropdown user-dropdown">
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 rounded-pill px-2 py-1" style="border: 1px solid rgba(255,255,255,0.3);" href="#" role="button" data-bs-toggle="dropdown">
+                            <div class="rounded-circle bg-black border border-light" style="width: 28px; height: 28px;"></div>
+                            <span class="fw-medium small pe-1">Rahul M.</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><a class="dropdown-item" href="profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="../auth/login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container px-4 px-xl-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../customer-dashboard/home.html">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="profile.html">Account</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">App Settings</li>
+                </ol>
+            </nav>
+            <h1>Preferences &amp; Configuration</h1>
+            <p>Manage application preferences, localization, and theme settings.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container px-4 px-xl-5 settings-container">
+        
+        <div class="row g-5">
+            <!-- Left Column -->
+            <div class="col-lg-6 pe-lg-5">
+                
+                <!-- Localization & Language -->
+                <div class="mb-5">
+                    <h2 class="section-title">Localization &amp; Language</h2>
+                    <div class="row g-3 mt-1">
+                        <div class="col-sm-6">
+                            <label class="form-label">Language</label>
+                                    <select class="form-select" id="appLanguageSelect" onchange="changeAppLanguage(this.value)">
+                                        <option value="en">English</option>
+                                        <option value="ta">Tamil</option>
+                                    </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label">Timezone</label>
+                            <select class="form-select" onchange="triggerUpdate()">
+                                <option value="ist" selected>(GMT+05:30) India</option>
+                                <option value="utc">(GMT+00:00) UTC</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appearance & Theme -->
+                <div class="mb-5">
+                    <h2 class="section-title">Appearance &amp; Theme</h2>
+                    <div class="row g-3 mt-1">
+                        <div class="col-sm-6">
+                            <div class="theme-card" id="lightThemeCard" onclick="setTheme(this, 'light')">
+                                <div class="theme-card-icon"></div>
+                                <div class="theme-card-title">Light Theme</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="theme-card" id="darkThemeCard" onclick="setTheme(this, 'dark')">
+                                <div class="theme-card-icon"></div>
+                                <div class="theme-card-title">Dark Theme</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts & Notifications -->
+                <div class="mb-5">
+                    <h2 class="section-title"><i class="fa-solid fa-bell text-warning"></i> Alerts &amp; Notifications</h2>
+                    
+                    <div class="settings-row">
+                        <span class="settings-label">Policy Renewal Reminders</span>
+                        <label class="custom-switch">
+                            <input type="checkbox" checked onchange="triggerUpdate()">
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <span class="settings-label">Claim Status Updates (SMS)</span>
+                        <label class="custom-switch">
+                            <input type="checkbox" checked onchange="triggerUpdate()">
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <span class="settings-label">Promotional Offers</span>
+                        <label class="custom-switch">
+                            <input type="checkbox" onchange="triggerUpdate()">
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Right Column -->
+            <div class="col-lg-6 ps-lg-4">
+                
+                <!-- Security Settings -->
+                <div class="mb-5">
+                    <h2 class="section-title">Security Settings</h2>
+                    
+                    <div class="settings-row">
+                        <span class="settings-label">Enable Two-Factor Authentication (2FA)</span>
+                        <label class="custom-switch">
+                            <input type="checkbox" checked onchange="triggerUpdate()">
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-row mb-3">
+                        <span class="settings-label">Receive alerts for unrecognized logins</span>
+                        <label class="custom-switch">
+                            <input type="checkbox" checked onchange="triggerUpdate()">
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="action-card mt-2">
+                        <div>
+                            <div class="action-card-title">Change Password</div>
+                            <p class="action-card-desc">Update your account password securely.</p>
+                        </div>
+                        <button class="btn btn-outline-custom" onclick="openPasswordModal()">Update</button>
+                    </div>
+                </div>
+                
+                <div style="height: 2rem;"></div> <!-- Spacer -->
+
+                <!-- Privacy & Data -->
+                <div class="mb-5 mt-4">
+                    <h2 class="section-title">
+                        <!-- Custom icon mimicking the screenshot -->
+                        <span style="display:inline-block; position:relative; width:20px; height:22px;">
+                            <i class="fa-solid fa-shield" style="color:#d1d5db; font-size:1.4rem; position:absolute; left:0; top:0;"></i>
+                            <i class="fa-solid fa-shield" style="color:#ef4444; font-size:1.4rem; position:absolute; left:0; top:0; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);"></i>
+                        </span>
+                        Privacy &amp; Data
+                    </h2>
+                    
+                    <div class="settings-row">
+                        <span class="settings-label">Cookie Tracking Consent</span>
+                        <label class="custom-switch">
+                            <input type="checkbox" checked onchange="triggerUpdate()">
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <span class="settings-label">Download Personal Data</span>
+                        <button class="btn btn-outline-custom" onclick="triggerUpdate('Downloading data...')">Download Data</button>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <span class="settings-label text-danger">Delete Account</span>
+                        <button class="btn btn-outline-danger-custom" onclick="confirmDelete()">Request Deletion</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab fab-left" title="Accessibility">
+        <i class="fa-solid fa-wheelchair"></i>
+    </div>
+    <div class="fab fab-right" title="Chat">
+        <i class="fa-solid fa-comment-dots"></i>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+        <div id="actionToast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage">
+                    Setting updated successfully.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../shared/notifications.js"></script>
+    
+    <!-- Settings Interactions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial active card based on current theme
+            const currentTheme = window.ThemeManager ? window.ThemeManager.getTheme() : 'light';
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+            if (currentTheme === 'dark') {
+                document.getElementById('darkThemeCard').classList.add('active');
+            } else {
+                document.getElementById('lightThemeCard').classList.add('active');
+            }
+        });
+
+        function setTheme(element, theme) {
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            
+            if (window.ThemeManager) {
+                window.ThemeManager.setTheme(theme);
+            }
+            
+            triggerUpdate(`Theme set to ${theme}.`);
+        }
+        
+        function triggerUpdate(msg = 'Setting updated successfully.') {
+            const toastEl = document.getElementById('actionToast');
+            document.getElementById('toastMessage').innerText = msg;
+            const toast = new bootstrap.Toast(toastEl, { delay: 2500 });
+            toast.show();
+        }
+        
+        function openPasswordModal() {
+            triggerUpdate('Redirecting to password update flow...');
+        }
+        
+        function confirmDelete() {
+            if(confirm("Are you sure you want to request account deletion? This action cannot be undone.")) {
+                triggerUpdate('Account deletion request submitted.');
+            }
+        }
+    </script>
+    <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../shared/a11y-core.js"></script>
+    <script src="../shared/chatbot.js"></script>
+
+    <script>
+        // Set the initial dropdown value based on the cookie
+        document.addEventListener('DOMContentLoaded', () => {
+            const match = document.cookie.match(new RegExp('(^| )googtrans=([^;]+)'));
+            if (match) {
+                const lang = match[2].split('/').pop();
+                const select = document.getElementById('appLanguageSelect');
+                if (select) {
+                    select.value = lang === 'ta' ? 'ta' : 'en';
+                }
+            }
+        });
+
+        function changeAppLanguage(lang) {
+            // Setting cookie format: /pageLang/targetLang e.g., /en/ta
+            const cookieValue = lang === 'en' ? '/en/en' : '/en/ta';
+            document.cookie = "googtrans=" + cookieValue + "; path=/;";
+            document.cookie = "googtrans=" + cookieValue + "; path=/; domain=" + window.location.hostname;
+            location.reload();
+        }
+    </script>
+</body>
+</html>

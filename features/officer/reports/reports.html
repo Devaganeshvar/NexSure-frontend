@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Reports</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/officer_v2.css" rel="stylesheet">
+    <!-- Chart.js for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <link href="../../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../../officer/dashboard/dashboard.html">
+                <img src="../../../assets/images/LandingPage/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                <a href="../../admin-dashboard/officer-dashboard.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Officer</a> &rsaquo; Reports &rsaquo; Policy Report
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" placeholder="Search...">
+            
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge rounded-pill bg-danger">3</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="../../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                    <span class="fw-medium small">Kavitha</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                    <li><a class="dropdown-item" href="#"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="officer-layout">
+        
+        <!-- Sidebar -->
+        <aside class="officer-sidebar">
+            <a href="../../officer/dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Customers</div>
+            <a href="#" class="sidebar-link">Customer Management</a>
+            <a href="../../officer/customers/kyc-verification.html" class="sidebar-link">KYC Verification</a>
+            
+            <div class="sidebar-section-title">Policies</div>
+            <a href="../policy-management/search-policy.html" class="sidebar-link">Policy Details</a>
+            <a href="../../officer/policies/applications.html" class="sidebar-link">Policy Applications</a>
+            <div class="sidebar-section-title">Claims</div>
+            <a href="../../officer/claims/claims-processing.html" class="sidebar-link">Claims Processing</a>
+            
+            <div class="sidebar-section-title">More</div>
+            <a href="reports.html" class="sidebar-link active">Reports & Renewals</a>
+            <a href="#" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="officer-content">
+            <h1 class="officer-page-title mb-4">Reports</h1>
+
+            <!-- Big Tab Buttons -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <a href="#" class="btn btn-outline-secondary w-100 py-3 rounded-3 fw-bold bg-white text-dark border-primary" style="border-width: 2px;">
+                        Policy Report
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="#" class="btn btn-outline-secondary w-100 py-3 rounded-3 fw-bold bg-light text-muted border-0 shadow-sm">
+                        Claim Report
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="#" class="btn btn-outline-secondary w-100 py-3 rounded-3 fw-bold bg-light text-muted border-0 shadow-sm">
+                        Dashboard Summary
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chart Card -->
+            <div class="content-card shadow-sm border rounded-4 p-4 mb-4 bg-white">
+                <h5 class="fw-bold mb-4">Policies Issued — Last 30 Days</h5>
+                <div class="chart-container" style="height: 350px;">
+                    <canvas id="policyChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Filters & Actions -->
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="officer-filter-bar mb-0">
+                    <select class="officer-filter-select w-auto">
+                        <option>Date Range</option>
+                    </select>
+                    <select class="officer-filter-select w-auto">
+                        <option>Product</option>
+                    </select>
+                    <select class="officer-filter-select w-auto">
+                        <option>Status</option>
+                    </select>
+                </div>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted small me-2">142 records match current filters</span>
+                    <button class="btn btn-outline-secondary bg-white px-4">TXT</button>
+                    <button class="btn btn-outline-secondary bg-white px-4">CSV</button>
+                    <button class="btn btn-officer-action px-4">Generate</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '../../../features/login/login.html';
+        }
+
+        // Initialize Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('policyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7'],
+                    datasets: [{
+                        label: 'Policies',
+                        data: [60, 90, 80, 140, 110, 130, 70],
+                        backgroundColor: '#1e3a5f',
+                        borderRadius: 4,
+                        barPercentage: 0.8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 150,
+                            ticks: { stepSize: 75 }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Customer KYC Verification</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../assets/css/officer_v2.css" rel="stylesheet">
+    <script src="../../features/shared/auth-guard.js?v=2"></script>
+    
+    
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                <a href="../admin-dashboard/officer-dashboard.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Officer</a> &rsaquo; Customer Management &rsaquo; KYC
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" placeholder="Search...">
+            
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge rounded-pill bg-danger">3</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                    <span class="fw-medium small">Gokul K &blacktriangledown;</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                    <li><a class="dropdown-item" href="../admin-dashboard/officer-profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="officer-layout">
+        
+        <!-- Sidebar -->
+        <aside class="officer-sidebar">
+            <a href="../admin-dashboard/officer-dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">CUSTOMERS</div>
+            <a href="customer-management.html" class="sidebar-link">Customer Management</a>
+            <a href="kyc-verification.html" class="sidebar-link active">KYC Verification</a>
+            
+            <div class="sidebar-section-title">POLICIES</div>
+            <a href="../policy-management/search-policy.html" class="sidebar-link">Policy Details</a>
+            <a href="../reports-and-policies/applications.html" class="sidebar-link">Policy Applications</a>
+            <div class="sidebar-section-title">CLAIMS</div>
+            <a href="../policy-management/claims-processing.html" class="sidebar-link">Claims Processing</a>
+            
+            <div class="sidebar-section-title">MORE</div>
+            <a href="../reports/reports.html" class="sidebar-link">Reports & Renewals</a>
+            <a href="../admin-dashboard/officer-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="officer-content p-5 w-100 bg-white">
+            
+            <h1 class="page-header mb-4">Customer KYC Verification</h1>
+
+            <!-- Tab Pills -->
+            <div class="d-flex mb-4" id="kyc-tabs">
+                <a href="javascript:void(0)" class="btn-pill-tab active" data-filter="Pending">Pending KYC</a>
+                <a href="javascript:void(0)" class="btn-pill-tab" data-filter="Verified">Verified</a>
+                <a href="javascript:void(0)" class="btn-pill-tab" data-filter="Rejected">Rejected</a>
+            </div>
+
+            <!-- Filters -->
+            <div class="d-flex mb-4">
+                <input type="text" class="filter-input" placeholder="Search by name or ID...">
+                <select class="filter-select">
+                    <option>Submitted Date &blacktriangledown;</option>
+                </select>
+            </div>
+
+            <!-- Data Table -->
+            <div class="border rounded shadow-sm bg-white">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">CUSTOMER</th>
+                            <th style="width: 15%;">POLICY</th>
+                            <th style="width: 25%;">DOCS SUBMITTED</th>
+                            <th style="width: 15%;">STATUS</th>
+                            <th style="width: 15%;">SUBMITTED ON</th>
+                            <th style="width: 10%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+
+            
+            </div>
+
+            <!-- Pagination and Counts -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div id="records-count" class="text-muted fs-6 fw-medium">Loading records...</div>
+                <div id="pagination-controls" class="pagination-container mt-0">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../../features/shared/officer-table.js?v=clean"></script>
+    <script src="../../assets/js/officer.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const kycData = JSON.parse(localStorage.getItem('mockKyc') || '[]');
+                
+                // Keep track of active tab filter
+                let activeTab = 'Pending';
+                
+                // Update tabs count dynamically
+                const updateTabCounts = () => {
+                    const tabs = document.querySelectorAll('#kyc-tabs .btn-pill-tab');
+                    tabs.forEach(tab => {
+                        const filterVal = tab.getAttribute('data-filter');
+                        const count = kycData.filter(item => item.status === filterVal).length;
+                        tab.textContent = filterVal === 'Pending' ? `Pending KYC (${count})` : `${filterVal} (${count})`;
+                    });
+                };
+                updateTabCounts();
+                
+                const kycTable = new OfficerTable({
+                    tableBodyId: 'table-body',
+                    paginationContainerId: 'pagination-controls',
+                    searchInputId: 'search-input',
+                    filterSelectIds: ['filter-date'],
+                    itemsPerPage: 6,
+                    data: kycData,
+                    filterLogic: (item) => {
+                        return item.status === activeTab;
+                    },
+                    columns: [
+                        { key: 'name', render: (row) => `<strong>${row.name}</strong>` },
+                        { key: 'policy' },
+                        { key: 'docs' },
+                        { key: 'status', render: (row) => {
+                            const badge = getBadgeClass(row.status);
+                            return `<span class="status-badge ${badge}">${row.status}</span>`;
+                        }},
+                        { key: 'date' },
+                        { key: 'actions', render: (row) => `
+                            <button class="btn btn-sm btn-outline-primary fw-bold px-3" data-bs-toggle="modal" data-bs-target="#actionModal">Review</button>
+                        `}
+                    ]
+                });
+
+                // Setup tab clicks
+                const tabs = document.querySelectorAll('#kyc-tabs .btn-pill-tab');
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        tabs.forEach(t => t.classList.remove('active'));
+                        e.target.classList.add('active');
+                        activeTab = e.target.getAttribute('data-filter');
+                        kycTable.applyFilters();
+                    });
+                });
+                
+            }, 200);
+        });
+    </script>
+
+
+    <!-- Action Modal -->
+    <div class="modal fade" id="actionModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
+                    <h5 class="modal-title fw-bold">Review KYC Document</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-4 py-4">
+                    <p class="text-muted mb-4">Please verify the submitted documents for this customer. Do they meet the required standards?</p>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">COMMENTS (OPTIONAL)</label>
+                        <textarea class="form-control" rows="3" placeholder="Enter reason for rejection or approval notes..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal" onclick="showOfficerToast('KYC Rejected successfully', 'danger')">Reject</button>
+                    <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal" onclick="showOfficerToast('KYC Approved successfully', 'success')">Approve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Reports</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../assets/css/officer_v2.css" rel="stylesheet">
+    <script src="../../features/shared/auth-guard.js?v=2"></script>
+    
+    
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                <a href="../admin-dashboard/officer-dashboard.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Officer</a> &rsaquo; 
+                <a href="reports.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Reports</a> &rsaquo; 
+                <span class="text-white fw-medium">Policy Report</span>
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" placeholder="Search...">
+            
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="nav-icon" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge rounded-pill bg-danger">3</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-0" style="width: 300px;">
+                    <li class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Notifications</span>
+                        <a href="#" class="small text-decoration-none">Mark all as read</a>
+                    </li>
+                    <li><a class="dropdown-item py-3 border-bottom" href="#">
+                        <div class="fw-bold text-dark mb-1">New Claim Submitted</div>
+                        <div class="text-muted small">Claim #CLM-1048 needs your review.</div>
+                    </a></li>
+                    <li><a class="dropdown-item py-3 border-bottom" href="#">
+                        <div class="fw-bold text-dark mb-1">System Update</div>
+                        <div class="text-muted small">Server maintenance at midnight.</div>
+                    </a></li>
+                    <li><a class="dropdown-item py-3" href="#">
+                        <div class="fw-bold text-dark mb-1">KYC Pending</div>
+                        <div class="text-muted small">5 new users waiting for verification.</div>
+                    </a></li>
+                    <li class="p-2 text-center border-top bg-light">
+                        <a href="#" class="small text-decoration-none fw-bold">View All Notifications</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="nav-icon" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 p-0" style="width: 320px;">
+                    <li class="p-3 border-bottom">
+                        <span class="fw-bold">Messages</span>
+                    </li>
+                    <li><a class="dropdown-item py-3 border-bottom" href="#">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="../../assets/images/LandingPage/landing11.png" class="rounded-circle" width="40" height="40">
+                            <div>
+                                <div class="fw-bold text-dark">Ravi Kumar</div>
+                                <div class="text-muted small text-truncate" style="max-width: 200px;">Can you check policy POL-8491?</div>
+                            </div>
+                        </div>
+                    </a></li>
+                    <li><a class="dropdown-item py-3 border-bottom" href="#">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="../../assets/images/LandingPage/landing12.png" class="rounded-circle" width="40" height="40">
+                            <div>
+                                <div class="fw-bold text-dark">Admin Team</div>
+                                <div class="text-muted small text-truncate" style="max-width: 200px;">Monthly reports are ready for download.</div>
+                            </div>
+                        </div>
+                    </a></li>
+                    <li class="p-2 text-center border-top bg-light">
+                        <a href="#" class="small text-decoration-none fw-bold">Open Inbox</a>
+                    </li>
+                </ul>
+            </div>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                    <span class="fw-medium small">Gokul K &blacktriangledown;</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                    <li><a class="dropdown-item" href="../admin-dashboard/officer-profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="officer-layout">
+        
+        <!-- Sidebar -->
+        <aside class="officer-sidebar">
+            <a href="../admin-dashboard/officer-dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">CUSTOMERS</div>
+            <a href="../people-and-audit/customer-management.html" class="sidebar-link">Customer Management</a>
+            <a href="../people-and-audit/kyc-verification.html" class="sidebar-link">KYC Verification</a>
+            
+            <div class="sidebar-section-title">POLICIES</div>
+            <a href="#" class="sidebar-link">Search Policy</a>
+            <a href="../reports-and-policies/applications.html" class="sidebar-link">Policy Applications</a>
+            <a href="#" class="sidebar-link">Generate Quotation</a>
+            
+            <div class="sidebar-section-title">CLAIMS</div>
+            <a href="../policy-management/claims-processing.html" class="sidebar-link">Claims Processing</a>
+            
+            <div class="sidebar-section-title">MORE</div>
+            <a href="reports.html" class="sidebar-link active">Reports & Renewals</a>
+            <a href="../admin-dashboard/officer-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="officer-content p-5 w-100 bg-white">
+            
+            <h1 class="page-header mb-4">Reports</h1>
+
+            <!-- Report Tabs -->
+            <div class="row g-3 mb-5">
+                <div class="col-md-4">
+                    <div class="report-tab-card active" onclick="switchReportTab('Policy Report', this)">
+                        Policy Report
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="report-tab-card" onclick="switchReportTab('Claim Report', this)">
+                        Claim Report
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="report-tab-card" onclick="switchReportTab('Dashboard Summary', this)">
+                        Dashboard Summary
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Card -->
+            <div class="card border rounded-4 shadow-none mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4" id="chart-title">Policies Issued &mdash; Last 30 Days</h5>
+                    
+                    <div class="d-flex align-items-end justify-content-between border border-light p-3 rounded" style="height: 350px; position: relative;">
+                        <!-- Grid lines -->
+                        <div class="position-absolute w-100 border-top" style="top: 20px; left: 0; border-color:#e2e8f0!important;"></div>
+                        <div class="position-absolute w-100 border-top" style="top: 50%; left: 0; border-color:#e2e8f0!important;"></div>
+                        <div class="position-absolute w-100 border-top" style="bottom: 30px; left: 0; border-color:#e2e8f0!important;"></div>
+                        
+                        <!-- Y axis labels -->
+                        <div class="position-absolute text-muted" id="y-axis-max" style="top: 10px; left: 10px; font-size: 0.65rem;">150</div>
+                        <div class="position-absolute text-muted" id="y-axis-mid" style="top: calc(50% - 10px); left: 10px; font-size: 0.65rem;">75</div>
+                        <div class="position-absolute text-muted" style="bottom: 35px; left: 10px; font-size: 0.65rem;">0</div>
+
+                        <!-- Bars -->
+                        <div id="chart-bars-container" class="d-flex justify-content-between align-items-end w-100 h-100 pb-4" style="margin-left: 30px;">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Controls -->
+            <div class="d-flex mb-5 gap-3">
+                <select class="filter-select">
+                    <option>Date Range &blacktriangledown;</option>
+                </select>
+                <select class="filter-select">
+                    <option>Product &blacktriangledown;</option>
+                </select>
+                <select class="filter-select">
+                    <option>Status &blacktriangledown;</option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-5 pt-3">
+                <div class="text-muted fs-5">
+                    142 records match current filters
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-custom" onclick="downloadReport('pdf')">PDF</button>
+                    <button class="btn btn-outline-custom" onclick="downloadReport('excel')">Excel</button>
+                    <button class="btn btn-outline-custom" onclick="downloadReport('csv')">CSV</button>
+                    <button class="btn btn-action-primary px-4" onclick="showOfficerToast('Report Generated Successfully', 'success')">Generate</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+
+    <!-- Report Download Logic -->
+    <script>
+        const reportData = {
+            'Policy Report': {
+                title: 'Policies Issued — Last 30 Days',
+                max: 150,
+                data: [60, 90, 80, 140, 110, 130, 70]
+            },
+            'Claim Report': {
+                title: 'Claims Processed — Last 30 Days',
+                max: 100,
+                data: [20, 45, 30, 85, 60, 40, 50]
+            },
+            'Dashboard Summary': {
+                title: 'Overall Revenue ($k) — Last 30 Days',
+                max: 300,
+                data: [120, 150, 200, 180, 250, 280, 220]
+            }
+        };
+
+        function switchReportTab(tabName, element) {
+            document.querySelectorAll('.report-tab-card').forEach(e => e.classList.remove('active'));
+            if(element) element.classList.add('active');
+            
+            const info = reportData[tabName];
+            if(!info) return;
+
+            document.getElementById('chart-title').textContent = info.title;
+            document.getElementById('y-axis-max').textContent = info.max;
+            document.getElementById('y-axis-mid').textContent = Math.round(info.max / 2);
+
+            const container = document.getElementById('chart-bars-container');
+            container.innerHTML = '';
+            
+            // The chart height is roughly 240px max for the bar
+            const maxBarHeight = 240;
+
+            info.data.forEach((val, index) => {
+                const heightPx = Math.max((val / info.max) * maxBarHeight, 5); // Ensure min height
+                const html = `
+                    <div class="text-center z-1 w-100 px-3 d-flex flex-column justify-content-end" style="height: 100%;">
+                        <div class="fw-bold text-dark mb-2" style="font-size: 0.8rem;">${val}</div>
+                        <div class="mx-auto rounded-top" style="
+                            width: 100%; 
+                            max-width: 65px;
+                            height: ${heightPx}px; 
+                            background: linear-gradient(180deg, var(--officer-primary) 0%, rgba(24,144,255,0.7) 100%); 
+                            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2);
+                        "></div>
+                        <div class="mt-3 text-muted fw-medium small" style="font-size: 0.75rem;">Week ${index + 1}</div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        // Initialize first tab
+        document.addEventListener('DOMContentLoaded', () => {
+            switchReportTab('Policy Report', null);
+        });
+
+        function downloadReport(type) {
+            let filename = 'Officer_Report';
+            let content = '';
+            let mimeType = '';
+
+            if (type === 'csv') {
+                filename += '.csv';
+                mimeType = 'text/csv;charset=utf-8;';
+                content = "Policy ID,Policy Name,Status,Premium\nPOL-8491,Comprehensive Auto,Active,$1200\nPOL-2234,Basic Health,Pending,$800\n";
+            } else if (type === 'excel') {
+                filename += '.xlsx';
+                // Mock excel using csv format as fallback for demo
+                mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                content = "Policy ID,Policy Name,Status,Premium\nPOL-8491,Comprehensive Auto,Active,$1200\nPOL-2234,Basic Health,Pending,$800\n";
+            } else if (type === 'pdf') {
+                filename += '.pdf';
+                mimeType = 'application/pdf';
+                // A very basic mock string representing binary PDF data
+                content = "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n";
+            }
+
+            const blob = new Blob([content], { type: mimeType });
+            const link = document.createElement("a");
+            
+            // Create a blob url
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            if (typeof showOfficerToast === 'function') {
+                showOfficerToast(type.toUpperCase() + ' download started', 'success');
+            }
+        }
+    </script>
+
+</body>
+</html>

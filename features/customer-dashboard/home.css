@@ -1,0 +1,106 @@
+/* ================================================================
+   NexSure Customer Dashboard — home.css
+   Dashboard-specific overrides on top of landing-page.css
+   ================================================================ */
+
+/* ── Base body override ── */
+body {
+  background-color: #f4f7fb !important;
+}
+
+/* ── Dashboard Hero (dark section with user greeting) ── */
+.dashboard-hero {
+  background-color: #16213e;
+  color: #fff;
+  padding-bottom: 3rem;
+}
+.dashboard-hero .hero-bg-circle {
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, rgba(22,33,62,0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* ── KPI grid in hero (2-col on desktop) ── */
+.kpi-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ── Policy cards ── */
+.policy-card {
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.policy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+}
+
+/* ── Quick-action cards ── */
+.quick-action-card {
+  border-radius: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.quick-action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+}
+.quick-action-card .icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+.quick-action-card:hover .icon-circle {
+  transform: scale(1.1);
+}
+
+/* ── List group items ── */
+.list-group-item {
+  border-color: rgba(0,0,0,0.05);
+  transition: background-color 0.2s ease;
+}
+.list-group-item:hover {
+  background-color: #f8fafc;
+}
+
+/* ── Claim tracker ── */
+.claim-tracker { padding: 0 10px; }
+.claim-tracker .step { width: 25%; }
+.claim-tracker .tracker-line { background-color: #e2e8f0 !important; }
+
+/* ── Utility ── */
+.bg-dark-blue { background-color: #1b2845 !important; }
+.font-playfair { font-family: 'Playfair Display', serif; }
+.max-w-75 { max-width: 75%; }
+
+.btn-dark-blue {
+  background-color: #1b2845;
+  color: #fff;
+  border: none;
+}
+.btn-dark-blue:hover {
+  background-color: #243360;
+  color: #fff;
+}
+
+/* ── Fade-in animation (for observer) ── */
+.fade-in-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

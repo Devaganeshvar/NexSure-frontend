@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Help Center</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                Admin &rsaquo; Help Center
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." onkeypress="handleGlobalSearch(event)">
+            <a href="javascript:void(0)" class="nav-icon" onclick="showAdminToast('No new messages', 'info')">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="fw-medium small">Admin User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Manage</div>
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link">Officers</a>
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link">Claims & Refunds</a>
+            <a href="../../features/content-management/content.html" class="sidebar-link">Content Management</a>
+            
+            <div class="sidebar-section-title">Operations</div>
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link">Reports & Audit</a>
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link">System Settings</a>
+            <a href="../../features/system/backup.html" class="sidebar-link">Backup & Recovery</a>
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link active">Help Center</a>
+            
+            <div class="sidebar-section-title">Account</div>
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="admin-page-title mb-0">Help Center Administration</h1>
+                <div class="d-flex gap-3">
+                    <button class="btn-admin-primary">+ New Support Ticket</button>
+                </div>
+            </div>
+            
+            <div class="admin-tabs">
+                <a href="#" class="admin-tab active" onclick="switchTab(this, 'Tickets')">Support Tickets (4 Open)</a>
+                <a href="#" class="admin-tab" onclick="switchTab(this, 'Knowledge Base')">Knowledge Base</a>
+                <a href="#" class="admin-tab" onclick="switchTab(this, 'Contact')">Contact Directory</a>
+            </div>
+
+            <div class="bg-white p-4" id="contentArea">
+                <div class="admin-filter-bar">
+                    <select class="admin-filter-select" id="statusFilter" onchange="renderTable()">
+                        <option value="All">Status: All</option>
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                    <select class="admin-filter-select" id="priorityFilter" onchange="renderTable()">
+                        <option value="All">Priority: All</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                    <input type="text" class="admin-filter-search" id="searchFilter" placeholder="Search by ID or Subject..." style="width: 300px;" onkeyup="renderTable()">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Subject</th>
+                                <th>Raised By</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ticketTable">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="admin-pagination" id="paginationControls">
+                    <!-- JS Populated -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        const tickets = [
+            { id: 'TKT-8842', subject: 'API Gateway Timeout Error', author: 'IT Dept', priority: 'High', status: 'Open', date: '2 hours ago' },
+            { id: 'TKT-8841', subject: 'Unable to process bulk import', author: 'Solai', priority: 'Medium', status: 'In Progress', date: '5 hours ago' },
+            { id: 'TKT-8839', subject: 'Customer KYC portal down', author: 'Kavitha (Officer)', priority: 'High', status: 'Open', date: 'Yesterday' },
+            { id: 'TKT-8830', subject: 'Update policy document template', author: 'Legal Dept', priority: 'Low', status: 'Resolved', date: '12 Jun 2026' },
+            { id: 'TKT-8821', subject: 'Server storage alert (90%)', author: 'System', priority: 'High', status: 'Resolved', date: '10 Jun 2026' },
+            { id: 'TKT-8815', subject: 'New admin account setup', author: 'HR Dept', priority: 'Medium', status: 'Resolved', date: '08 Jun 2026' },
+            { id: 'TKT-8802', subject: 'Requesting access to Audit Logs', author: 'Gokul K', priority: 'Low', status: 'Open', date: '01 Jun 2026' }
+        ];
+
+        let currentPage = 1;
+        const rowsPerPage = 5;
+
+        function switchTab(el, tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            
+            if(tab !== 'Tickets') {
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-person-digging text-muted mb-3" style="font-size: 3rem;"></i>
+                        <h4 class="text-dark fw-bold mb-2">${tab} Module</h4>
+                        <p class="text-muted">This module is currently under construction. Please refer to the Support Tickets tab for the demo.</p>
+                    </div>
+                `;
+            } else {
+                window.location.reload();
+            }
+        }
+
+        function renderTable() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+            
+            let filtered = tickets.filter(t => {
+                const matchStatus = statusFilter === 'All' || t.status === statusFilter;
+                const matchPriority = priorityFilter === 'All' || t.priority === priorityFilter;
+                const matchSearch = t.subject.toLowerCase().includes(searchFilter) || t.id.toLowerCase().includes(searchFilter);
+                return matchStatus && matchPriority && matchSearch;
+            });
+
+            const totalPages = Math.ceil(filtered.length / rowsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginated = filtered.slice(start, end);
+
+            const tbody = document.getElementById('ticketTable');
+            tbody.innerHTML = '';
+
+            if (paginated.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No tickets found.</td></tr>`;
+            } else {
+                paginated.forEach(t => {
+                    let statusClass = 'status-warning';
+                    if (t.status === 'Resolved') statusClass = 'status-success';
+                    if (t.status === 'In Progress') statusClass = 'status-info';
+                    
+                    let prioClass = 'text-success';
+                    if (t.priority === 'High') prioClass = 'text-danger fw-bold';
+                    if (t.priority === 'Medium') prioClass = 'text-warning fw-bold';
+
+                    let actionHtml = t.status === 'Resolved' 
+                        ? `<a href="#" class="text-primary text-decoration-none" onclick="showAdminToast('Viewing ticket...')">[View]</a>`
+                        : `<a href="#" class="text-primary text-decoration-none" onclick="showAdminToast('Opening reply window...')">[Reply]</a>
+                           <a href="#" class="text-success text-decoration-none ms-2" onclick="resolveTicket('${t.id}')">[Resolve]</a>`;
+                           
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="text-dark fw-medium">${t.id}</td>
+                            <td class="text-dark">${t.subject}</td>
+                            <td class="text-muted">${t.author}</td>
+                            <td class="${prioClass}">${t.priority}</td>
+                            <td><span class="status-badge ${statusClass}">${t.status}</span></td>
+                            <td class="text-muted">${t.date}</td>
+                            <td>${actionHtml}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            renderPagination(totalPages);
+        }
+
+        function resolveTicket(id) {
+            const t = tickets.find(x => x.id === id);
+            if (t) {
+                t.status = 'Resolved';
+                showAdminToast(`Ticket ${id} marked as resolved!`, 'success');
+                renderTable();
+            }
+        }
+
+        function renderPagination(totalPages) {
+            const controls = document.getElementById('paginationControls');
+            let html = `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage - 1})">&lsaquo;</a>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<a href="javascript:void(0)" class="admin-page-link ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
+            }
+            html += `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage + 1}, ${totalPages})">&rsaquo;</a>`;
+            controls.innerHTML = html;
+        }
+
+        function changePage(page, maxPage = null) {
+            if (page < 1 || (maxPage && page > maxPage)) return;
+            currentPage = page;
+            renderTable();
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '/features/auth/login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', renderTable);
+    </script>
+</body>
+</html>

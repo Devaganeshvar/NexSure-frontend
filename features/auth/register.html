@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Register</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom CSS (Shared Auth & Page Specific) -->
+    <link href="../shared/auth.css" rel="stylesheet">
+    <link href="register.css" rel="stylesheet">
+        <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="auth-layout container-fluid p-0 h-100">
+        <div class="row g-0 h-100">
+            <!-- Left Side Branding Panel -->
+            <!-- Note: Using inline style to override background image for this specific page -->
+            <div class="col-lg-5 d-none d-lg-flex flex-column justify-content-between branding-panel position-relative" style="background-image: url('../../assets/images/Register.png');">
+                <!-- Overlay for dark blue tint -->
+                <div class="branding-overlay position-absolute w-100 h-100"></div>
+                
+                <div class="branding-content position-relative z-1 p-5 d-flex flex-column h-100">
+                    <!-- Logo Area -->
+                    <div class="logo-container mb-auto">
+                        <div class="logo d-inline-block">
+                            <img src="../../assets/images/Logo.png" alt="Nexsure Logo" height="55">
+                        </div>
+                    </div>
+                    
+                    <!-- Main Text Area -->
+                    <div class="main-text-area my-auto">
+                        <h1 class="display-3 fw-bold text-white mb-4 italic-serif">Join Us & Secure<br>Your Future!</h1>
+                        <p class="fs-5 text-light opacity-75 pe-5">
+                            Create your account to manage policies, track claims,<br>pay premiums, and enjoy seamless insurance services.
+                        </p>
+                    </div>
+
+                    <!-- Footer Stats -->
+                    <div class="stats-footer mt-auto d-flex gap-4 text-white">
+                        <div class="stat-item d-flex align-items-center">
+                            <span class="status-dot bg-success rounded-circle me-2"></span> Instant policy issuance
+                        </div>
+                        <div class="stat-item d-flex align-items-center">
+                            <span class="status-dot bg-success rounded-circle me-2"></span> Free KYC assistance
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Register Panel -->
+            <div class="col-12 col-lg-7 d-flex align-items-center justify-content-center bg-white auth-panel overflow-y-auto">
+                <div class="auth-form-container w-100 py-4 my-auto">
+                    <div class="text-center mb-4">
+                        <div class="shield-icon mb-2 mx-auto">
+                            <svg width="56" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#f8fafc" stroke="#1e293b" stroke-width="1"/>
+                                <circle cx="12" cy="10" r="2.5" fill="#1c385c" stroke="none"/>
+                                <path d="M7 16.5c0-1.5 2-3.5 5-3.5s5 2 5 3.5" fill="#1c385c" stroke="none"/>
+                            </svg>
+                        </div>
+                        <p class="fw-semibold text-dark mb-4">NexSure</p>
+                        <h2 class="fw-bold mb-2">Join Us & Secure Your Future!</h2>
+                        <p class="text-muted fs-6 px-4 mb-4">Create your account to manage policies, track claims, pay premiums, and enjoy seamless insurance services.</p>
+                    </div>
+
+                    <form id="registerForm">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="username" class="form-label fw-semibold text-dark fs-7">Username</label>
+                                <div class="input-group custom-input-group">
+                                    <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                                    <span class="input-group-text bg-transparent border-start-0">
+                                        <i class="fa-solid fa-user text-muted"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label fw-semibold text-dark fs-7">Phone Number</label>
+                                <div class="input-group custom-input-group">
+                                    <input type="tel" class="form-control" id="phone" placeholder="+91 98765 43210" required>
+                                    <span class="input-group-text bg-transparent border-start-0">
+                                        <i class="fa-solid fa-phone text-muted" style="transform: scaleX(-1);"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-semibold text-dark fs-7">Email</label>
+                                <div class="input-group custom-input-group">
+                                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                    <span class="input-group-text bg-transparent border-start-0">
+                                        <i class="fa-solid fa-envelope text-muted"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="otp" class="form-label fw-semibold text-dark fs-7">Enter OTP</label>
+                                <div class="d-flex" style="gap: 1rem;">
+                                    <div class="custom-input-group w-100">
+                                        <input type="text" class="form-control shadow-none" id="otp" placeholder="Enter phone OTP" required>
+                                    </div>
+                                    <button type="button" class="btn btn-primary-auth fw-semibold text-nowrap shadow-none m-0" id="sendOtpBtn" style="min-width: 110px;">Send OTP</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="password" class="form-label fw-semibold text-dark fs-7">Password</label>
+                                <div class="input-group custom-input-group">
+                                    <input type="password" class="form-control border-end-0" id="password" placeholder="Create password" required>
+                                    <span class="input-group-text bg-transparent border-start-0 cursor-pointer toggle-password" data-target="password">
+                                        <i class="fa-solid fa-eye-slash text-muted"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="confirmPassword" class="form-label fw-semibold text-dark fs-7">Confirm Password</label>
+                                <div class="input-group custom-input-group">
+                                    <input type="password" class="form-control border-end-0" id="confirmPassword" placeholder="Confirm password" required>
+                                    <span class="input-group-text bg-transparent border-start-0 cursor-pointer toggle-password" data-target="confirmPassword">
+                                        <i class="fa-solid fa-eye-slash text-muted"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Password Strength -->
+                        <div class="mb-4">
+                            <div class="progress" style="height: 4px; background-color: #e2e8f0; border-radius: 2px;">
+                                <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%; border-radius: 2px; transition: width 0.3s ease, background-color 0.3s ease;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="mt-2">
+                                <span id="passwordStrengthText" class="fw-semibold" style="font-size: 0.85rem; color: #94a3b8;">Enter password</span>
+                            </div>
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-primary-auth w-100 py-2 fw-semibold fs-6 mb-4 btn-register">Register Now</button>
+
+                        <div class="text-center">
+                            <span class="text-dark fw-semibold">Already have an account?</span> 
+                            <a href="../auth/login.html" class="text-decoration-none fw-semibold link-primary ms-1">Sign in</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom-0 pb-2 pt-4 px-4 align-items-start">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="fs-1">&#128220;</div>
+                        <div>
+                            <h4 class="modal-title fw-bold text-dark mb-1" id="privacyModalLabel">Terms & Conditions</h4>
+                            <p class="mb-0 text-muted small fw-medium">NexSure Insurance Policy Management Platform</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="px-4">
+                    <div class="d-flex justify-content-between align-items-center bg-light rounded-3 px-4 py-2 mt-2 mb-3 text-muted small fw-medium">
+                        <div><i class="fa-regular fa-calendar-alt text-danger me-2"></i> Effective: 01 Jan 2026</div>
+                        <div><i class="fa-solid fa-code-branch text-danger me-2"></i> Version: v8</div>
+                        <div><i class="fa-regular fa-clock text-secondary me-2"></i> Reading time: ~6 min</div>
+                    </div>
+                </div>
+
+                <div class="modal-body px-4 py-2" id="modalScrollBody">
+                    
+                    <!-- Jump to section -->
+                    <div class="bg-light rounded-3 p-3 mb-4 border border-light">
+                        <div class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">JUMP TO SECTION</div>
+                        <div class="row g-2">
+                            <div class="col-6"><a href="#policy-1" class="text-decoration-none fw-bold small text-primary">1. General Policy</a></div>
+                            <div class="col-6"><a href="#policy-2" class="text-decoration-none fw-bold small text-primary">2. Issuance Policy</a></div>
+                            <div class="col-6"><a href="#policy-3" class="text-decoration-none fw-bold small text-primary">3. Cancellation Policy</a></div>
+                            <div class="col-6"><a href="#policy-4" class="text-decoration-none fw-bold small text-primary">4. Payment Policy</a></div>
+                            <div class="col-6"><a href="#policy-5" class="text-decoration-none fw-bold small text-primary">5. Refund Policy</a></div>
+                            <div class="col-6"><a href="#policy-6" class="text-decoration-none fw-bold small text-primary">6. Claims Policy</a></div>
+                            <div class="col-6"><a href="#policy-7" class="text-decoration-none fw-bold small text-primary">7. Renewal Policy</a></div>
+                        </div>
+                    </div>
+
+                    <div id="dynamicPrivacyContent" style="color: #475569; font-size: 0.85rem; line-height: 1.6;">
+                        <!-- Content loaded via JS -->
+                    </div>
+                </div>
+
+                <div class="modal-footer flex-column border-top-0 px-4 pb-4 pt-2">
+                    <!-- Progress bar -->
+                    <div class="w-100 d-flex align-items-center gap-3 mb-3">
+                        <span class="text-muted small" style="font-size: 0.75rem;">Scroll to read full document</span>
+                        <div class="progress flex-grow-1" style="height: 4px;">
+                            <div class="progress-bar bg-primary" id="modalProgressBar" role="progressbar" style="width: 0%;"></div>
+                        </div>
+                        <span class="fw-bold text-dark small" id="modalProgressText" style="font-size: 0.75rem; min-width: 30px;">0%</span>
+                    </div>
+                    
+                    <!-- Checkbox -->
+                    <div class="w-100 bg-light p-3 rounded-3 mb-3 d-flex align-items-start gap-3 border border-light">
+                        <input class="form-check-input mt-1" type="checkbox" id="acceptTermsCheckbox" style="transform: scale(1.2);">
+                        <label class="form-check-label fw-bold text-dark small" for="acceptTermsCheckbox">
+                            I have read and understood the Terms & Conditions in full, and I agree to be legally bound by them.
+                        </label>
+                    </div>
+
+                    <div class="d-flex w-100 gap-3">
+                        <button type="button" class="btn btn-outline-secondary w-50 py-2 fw-bold" data-bs-dismiss="modal">Decline</button>
+                        <button type="button" class="btn btn-dark w-50 py-2 fw-bold" id="btnAcceptPolicy" disabled>Accept & Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="register.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

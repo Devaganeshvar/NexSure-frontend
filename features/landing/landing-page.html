@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Insurance Policy Management, Simplified</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom CSS -->
+    <link href="landing-page.css?v=8" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <script src="../shared/auth-guard.js"></script>
+    <link rel="stylesheet" href="../../features/shared/theme-overrides.css">
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg py-1 sticky-top">
+        <div class="container-fluid px-4 px-xl-5">
+            <a class="navbar-brand text-white fw-bold d-flex align-items-center" href="../landing/landing-page.html">
+                        <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link active" href="../landing/landing-page.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../help-center/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../plan-listings/plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../help-center/contact.html">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="../help-center/help.html" class="nav-link text-white opacity-75 text-decoration-none fw-medium me-2">Help</a>
+                    <a href="../auth/login.html" class="btn btn-outline-light">Sign In</a>
+                    <a href="../auth/register.html" class="btn btn-green">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg-circle"></div>
+        <div class="container position-relative z-1">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="hero-badge">
+                        <span class="dot"></span> <span id="hero-badge-text">All-in-one Platform</span>
+                    </div>
+                    <h1 id="hero-title">Insurance Policy<br>Management,<br><span class="text-green">Simplified</span></h1>
+                    <p id="hero-subtitle">From life to motor, health to property — generate quotes, manage policies, file claims and track renewals, all within one secure place built around what matters to you.</p>
+                    
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="../plan-listings/plans.html" class="btn btn-green d-flex align-items-center">Explore Plans <i class="fa-solid fa-arrow-right ms-2"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light d-flex align-items-center"><i class="fa-solid fa-play me-2"></i> Watch How it Works</a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="hero-collage">
+                        <div class="hero-img-box main">
+                            <img id="hero-img-main" src="../../assets/images/LandingPage/landing1.png" alt="Personal Assistance">
+                            <div class="collage-label">
+                                <strong>Personal Assistance</strong>
+                                For all, secured
+                            </div>
+                        </div>
+                        <div class="hero-img-box split">
+                            <div class="split-img-box">
+                                <img id="hero-img-split-1" src="../../assets/images/LandingPage/landing2.png" alt="Wealth & Pension">
+                                <div class="collage-label">
+                                    <strong>Wealth & Pension &middot; For better tomorrow</strong>
+                                </div>
+                            </div>
+                            <div class="split-img-box">
+                                <img id="hero-img-split-2" src="../../assets/images/LandingPage/landing3.png" alt="Safe Motor">
+                                <div class="collage-label">
+                                    <strong>Safe Motor &middot; On every road</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dark Stats Strip -->
+    <section class="stats-strip dark">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <div class="stat-number" id="stat-0-val">50,000+</div>
+                    <div class="stat-label" id="stat-0-label">Policies Issued</div>
+                </div>
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <div class="stat-number" id="stat-1-val">1,20,000+</div>
+                    <div class="stat-label" id="stat-1-label">Claims Settled</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-number" id="stat-2-val">800+</div>
+                    <div class="stat-label" id="stat-2-label">Verified Officers</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-number" id="stat-3-val">98%</div>
+                    <div class="stat-label" id="stat-3-label">Customer Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Insurance Plans -->
+    <section class="section-padding bg-white">
+        <div class="container">
+            <div class="row align-items-end mb-5">
+                <div class="col-lg-8">
+                    <div class="section-subtitle" id="plans-subtitle">OUR INSURANCE PLANS</div>
+                    <h2 class="section-title" id="plans-title">Protection for every stage of life</h2>
+                    <p class="text-muted" id="plans-desc">Whatever stage of life you're protecting — starting a family, buying your first car, or safeguarding your home  there's a plan built for you, backed by verified officers and transparent terms.</p>
+                    
+                    <div class="plan-filters">
+                        <button class="filter-btn active" data-filter="all">Popular</button>
+                        <button class="filter-btn" data-filter="Life">Life</button>
+                        <button class="filter-btn" data-filter="Motor">Motor</button>
+                        <button class="filter-btn" data-filter="Health">Health</button>
+                        <button class="filter-btn" data-filter="Property">Property</button>
+                        <button class="filter-btn" data-filter="Travel">Travel</button>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <a href="../plan-listings/plans.html" class="text-dark fw-semibold text-decoration-none">Explore All <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+
+            <div class="position-relative swiper-container-wrapper" style="padding: 0 40px;">
+                <!-- Navigation arrows -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+
+                <div class="swiper plans-swiper">
+                    <div class="swiper-wrapper" id="insurance-cards-container">
+                        <!-- Plan 1 -->
+                        <div class="swiper-slide" data-category="Life">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Life</span>
+                            <img src="../../assets/images/LandingPage/landing4.png" class="card-img-top" alt="Life Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Life Insurance</h3>
+                            <div class="price">Starting <span>&#8377;4,999</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Comprehensive life cover</li>
+                                <li><i class="fa-solid fa-check"></i> Nominee protection guarantee</li>
+                                <li><i class="fa-solid fa-check"></i> Critical illness add-on</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                        </div>
+                        
+                        <!-- Plan 2 -->
+                        <div class="swiper-slide" data-category="Health">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Health</span>
+                            <img src="../../assets/images/LandingPage/landing5.png" class="card-img-top" alt="Health Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Health Insurance</h3>
+                            <div class="price">Starting <span>&#8377;6,500</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Cashless hospitalization</li>
+                                <li><i class="fa-solid fa-check"></i> 500+ network hospitals</li>
+                                <li><i class="fa-solid fa-check"></i> Free annual checkup</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                        </div>
+
+                        <!-- Plan 3 -->
+                        <div class="swiper-slide" data-category="Motor">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Motor</span>
+                            <img src="../../assets/images/LandingPage/landing6.png" class="card-img-top" alt="Motor Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Motor Insurance</h3>
+                            <div class="price">Starting <span>&#8377;2,200</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Third-party + own damage</li>
+                                <li><i class="fa-solid fa-check"></i> Zero depreciation cover</li>
+                                <li><i class="fa-solid fa-check"></i> 24x7 roadside assistance</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                        </div>
+
+                        <!-- Plan 4 -->
+                        <div class="swiper-slide" data-category="Property">
+                    <div class="plan-card">
+                        <div class="card-img-wrapper">
+                            <span class="card-badge">Property</span>
+                            <img src="../../assets/images/LandingPage/landing7.png" class="card-img-top" alt="Property Insurance">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Property Insurance</h3>
+                            <div class="price">Starting <span>&#8377;1,800</span><small>/yr</small></div>
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Home structure cover</li>
+                                <li><i class="fa-solid fa-check"></i> Burglary & flood protection</li>
+                                <li><i class="fa-solid fa-check"></i> Contents coverage</li>
+                            </ul>
+                            <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                        </div>
+                    </div>
+                        </div>
+
+                        <!-- Plan 5: Travel -->
+                        <div class="swiper-slide" data-category="Travel">
+                            <div class="plan-card">
+                                <div class="card-img-wrapper">
+                                    <span class="card-badge">Travel</span>
+                                    <img src="../../assets/images/LandingPage/landing8.png" class="card-img-top" alt="Travel Insurance">
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title">Travel Insurance</h3>
+                                    <div class="price">Starting <span>&#8377;1,500</span><small>/yr</small></div>
+                                    <ul class="feature-list">
+                                        <li><i class="fa-solid fa-check"></i> Global medical cover</li>
+                                        <li><i class="fa-solid fa-check"></i> Flight delay & cancellation</li>
+                                        <li><i class="fa-solid fa-check"></i> Loss of baggage protection</li>
+                                    </ul>
+                                    <a href="../policyholder-details/wizard.html" class="btn btn-dark-blue w-100 text-center">Get Quote</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> <!-- End swiper-wrapper -->
+                </div> <!-- End swiper container -->
+            </div> <!-- End relative wrapper -->
+        </div>
+    </section>
+
+    <!-- Light Stats Strip -->
+    <section class="stats-strip light">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <div class="stat-number text-dark">50,000<span class="text-green">+</span></div>
+                    <div class="stat-label">Policies Issued</div>
+                </div>
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <div class="stat-number text-dark">1,20,000<span class="text-green">+</span></div>
+                    <div class="stat-label">Claims Settled</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-number text-dark">98<span class="text-green">%</span></div>
+                    <div class="stat-label">Customer Satisfaction</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-number text-dark">800<span class="text-green">+</span></div>
+                    <div class="stat-label">Verified Officers</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="row align-items-end mb-5">
+                <div class="col-lg-8">
+                    <div class="section-subtitle">OUR SUCCESS STORIES</div>
+                    <h2 class="section-title">Every policy tells a story of protection</h2>
+                    <p class="text-muted">Here are some of the moments we've helped safeguard, backed by the dedication of our support officers.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <a href="javascript:void(0)" class="text-dark fw-semibold text-decoration-none">View More Stories <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="story-card-wrapper">
+                        <div class="story-card">
+                            <div class="img-wrapper">
+                                <img id="story-img-0" src="../../assets/images/LandingPage/landing8.png" alt="Rahul & Family">
+                                <div class="story-overlay">
+                                    <h4>Rahul & Family</h4>
+                                    <p>Salem — Life Insurance Claim Settled</p>
+                                </div>
+                            </div>
+                            <div class="story-preview-container">
+                                <div class="story-preview-content">
+                                    <p class="mb-0">"When the unexpected happened, the last thing we wanted to worry about was paperwork. The NexSure team stepped in immediately, handling our life insurance claim with such empathy and speed. The entire process was transparent, and the funds were released without any hassle."</p>
+                                    <div class="fade-out-overlay"></div>
+                                </div>
+                            </div>
+                            <div class="read-more-wrapper">
+                                <button class="read-more-btn">Read More <i class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="story-card-wrapper">
+                        <div class="story-card">
+                            <div class="img-wrapper">
+                                <img id="story-img-1" src="../../assets/images/LandingPage/landing9.png" alt="Priya M.">
+                                <div class="story-overlay">
+                                    <h4>Priya M.</h4>
+                                    <p>Chennai — Motor Accident Claim</p>
+                                </div>
+                            </div>
+                            <div class="story-preview-container">
+                                <div class="story-preview-content">
+                                    <p class="mb-0">"After my car accident, I was overwhelmed. A single call to NexSure's 24x7 support changed everything. They dispatched roadside assistance within 30 minutes, towed my car to a network garage, and approved the repair estimate the very next morning. I didn't have to pay out of pocket."</p>
+                                    <div class="fade-out-overlay"></div>
+                                </div>
+                            </div>
+                            <div class="read-more-wrapper">
+                                <button class="read-more-btn">Read More <i class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="story-card-wrapper">
+                        <div class="story-card">
+                            <div class="img-wrapper">
+                                <img id="story-img-2" src="../../assets/images/LandingPage/landing10.png" alt="Arjun K.">
+                                <div class="story-overlay">
+                                    <h4>Arjun K.</h4>
+                                    <p>Coimbatore — Health Insurance Renewal</p>
+                                </div>
+                            </div>
+                            <div class="story-preview-container">
+                                <div class="story-preview-content">
+                                    <p class="mb-0">"As a doctor myself, I know how complex medical bills can be. NexSure's health insurance is a breath of fresh air. When I had to upgrade my family's cover, their verified officer walked me through every detail, explaining the no-claim bonuses and top-up options perfectly."</p>
+                                    <div class="fade-out-overlay"></div>
+                                </div>
+                            </div>
+                            <div class="read-more-wrapper">
+                                <button class="read-more-btn">Read More <i class="fa-solid fa-chevron-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet Our Officers -->
+    <section class="officers-section section-padding">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="section-subtitle">MEET OUR OFFICERS</div>
+                <h2 class="section-title text-white">The team behind every claim settled</h2>
+                <p class="text-light opacity-75">Our verified officers bring expertise, empathy, and speed to every policy they handle.</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="officer-card">
+                        <img id="officer-img-0" src="../../assets/images/LandingPage/landing11.png" alt="Gokul K" class="officer-img profile-sync-img">
+                        <h5>Gokul K</h5>
+                        <p>Insurance Officer</p>
+                        <div class="social-links">
+                            <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="javascript:void(0)"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="officer-card">
+                        <img id="officer-img-1" src="../../assets/images/LandingPage/landing12.png" alt="Hephzibha A" class="officer-img">
+                        <h5>Hephzibha A</h5>
+                        <p>Claims Officer</p>
+                        <div class="social-links">
+                            <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="javascript:void(0)"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="officer-card">
+                        <img id="officer-img-2" src="../../assets/images/LandingPage/landing13.png" alt="Solai" class="officer-img">
+                        <h5>Solai</h5>
+                        <p>Branch Manager</p>
+                        <div class="social-links">
+                            <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="javascript:void(0)"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="officer-card">
+                        <img id="officer-img-3" src="../../assets/images/LandingPage/landing14.png" alt="Abishek S" class="officer-img">
+                        <h5>Abishek S</h5>
+                        <p>Customer Relations</p>
+                        <div class="social-links">
+                            <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="javascript:void(0)"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="section-subtitle text-muted" id="testimonials-subtitle">TESTIMONIALS</div>
+                <h2 class="section-title" id="testimonials-title">What our customers say</h2>
+            </div>
+            
+            <div class="swiper testimonials-swiper">
+                <div class="swiper-wrapper" id="testimonials-wrapper">
+                    <!-- Testimonial 1 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-box">
+                                <img id="testimonial-img-0" src="../../assets/images/LandingPage/landing15.png" alt="Rahul & Priya" class="testimonial-img">
+                                <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+                                <p class="quote-text">Filing our claim after the accident felt completely effortless. The officer kept us updated at every stage, and the settlement landed faster than we expected. It gave us real peace of mind.</p>
+                                <div class="author-name">Rahul & Priya</div>
+                                <div class="author-location">Salem, Tamil Nadu</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-box">
+                                <img id="testimonial-img-1" src="../../assets/images/LandingPage/landing11.png" alt="Anita S." class="testimonial-img profile-sync-img">
+                                <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+                                <p class="quote-text">I've had health insurance with other providers before, but NexSure is by far the most transparent. Upgrading my family's cover was a breeze, and their customer support is truly 24x7.</p>
+                                <div class="author-name">Anita S.</div>
+                                <div class="author-location">Bengaluru, Karnataka</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-box">
+                                <img id="testimonial-img-2" src="../../assets/images/LandingPage/landing12.png" alt="Vikram Desai" class="testimonial-img">
+                                <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+                                <p class="quote-text">When my father needed emergency surgery, NexSure's cashless facility saved us. The hospital approval came through in minutes, not hours. I couldn't be more grateful for their swift response.</p>
+                                <div class="author-name">Vikram Desai</div>
+                                <div class="author-location">Mumbai, Maharashtra</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Swiper Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coverage Plans (Pricing) -->
+    <section class="section-padding bg-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="section-subtitle">OUR COVERAGE PLANS</div>
+                <h2 class="section-title">Simple, transparent pricing</h2>
+                <p class="text-muted">Choose the plan that fits your life. Upgrade anytime. No hidden charges.</p>
+            </div>
+            
+            <div class="row g-4 align-items-center justify-content-center">
+                <!-- Basic Plan -->
+                <div class="col-lg-4">
+                    <div class="pricing-card">
+                        <div class="icon-box">
+                            <img id="pricing-icon-0" src="../../assets/images/LandingPage/landing16.png" alt="Basic Plan" style="width: 30px;">
+                        </div>
+                        <div class="plan-name">BASIC PLAN</div>
+                        <div class="price">&#8377;4,999 <span>/yr</span></div>
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check"></i> Term life cover up to &#8377;10L</li>
+                            <li><i class="fa-solid fa-check"></i> Standard claim assistance</li>
+                            <li><i class="fa-solid fa-check"></i> Email support</li>
+                            <li><i class="fa-solid fa-check"></i> Annual policy review</li>
+                        </ul>
+                        <button class="btn btn-outline-dark-blue w-100">Choose Plan</button>
+                    </div>
+                </div>
+                
+                <!-- Standard Plan (Popular) -->
+                <div class="col-lg-4">
+                    <div class="pricing-card popular">
+                        <div class="popular-badge">MOST POPULAR</div>
+                        <div class="icon-box">
+                            <img id="pricing-icon-1" src="../../assets/images/LandingPage/landing17.png" alt="Standard Plan" style="width: 30px;">
+                        </div>
+                        <div class="plan-name">STANDARD PLAN</div>
+                        <div class="price">&#8377;9,999 <span>/yr</span></div>
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check"></i> Life + health cover up to &#8377;25L</li>
+                            <li><i class="fa-solid fa-check"></i> Priority claim assistance</li>
+                            <li><i class="fa-solid fa-check"></i> 24/7 phone & chat support</li>
+                            <li><i class="fa-solid fa-check"></i> Free annual health checkup</li>
+                        </ul>
+                        <button class="btn btn-outline-dark-blue w-100">Choose Plan</button>
+                    </div>
+                </div>
+                
+                <!-- Premium Plan -->
+                <div class="col-lg-4">
+                    <div class="pricing-card">
+                        <div class="icon-box">
+                            <img id="pricing-icon-2" src="../../assets/images/LandingPage/landing18.png" alt="Premium Plan" style="width: 30px;">
+                        </div>
+                        <div class="plan-name">PREMIUM PLAN</div>
+                        <div class="price">&#8377;17,999 <span>/yr</span></div>
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check"></i> Full cover up to &#8377;50L</li>
+                            <li><i class="fa-solid fa-check"></i> Dedicated relationship officer</li>
+                            <li><i class="fa-solid fa-check"></i> Cashless claim settlement</li>
+                            <li><i class="fa-solid fa-check"></i> Family floater add-on</li>
+                        </ul>
+                        <button class="btn btn-outline-dark-blue w-100">Choose Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 pe-lg-5">
+                    <img src="../../assets/images/Logo.png" alt="NexSure" class="footer-logo">
+                    <p>Protecting what matters most — from policy to claim, we're with you every step of the way.</p>
+                    <div class="d-flex gap-2">
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4">
+                    <h6>INFORMATION</h6>
+                    <ul class="footer-links">
+                        <li><a href="../landing/landing-page.html">Home</a></li>
+                        <li><a href="../help-center/about.html">About</a></li>
+                        <li><a href="../plan-listings/plans.html">Plans</a></li>
+                        <li><a href="../help-center/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6>CONTACT</h6>
+                    <p>Have any questions? Feel free to contact our administration team.</p>
+                    <ul class="contact-info">
+                        <li><i class="fa-solid fa-envelope"></i> support@nexsure.com</li>
+                        <li><i class="fa-solid fa-phone"></i> +91 12345 67890</li>
+                        <li><i class="fa-solid fa-location-dot"></i> India</li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4">
+                    <h6>QUICK HELP</h6>
+                    <div class="quick-help">
+                        <div class="help-card text-center">
+                            <img src="../../assets/images/LandingPage/landing19.png" alt="Support">
+                            <a href="javascript:void(0)" class="btn btn-sm"><i class="fa-solid fa-headset me-2"></i> Speak to an Officer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>&copy; 2026 NexSure, All Rights Reserved.</div>
+                <div class="footer-bottom-links">
+                    <a href="javascript:void(0)" onclick="alert('Terms & Conditions are currently being updated.')">Terms</a>
+                    <a href="javascript:void(0)" onclick="alert('Privacy Policy is currently being updated.')">Privacy</a>
+                    <a href="javascript:void(0)" onclick="alert('Cookie Policy is currently being updated.')">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="landing-page.js?v=4"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.notification-bell').forEach(bell => {
+        bell.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.textContent && link.textContent.includes('Mark all')) {
+                e.preventDefault();
+                e.stopPropagation();
+                const listGroup = bell.querySelector('.list-group');
+                if (listGroup) {
+                    listGroup.innerHTML = '<div class="p-4 text-center text-muted"><i class="fa-regular fa-bell-slash fs-3 mb-2 opacity-50"></i><p class="mb-0 small">No new notifications</p></div>';
+                }
+                const badge = bell.querySelector('.badge');
+                if (badge) {
+                    badge.style.display = 'none';
+                }
+            }
+        });
+    });
+});
+</script>
+<script src="../shared/profile-sync.js"></script>
+
+    <script src="../shared/notifications.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Claims Processing</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../assets/css/officer_v2.css" rel="stylesheet">
+    <script src="../../features/shared/auth-guard.js"></script>
+    <link href="../../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+                <img src="../../assets/images/LandingPage/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                <a href="../../admin-dashboard/officer-dashboard.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Officer</a> &rsaquo; Claims
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" placeholder="Search...">
+            
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge rounded-pill bg-danger">3</span>
+            </a>
+            
+            <a href="javascript:void(0)" class="nav-icon">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                    <span class="fw-medium small">Kavitha</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                    <li><a class="dropdown-item" href="#"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="officer-layout">
+        
+        <!-- Sidebar -->
+        <aside class="officer-sidebar">
+            <a href="../dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Customers</div>
+            <a href="#" class="sidebar-link">Customer Management</a>
+            <a href="../customers/kyc-verification.html" class="sidebar-link">KYC Verification</a>
+            
+            <div class="sidebar-section-title">Policies</div>
+            <a href="../policy-management/search-policy.html" class="sidebar-link">Policy Details</a>
+            <a href="../policies/applications.html" class="sidebar-link">Policy Applications</a>
+            <div class="sidebar-section-title">Claims</div>
+            <a href="claims-processing.html" class="sidebar-link active">Claims Processing</a>
+            
+            <div class="sidebar-section-title">More</div>
+            <a href="../reports/reports.html" class="sidebar-link">Reports & Renewals</a>
+            <a href="#" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="officer-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="officer-page-title mb-0">Claims Processing</h1>
+                <button class="btn btn-officer-outline">Settle Approved</button>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="officer-filter-bar">
+                <select class="officer-filter-select w-auto">
+                    <option>Status</option>
+                    <option>Open</option>
+                    <option>Under Review</option>
+                    <option>Approved</option>
+                </select>
+                <select class="officer-filter-select w-auto">
+                    <option>Claim Type</option>
+                    <option>Health</option>
+                    <option>Motor</option>
+                    <option>Life</option>
+                </select>
+                <input type="text" class="officer-filter-search flex-grow-1 max-w-400" placeholder="Search policy ID...">
+            </div>
+
+            <!-- Table -->
+            <div class="bg-white rounded-4 shadow-sm border overflow-hidden">
+                <table class="officer-table">
+                    <thead>
+                        <tr>
+                            <th>CLAIM NO</th>
+                            <th>POLICYHOLDER</th>
+                            <th>TYPE</th>
+                            <th>FILED</th>
+                            <th>AMOUNT</th>
+                            <th>STATUS</th>
+                            <th class="text-end">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CLM-1042</td>
+                            <td>Rahul Mehta</td>
+                            <td>Accident Damage</td>
+                            <td>12 Jun 2026</td>
+                            <td>₹45,000</td>
+                            <td><span class="status-badge status-under-review">Under Review</span></td>
+                            <td class="text-end"><button class="btn btn-officer-action">Open</button></td>
+                        </tr>
+                        <tr>
+                            <td>CLM-1043</td>
+                            <td>Priya Sharma</td>
+                            <td>Hospitalization</td>
+                            <td>13 Jun 2026</td>
+                            <td>₹80,000</td>
+                            <td><span class="status-badge status-submitted">Submitted</span></td>
+                            <td class="text-end"><button class="btn btn-officer-action">Open</button></td>
+                        </tr>
+                        <tr>
+                            <td>CLM-1044</td>
+                            <td>Arjun Kumar</td>
+                            <td>Critical Illness</td>
+                            <td>14 Jun 2026</td>
+                            <td>₹2,00,000</td>
+                            <td><span class="status-badge status-approved">Approved</span></td>
+                            <td class="text-end"><button class="btn btn-officer-outline">Settle</button></td>
+                        </tr>
+                        <tr>
+                            <td>CLM-1045</td>
+                            <td>Meera Raman</td>
+                            <td>Theft</td>
+                            <td>15 Jun 2026</td>
+                            <td>₹30,000</td>
+                            <td><span class="status-badge status-under-review">Under Review</span></td>
+                            <td class="text-end"><button class="btn btn-officer-action">Open</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="officer-pagination">
+                <a href="#" class="officer-page-link">&lsaquo;</a>
+                <a href="#" class="officer-page-link active">1</a>
+                <a href="#" class="officer-page-link">2</a>
+                <a href="#" class="officer-page-link">3</a>
+                <a href="#" class="officer-page-link">&rsaquo;</a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '../../features/login/login.html';
+        }
+    </script>
+</body>
+</html>

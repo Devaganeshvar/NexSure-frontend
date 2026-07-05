@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - System Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+    <style>
+        .settings-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--admin-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .theme-card {
+            border: 2px solid var(--admin-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            background: var(--admin-bg);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .theme-card:hover {
+            border-color: var(--admin-primary);
+        }
+        .theme-card.active {
+            border-color: var(--admin-primary);
+            background: #eef2ff;
+        }
+        .theme-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            border: 2px solid var(--admin-border);
+        }
+        
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--admin-border);
+        }
+        .settings-row:last-child {
+            border-bottom: none;
+        }
+        .settings-label {
+            color: var(--admin-text);
+            font-weight: 500;
+        }
+        
+        /* Custom Switch */
+        .form-switch .form-check-input {
+            width: 3rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
+        .form-switch .form-check-input:checked {
+            background-color: var(--admin-darker);
+            border-color: var(--admin-darker);
+        }
+        
+        [data-theme="dark"] .theme-card { background: #0f172a; border-color: var(--admin-border); }
+        [data-theme="dark"] .theme-card.active { background: #1e293b; border-color: var(--admin-text); }
+        [data-theme="dark"] .theme-circle { border-color: var(--admin-border); }
+        [data-theme="dark"] .form-switch .form-check-input:checked { background-color: var(--admin-primary); border-color: var(--admin-primary); }
+    </style>
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                Admin &rsaquo; System Settings
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." onkeypress="handleGlobalSearch(event)">
+            <a href="javascript:void(0)" class="nav-icon" onclick="showAdminToast('No new messages', 'info')">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="fw-medium small">Admin User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Manage</div>
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link">Officers</a>
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link">Claims & Refunds</a>
+            <a href="../../features/content-management/content.html" class="sidebar-link">Content Management</a>
+            
+            <div class="sidebar-section-title">Operations</div>
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link">Reports & Audit</a>
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link active">System Settings</a>
+            <a href="../../features/system/backup.html" class="sidebar-link">Backup & Recovery</a>
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link">Help Center</a>
+            
+            <div class="sidebar-section-title">Account</div>
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="mb-5">
+                <h1 class="admin-page-title mb-1">Preferences & Configuration</h1>
+                <p class="text-muted">Manage system preferences, localization, and theme settings.</p>
+            </div>
+            
+            <!-- Top Configs -->
+            <div class="row g-5 mb-5">
+                <div class="col-lg-6">
+                    <h5 class="fw-bold mb-3 text-dark">Localization & Language</h5>
+                    <div class="d-flex gap-4 mb-4">
+                        <div class="flex-grow-1">
+                            <label class="form-label text-muted small">Primary Language</label>
+                            <select class="form-select bg-white">
+                                <option>English (US)</option>
+                                <option>English (UK)</option>
+                            </select>
+                        </div>
+                        <div class="flex-grow-1">
+                            <label class="form-label text-muted small">Timezone</label>
+                            <select class="form-select bg-white">
+                                <option>(GMT+05:30) India</option>
+                                <option>(GMT+00:00) UTC</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mb-3 text-dark mt-4 pt-2">Appearance & Theme</h5>
+                    <div class="d-flex gap-3">
+                        <div class="theme-card flex-grow-1" id="theme-light" onclick="setTheme('light')">
+                            <div class="theme-circle" style="background: #ffffff; border-color: #1e293b;"></div>
+                            <div class="fw-medium text-dark">Light Theme</div>
+                        </div>
+                        <div class="theme-card flex-grow-1" id="theme-dark" onclick="setTheme('dark')">
+                            <div class="theme-circle" style="background: #0f172a; border-color: #f8fafc;"></div>
+                            <div class="fw-medium text-dark">Dark Theme</div>
+                        </div>
+                        <div class="theme-card flex-grow-1" id="theme-system" onclick="setTheme('system')">
+                            <div class="theme-circle" style="background: linear-gradient(90deg, #ffffff 50%, #0f172a 50%); border-color: #64748b;"></div>
+                            <div class="fw-medium text-dark">System Default</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <h5 class="fw-bold mb-4 text-dark">Advanced Settings</h5>
+                    
+                    <div class="form-check form-switch mb-4 d-flex align-items-center gap-3">
+                        <input class="form-check-input mt-0" type="checkbox" id="auditToggle">
+                        <label class="form-check-label text-dark fw-medium" for="auditToggle">Enable verbose Audit Logs for debugging</label>
+                    </div>
+                    
+                    <div class="form-check form-switch mb-4 d-flex align-items-center gap-3">
+                        <input class="form-check-input mt-0" type="checkbox" id="apiToggle" checked>
+                        <label class="form-check-label text-dark fw-medium" for="apiToggle">Allow remote API access (Requires 2FA)</label>
+                    </div>
+                    
+                    <div class="form-check form-switch d-flex align-items-center gap-3">
+                        <input class="form-check-input mt-0" type="checkbox" id="bulkToggle" checked>
+                        <label class="form-check-label text-dark fw-medium" for="bulkToggle">Enable Bulk Import Auto-Validation (NexSure)</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Panels -->
+            <div class="row g-5">
+                <!-- Column 1 -->
+                <div class="col-lg-4">
+                    <div class="settings-section-title"><i class="fa-solid fa-lock text-muted"></i> Security Settings</div>
+                    <div class="settings-row">
+                        <span class="settings-label">Password policy configuration</span>
+                        <select class="form-select w-auto bg-white"><option>Strong</option></select>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Login attempt limit (lock after N)</span>
+                        <select class="form-select w-auto bg-white"><option>5 attempts</option></select>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">IP whitelisting</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Audit log access</span>
+                        <select class="form-select w-auto bg-white"><option>Admin Only</option></select>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Auto logout / session timeout</span>
+                        <select class="form-select w-auto bg-white"><option>15 mins</option></select>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Data access permission levels</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    
+                    <div class="settings-section-title mt-5 pt-3"><i class="fa-solid fa-palette text-muted"></i> Platform & Branding</div>
+                    <div class="settings-row">
+                        <span class="settings-label">Platform name (NexSure)</span>
+                        <input type="text" id="platformNameInput" class="form-control w-auto bg-white" value="NexSure Admin" style="max-width: 150px;">
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Logo upload</span>
+                        <div class="d-flex gap-2 align-items-center">
+                            <input type="file" id="logoUploadInput" class="d-none" accept="image/*">
+                            <label for="logoUploadInput" class="btn btn-sm btn-admin-outline px-4 mb-0">Choose Image</label>
+                            <button class="btn btn-sm text-danger px-2" onclick="resetLogo()" title="Restore Original Logo" style="border: none; background: transparent;"><i class="fa-solid fa-rotate-left"></i></button>
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Favicon upload</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Primary color theme</span>
+                        <div class="d-flex align-items-center gap-2">
+                            <input type="color" id="primaryColorInput" class="form-control form-control-color p-0 border-0" value="#0e7490" title="Choose your color" style="width: 32px; height: 32px; cursor: pointer;">
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Footer text / copyright</span>
+                        <input type="text" class="form-control w-auto bg-white text-muted" value="© 2026 NexSure" style="max-width: 150px;" readonly>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Support contact email/phone</span>
+                        <input type="text" class="form-control w-auto bg-white text-muted" value="admin@nexsure.com" style="max-width: 180px;" readonly>
+                    </div>
+                    
+                    <button class="btn btn-admin-outline mt-4 w-100 py-2" onclick="confirmLogoutAll()">Logout All Sessions</button>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="col-lg-4">
+                    <div class="settings-section-title"><i class="fa-solid fa-bell text-muted"></i> Alerts & Notifications</div>
+                    <div class="settings-row">
+                        <span class="settings-label">Alert thresholds (e.g. >50/day)</span>
+                        <input type="number" class="form-control w-auto bg-white text-muted" value="50" style="max-width: 100px;">
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Digest frequency</span>
+                        <select class="form-select w-auto bg-white"><option>Daily</option></select>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Notification templates (email/SMS)</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    
+                    <div class="settings-section-title mt-5 pt-3"><i class="fa-solid fa-scale-balanced text-muted"></i> Legal & Compliance</div>
+                    <div class="settings-row">
+                        <span class="settings-label">Terms & Conditions editor</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Privacy Policy editor</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Cookie consent toggle</span>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">GDPR / data compliance mode</span>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Policyholder data anonymization</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="col-lg-4">
+                    <div class="settings-section-title"><i class="fa-solid fa-user-shield text-muted"></i> Policyholder Settings</div>
+                    <div class="settings-row">
+                        <span class="settings-label">Registration fields</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Minimum policyholder age</span>
+                        <input type="number" class="form-control w-auto bg-white text-muted" value="18" style="max-width: 100px;">
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">ID proof requirement at registration</span>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" checked></div>
+                    </div>
+                    
+                    <div class="settings-section-title mt-5 pt-3"><i class="fa-solid fa-server text-muted"></i> System Health & Integrations</div>
+                    <div class="settings-row">
+                        <span class="settings-label">Maintenance mode toggle</span>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox"></div>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">System health status view</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Webhook configuration</span>
+                        <button class="btn btn-sm btn-admin-outline px-4">Edit</button>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">SMS & Email gateway config</span>
+                        <select class="form-select w-auto bg-white"><option>Twilio / Sendgrid</option></select>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label">Bulk Import Max File Size</span>
+                        <select class="form-select w-auto bg-white"><option>50 MB</option></select>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Generic Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--admin-bg); border: 1px solid var(--admin-border);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark" id="settingsModalTitle">Edit Configuration</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-medium">Configuration Value</label>
+                        <textarea class="form-control" rows="3" placeholder="Enter configuration values (JSON or plain text)..."></textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary flex-grow-1" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary flex-grow-1" onclick="saveGenericSetting()">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout All Modal -->
+    <div class="modal fade" id="logoutAllModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--admin-bg); border: 1px solid var(--admin-border);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-danger">Logout All Sessions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <p class="text-muted mb-4">Are you sure you want to terminate all active sessions? This will force logout on all devices, including this one.</p>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary flex-grow-1" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger flex-grow-1" onclick="logout()">Terminate All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        function setTheme(mode) {
+            document.querySelectorAll('.theme-card').forEach(t => t.classList.remove('active'));
+            document.getElementById('theme-' + mode).classList.add('active');
+            
+            if (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+            
+            showAdminToast(`Theme changed to ${mode}.`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Restore theme selection state
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.getElementById('theme-' + currentTheme).classList.add('active');
+            
+            // Wire up toggles
+            document.querySelectorAll('.form-check-input').forEach(t => {
+                t.addEventListener('change', (e) => {
+                    const label = e.target.closest('.settings-row') || e.target.closest('.d-flex');
+                    const text = label ? label.innerText.trim() : 'Setting';
+                    showAdminToast(`${text} updated successfully.`, 'success');
+                });
+            });
+
+            // Wire up selects and inputs
+            document.querySelectorAll('.form-select, input[type="text"], input[type="number"]').forEach(input => {
+                input.addEventListener('change', () => {
+                    showAdminToast(`Configuration saved.`, 'success');
+                });
+            });
+            
+            // Wire up Edit buttons
+            document.querySelectorAll('button.btn-admin-outline:not(.w-100)').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const row = e.target.closest('.settings-row');
+                    const title = row.querySelector('.settings-label').innerText;
+                    document.getElementById('settingsModalTitle').innerText = 'Edit ' + title;
+                    const modal = new bootstrap.Modal(document.getElementById('settingsModal'));
+                    modal.show();
+                });
+            });
+            
+            // Load Branding Defaults
+            const savedName = localStorage.getItem('nexsure_platform_name');
+            if (savedName) document.getElementById('platformNameInput').value = savedName;
+
+            const savedColor = localStorage.getItem('nexsure_primary_color');
+            if (savedColor) document.getElementById('primaryColorInput').value = savedColor;
+            
+            // Wire up Branding Inputs
+            document.getElementById('platformNameInput').addEventListener('change', (e) => {
+                localStorage.setItem('nexsure_platform_name', e.target.value);
+                document.title = e.target.value;
+                showAdminToast('Platform name updated globally.', 'success');
+            });
+
+            document.getElementById('primaryColorInput').addEventListener('change', (e) => {
+                localStorage.setItem('nexsure_primary_color', e.target.value);
+                document.documentElement.style.setProperty('--admin-primary', e.target.value);
+                showAdminToast('Primary color updated globally.', 'success');
+            });
+
+            document.getElementById('logoUploadInput').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        localStorage.setItem('nexsure_logo', event.target.result);
+                        const logoImg = document.querySelector('.navbar-brand img');
+                        if (logoImg) logoImg.src = event.target.result;
+                        showAdminToast('Logo updated globally.', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        function saveGenericSetting() {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('settingsModal'));
+            modal.hide();
+            showAdminToast('Configuration saved successfully.', 'success');
+        }
+
+        function confirmLogoutAll() {
+            const modal = new bootstrap.Modal(document.getElementById('logoutAllModal'));
+            modal.show();
+        }
+
+        function resetLogo() {
+            localStorage.removeItem('nexsure_logo');
+            const logoImg = document.querySelector('.navbar-brand img');
+            if (logoImg) logoImg.src = '../../../assets/images/Logo.png';
+            showAdminToast('Restored original logo globally.', 'info');
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '/features/auth/login.html';
+        }
+    </script>
+</body>
+</html>

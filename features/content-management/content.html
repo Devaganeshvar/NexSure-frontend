@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Content Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+    <style>
+        .banner-card {
+            border: 1px solid var(--admin-border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--admin-bg);
+            transition: all 0.2s;
+            height: 100%;
+        }
+        .banner-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-color: var(--admin-primary);
+        }
+        .banner-content {
+            padding: 1.5rem;
+        }
+        
+        [data-theme="dark"] .banner-card { background: #0f172a; border-color: var(--admin-border); }
+        [data-theme="dark"] .banner-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-color: var(--admin-text); }
+    </style>
+        <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                Admin &rsaquo; Content Management
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." onkeypress="handleGlobalSearch(event)">
+            <a href="javascript:void(0)" class="nav-icon" onclick="showAdminToast('No new messages', 'info')">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="fw-medium small">Admin User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Manage</div>
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link">Officers</a>
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link">Claims & Refunds</a>
+            <a href="../../features/content-management/content.html" class="sidebar-link active">Content Management</a>
+            
+            <div class="sidebar-section-title">Operations</div>
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link">Reports & Audit</a>
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link">System Settings</a>
+            <a href="../../features/system/backup.html" class="sidebar-link">Backup & Recovery</a>
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link">Help Center</a>
+            
+            <div class="sidebar-section-title">Account</div>
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="admin-page-title mb-0">Content Management</h1>
+                <div class="d-flex gap-3 align-items-center">
+                    <span id="draft-status" class="badge bg-secondary px-3 py-2">Published / Synced</span>
+                    <button class="btn btn-outline-danger" onclick="discardDraft()" id="btn-discard" style="display:none;"><i class="fa-solid fa-trash me-2"></i>Discard Draft</button>
+                    <button class="btn btn-outline-primary" onclick="previewLandingPage()"><i class="fa-solid fa-eye me-2"></i>Preview</button>
+                    <button class="btn btn-admin-primary" onclick="publishChanges()" id="btn-publish" disabled><i class="fa-solid fa-cloud-arrow-up me-2"></i>Publish</button>
+                </div>
+            </div>
+            
+            <div class="admin-tabs">
+                <a href="javascript:void(0)" class="admin-tab active" id="tab-landing" onclick="switchTab('landing')">Landing Page Content</a>
+                <a href="javascript:void(0)" class="admin-tab" id="tab-home" onclick="switchTab('home')">Home Page Content</a>
+                <a href="javascript:void(0)" class="admin-tab" id="tab-terms" onclick="switchTab('terms')">Legal Content</a>
+            </div>
+
+            <div class="bg-white p-4" id="landingContentArea">
+                <p class="text-muted mb-4">Select a section of the Customer Landing Page to edit its content. Changes are saved as a draft. Click <strong>Preview</strong> to see your changes before you <strong>Publish</strong> them live.</p>
+
+                <div class="row g-4">
+                    <!-- Hero Section Card -->
+                    <div class="col-md-6">
+                        <div class="banner-card d-flex flex-column justify-content-between">
+                            <div class="banner-content">
+                                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-heading text-primary me-2"></i> Hero Section</h5>
+                                <p class="text-muted small">Manage the main headline, subtitle, and badge text displayed at the very top of the landing page.</p>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <button class="btn btn-sm btn-outline-primary w-100" onclick="openHeroModal()">Edit Hero Content</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Section Card -->
+                    <div class="col-md-6">
+                        <div class="banner-card d-flex flex-column justify-content-between">
+                            <div class="banner-content">
+                                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-chart-line text-success me-2"></i> Statistics Strip</h5>
+                                <p class="text-muted small">Update the animated counters (e.g., Policies Issued, Claims Settled) to reflect the latest milestones.</p>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <button class="btn btn-sm btn-outline-primary w-100" onclick="openStatsModal()">Edit Statistics</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Plans Header Card -->
+                    <div class="col-md-6">
+                        <div class="banner-card d-flex flex-column justify-content-between">
+                            <div class="banner-content">
+                                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-shield-halved text-warning me-2"></i> Insurance Plans Header</h5>
+                                <p class="text-muted small">Edit the title and descriptive text for the Insurance Plans section.</p>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <button class="btn btn-sm btn-outline-primary w-100" onclick="openPlansModal()">Edit Plans Header</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonials Header Card -->
+                    <div class="col-md-6">
+                        <div class="banner-card d-flex flex-column justify-content-between">
+                            <div class="banner-content">
+                                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-quote-left text-info me-2"></i> Testimonials</h5>
+                                <p class="text-muted small">Edit the title, subtitle, and profile pictures for the customer feedback section.</p>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <button class="btn btn-sm btn-outline-primary w-100" onclick="openTestimonialsModal()">Edit Testimonials</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Success Stories Card -->
+                    <div class="col-md-6">
+                        <div class="banner-card d-flex flex-column justify-content-between">
+                            <div class="banner-content">
+                                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-camera text-danger me-2"></i> Success Stories</h5>
+                                <p class="text-muted small">Update the photos used for the Success Stories section.</p>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <button class="btn btn-sm btn-outline-primary w-100" onclick="openStoriesModal()">Edit Images</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Officers Card -->
+                    <div class="col-md-6">
+                        <div class="banner-card d-flex flex-column justify-content-between">
+                            <div class="banner-content">
+                                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-user-tie text-secondary me-2"></i> Meet Our Officers</h5>
+                                <p class="text-muted small">Update the profile photos for the verified officers.</p>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <button class="btn btn-sm btn-outline-primary w-100" onclick="openOfficersModal()">Edit Officer Photos</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pricing Card -->
+                    <div class="col-md-6">
+                        <div class="banner-card d-flex flex-column justify-content-between">
+                            <div class="banner-content">
+                                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-tags text-primary me-2"></i> Coverage Plans</h5>
+                                <p class="text-muted small">Update the icons used for the pricing plans.</p>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <button class="btn btn-sm btn-outline-primary w-100" onclick="openPricingModal()">Edit Pricing Icons</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Home Page Content Area -->
+            <div class="bg-white p-4" id="homeContentArea" style="display: none;">
+                <p class="text-muted mb-4">Select a section of the Customer Dashboard (Home Page) to edit its content.</p>
+
+                <div class="row g-4">
+                    <!-- Promotional Banner Card -->
+                    <div class="col-md-6">
+                        <div class="banner-card d-flex flex-column justify-content-between">
+                            <div class="banner-content">
+                                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-bullhorn text-warning me-2"></i> Promotional Upgrade Banner</h5>
+                                <p class="text-muted small">Edit the marketing banner displayed to customers on their dashboard to encourage plan upgrades.</p>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <button class="btn btn-sm btn-outline-primary w-100" onclick="alert('This feature will be implemented in the next iteration.')">Edit Promotional Banner</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terms Content Area -->
+            <div class="bg-white p-4" id="termsContentArea" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="text-muted mb-0">Manage the system policies. These are displayed to users during registration.</p>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-secondary" onclick="openVersionHistoryModal()"><i class="fa-solid fa-clock-rotate-left me-2"></i>History</button>
+                        <button class="btn btn-admin-primary" onclick="openPolicyModal()"><i class="fa-solid fa-plus me-2"></i>Add Policy</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table admin-table align-middle">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th>Policy Section</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="policiesTableBody">
+                            <!-- Populated dynamically by terms-management.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Hero Modal -->
+    <div class="modal fade" id="heroModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Edit Hero Section</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Badge Text</label>
+                        <input type="text" class="form-control" id="heroBadgeInput">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Title Line 1</label>
+                        <input type="text" class="form-control" id="heroTitleLine1Input" placeholder="e.g. Insurance Policy">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Title Line 2</label>
+                        <input type="text" class="form-control" id="heroTitleLine2Input" placeholder="e.g. Management,">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Title Highlight (Green Text)</label>
+                        <input type="text" class="form-control" id="heroTitleHighlightInput" placeholder="e.g. Simplified">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Subtitle</label>
+                        <textarea class="form-control" id="heroSubtitleInput" rows="3"></textarea>
+                    </div>
+                    <hr>
+                    <h6 class="fw-bold mb-3">Hero Images</h6>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Main Image</label>
+                        <input type="file" class="form-control" id="heroImgMainInput" accept="image/*">
+                        <div class="form-text">Upload a new main image. Leave blank to keep current.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Split Image 1 (Top)</label>
+                        <input type="file" class="form-control" id="heroImgSplit1Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Split Image 2 (Bottom)</label>
+                        <input type="file" class="form-control" id="heroImgSplit2Input" accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin-primary" onclick="saveHero()">Save to Draft</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Stats Modal -->
+    <div class="modal fade" id="statsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Edit Statistics</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="statsModalBody">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin-primary" onclick="saveStats()">Save to Draft</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Plans Modal -->
+    <div class="modal fade" id="plansModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Edit Plans Header</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Subtitle</label>
+                        <input type="text" class="form-control" id="plansSubtitleInput">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Main Title</label>
+                        <input type="text" class="form-control" id="plansTitleInput">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Description</label>
+                        <textarea class="form-control" id="plansDescInput" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin-primary" onclick="savePlans()">Save to Draft</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Testimonials Modal -->
+    <div class="modal fade" id="testimonialsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Edit Testimonials Header</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Subtitle</label>
+                        <input type="text" class="form-control" id="testSubtitleInput">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Main Title</label>
+                        <input type="text" class="form-control" id="testTitleInput">
+                    </div>
+                    <hr>
+                    <h6 class="fw-bold mb-3">Customer Profile Photos</h6>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Customer 1</label>
+                        <input type="file" class="form-control" id="testImg0Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Customer 2</label>
+                        <input type="file" class="form-control" id="testImg1Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Customer 3</label>
+                        <input type="file" class="form-control" id="testImg2Input" accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin-primary" onclick="saveTestimonials()">Save to Draft</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Stories Modal -->
+    <div class="modal fade" id="storiesModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Edit Success Stories Images</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Story 1 Image</label>
+                        <input type="file" class="form-control" id="storyImg0Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Story 2 Image</label>
+                        <input type="file" class="form-control" id="storyImg1Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Story 3 Image</label>
+                        <input type="file" class="form-control" id="storyImg2Input" accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin-primary" onclick="saveStories()">Save to Draft</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Officers Modal -->
+    <div class="modal fade" id="officersModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Edit Officer Photos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Officer 1</label>
+                        <input type="file" class="form-control" id="officerImg0Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Officer 2</label>
+                        <input type="file" class="form-control" id="officerImg1Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Officer 3</label>
+                        <input type="file" class="form-control" id="officerImg2Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Officer 4</label>
+                        <input type="file" class="form-control" id="officerImg3Input" accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin-primary" onclick="saveOfficers()">Save to Draft</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Modal -->
+    <div class="modal fade" id="pricingModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Edit Pricing Plan Icons</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Basic Plan Icon</label>
+                        <input type="file" class="form-control" id="pricingImg0Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Standard Plan Icon</label>
+                        <input type="file" class="form-control" id="pricingImg1Input" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Premium Plan Icon</label>
+                        <input type="file" class="form-control" id="pricingImg2Input" accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin-primary" onclick="savePricing()">Save to Draft</button>
+    <!-- Policy Editor Modal -->
+    <div class="modal fade" id="policyModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="policyModalTitle">Edit Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="policyId">
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <label class="form-label fw-medium">Section Title</label>
+                            <input type="text" class="form-control" id="policyTitle" placeholder="e.g. General Policy">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="policyEnabled" checked>
+                                <label class="form-check-label fw-medium" for="policyEnabled">Active for Customers</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Policy Content</label>
+                        <div id="quillEditor" style="height: 350px; background: #fff; font-family: 'Inter', sans-serif;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin-primary" onclick="savePolicy()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version History Modal -->
+    <div class="modal fade" id="versionHistoryModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Publish History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="list-group list-group-flush" id="versionHistoryList">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        // CMS State Management
+        const defaultLandingContent = {
+            hero: {
+                badge: "All-in-one Platform",
+                titleLine1: "Insurance Policy",
+                titleLine2: "Management,",
+                titleHighlight: "Simplified",
+                subtitle: "From life to motor, health to property — generate quotes, manage policies, file claims and track renewals, all within one secure place built around what matters to you.",
+                imgMain: "../../assets/images/LandingPage/landing1.png",
+                imgSplit1: "../../assets/images/LandingPage/landing2.png",
+                imgSplit2: "../../assets/images/LandingPage/landing3.png"
+            },
+            stats: [
+                { val: "50,000+", label: "Policies Issued" },
+                { val: "1,20,000+", label: "Claims Settled" },
+                { val: "800+", label: "Verified Officers" },
+                { val: "98%", label: "Customer Satisfaction" }
+            ],
+            plansText: {
+                subtitle: "OUR INSURANCE PLANS",
+                title: "Protection for every stage of life",
+                desc: "Whatever stage of life you're protecting — starting a family, buying your first car, or safeguarding your home  there's a plan built for you, backed by verified officers and transparent terms."
+            },
+            testimonialsText: {
+                subtitle: "TESTIMONIALS",
+                title: "What our customers say"
+            },
+            storiesImages: [
+                "../../assets/images/LandingPage/landing8.png",
+                "../../assets/images/LandingPage/landing9.png",
+                "../../assets/images/LandingPage/landing10.png"
+            ],
+            officersImages: [
+                "../../assets/images/LandingPage/landing11.png",
+                "../../assets/images/LandingPage/landing12.png",
+                "../../assets/images/LandingPage/landing13.png",
+                "../../assets/images/LandingPage/landing14.png"
+            ],
+            testimonialsImages: [
+                "../../assets/images/LandingPage/landing15.png",
+                "../../assets/images/LandingPage/landing11.png",
+                "../../assets/images/LandingPage/landing12.png"
+            ],
+            pricingIcons: [
+                "../../assets/images/LandingPage/landing16.png",
+                "../../assets/images/LandingPage/landing17.png",
+                "../../assets/images/LandingPage/landing18.png"
+            ]
+        };
+
+        let currentDraft = null;
+
+        function initCMS() {
+            const draftStr = localStorage.getItem('draftLandingContent');
+            if (draftStr) {
+                currentDraft = JSON.parse(draftStr);
+                updateUIState(true);
+            } else {
+                const publishedStr = localStorage.getItem('publishedLandingContent');
+                if (publishedStr) {
+                    currentDraft = JSON.parse(publishedStr);
+                } else {
+                    currentDraft = JSON.parse(JSON.stringify(defaultLandingContent));
+                }
+                updateUIState(false);
+            }
+        }
+
+        function updateUIState(hasDraft) {
+            const statusBadge = document.getElementById('draft-status');
+            const btnDiscard = document.getElementById('btn-discard');
+            const btnPublish = document.getElementById('btn-publish');
+            
+            if (hasDraft) {
+                statusBadge.className = 'badge bg-warning text-dark px-3 py-2';
+                statusBadge.innerHTML = '<i class="fa-solid fa-pen-ruler me-2"></i>Unpublished Draft';
+                btnDiscard.style.display = 'inline-block';
+                btnPublish.removeAttribute('disabled');
+            } else {
+                statusBadge.className = 'badge bg-success px-3 py-2';
+                statusBadge.innerHTML = '<i class="fa-solid fa-check me-2"></i>Published / Synced';
+                btnDiscard.style.display = 'none';
+                btnPublish.setAttribute('disabled', 'true');
+            }
+        }
+
+        function saveDraft() {
+            localStorage.setItem('draftLandingContent', JSON.stringify(currentDraft));
+            updateUIState(true);
+            showAdminToast('Draft saved successfully', 'success');
+        }
+
+        function publishChanges() {
+            const activeTab = document.querySelector('.admin-tab.active').id;
+            
+            if (activeTab === 'tab-terms') {
+                if (window.publishTermsChanges) {
+                    window.publishTermsChanges();
+                }
+                return;
+            }
+
+            if (confirm('Are you sure you want to publish these changes to the live Customer Home Page?')) {
+                localStorage.setItem('publishedLandingContent', JSON.stringify(currentDraft));
+                localStorage.removeItem('draftLandingContent');
+                updateUIState(false);
+                showAdminToast('Changes published successfully!', 'success');
+            }
+        }
+
+        function discardDraft() {
+            const activeTab = document.querySelector('.admin-tab.active').id;
+            
+            if (activeTab === 'tab-terms') {
+                if (window.discardTermsDraft) {
+                    window.discardTermsDraft();
+                }
+                return;
+            }
+
+            if (confirm('Are you sure you want to discard your draft? This will revert to the currently published version.')) {
+                localStorage.removeItem('draftLandingContent');
+                initCMS(); // reload state
+                showAdminToast('Draft discarded', 'info');
+            }
+        }
+
+
+        function previewLandingPage() {
+            const activeTab = document.querySelector('.admin-tab.active').id;
+            if (activeTab === 'tab-terms') {
+                window.open('../../features/auth/register.html?previewTerms=true', '_blank');
+                return;
+            }
+            window.open('../../features/landing/landing-page.html?preview=true', '_blank');
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Modals Management
+        const heroModal = new bootstrap.Modal(document.getElementById('heroModal'));
+        function openHeroModal() {
+            document.getElementById('heroBadgeInput').value = currentDraft.hero.badge || '';
+            document.getElementById('heroTitleLine1Input').value = currentDraft.hero.titleLine1 || '';
+            document.getElementById('heroTitleLine2Input').value = currentDraft.hero.titleLine2 || '';
+            document.getElementById('heroTitleHighlightInput').value = currentDraft.hero.titleHighlight || '';
+            document.getElementById('heroSubtitleInput').value = currentDraft.hero.subtitle || '';
+            
+            // Clear file inputs when opening
+            document.getElementById('heroImgMainInput').value = '';
+            document.getElementById('heroImgSplit1Input').value = '';
+            document.getElementById('heroImgSplit2Input').value = '';
+            
+            heroModal.show();
+        }
+        async function saveHero() {
+            currentDraft.hero.badge = document.getElementById('heroBadgeInput').value;
+            currentDraft.hero.titleLine1 = document.getElementById('heroTitleLine1Input').value;
+            currentDraft.hero.titleLine2 = document.getElementById('heroTitleLine2Input').value;
+            currentDraft.hero.titleHighlight = document.getElementById('heroTitleHighlightInput').value;
+            currentDraft.hero.subtitle = document.getElementById('heroSubtitleInput').value;
+            
+            const mainFile = document.getElementById('heroImgMainInput').files[0];
+            if (mainFile) currentDraft.hero.imgMain = await readFileAsDataURL(mainFile);
+
+            const split1File = document.getElementById('heroImgSplit1Input').files[0];
+            if (split1File) currentDraft.hero.imgSplit1 = await readFileAsDataURL(split1File);
+
+            const split2File = document.getElementById('heroImgSplit2Input').files[0];
+            if (split2File) currentDraft.hero.imgSplit2 = await readFileAsDataURL(split2File);
+
+            // Delete the old 'title' property if it exists to keep schema clean
+            delete currentDraft.hero.title;
+            
+            saveDraft();
+            heroModal.hide();
+        }
+
+        const statsModal = new bootstrap.Modal(document.getElementById('statsModal'));
+        function openStatsModal() {
+            let html = '';
+            currentDraft.stats.forEach((s, idx) => {
+                html += `
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-md-5">
+                            <label class="form-label fw-medium small text-muted">Stat ${idx+1} Value</label>
+                            <input type="text" class="form-control" id="statVal${idx}" value="${s.val}">
+                        </div>
+                        <div class="col-md-7">
+                            <label class="form-label fw-medium small text-muted">Stat ${idx+1} Label</label>
+                            <input type="text" class="form-control" id="statLabel${idx}" value="${s.label}">
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('statsModalBody').innerHTML = html;
+            statsModal.show();
+        }
+        function saveStats() {
+            for (let i=0; i<4; i++) {
+                currentDraft.stats[i].val = document.getElementById(`statVal${i}`).value;
+                currentDraft.stats[i].label = document.getElementById(`statLabel${i}`).value;
+            }
+            saveDraft();
+            statsModal.hide();
+        }
+
+        const plansModal = new bootstrap.Modal(document.getElementById('plansModal'));
+        function openPlansModal() {
+            document.getElementById('plansSubtitleInput').value = currentDraft.plansText.subtitle;
+            document.getElementById('plansTitleInput').value = currentDraft.plansText.title;
+            document.getElementById('plansDescInput').value = currentDraft.plansText.desc;
+            plansModal.show();
+        }
+        function savePlans() {
+            currentDraft.plansText.subtitle = document.getElementById('plansSubtitleInput').value;
+            currentDraft.plansText.title = document.getElementById('plansTitleInput').value;
+            currentDraft.plansText.desc = document.getElementById('plansDescInput').value;
+            saveDraft();
+            plansModal.hide();
+        }
+
+        const testModal = new bootstrap.Modal(document.getElementById('testimonialsModal'));
+        function openTestimonialsModal() {
+            document.getElementById('testSubtitleInput').value = currentDraft.testimonialsText.subtitle || '';
+            document.getElementById('testTitleInput').value = currentDraft.testimonialsText.title || '';
+            document.getElementById('testImg0Input').value = '';
+            document.getElementById('testImg1Input').value = '';
+            document.getElementById('testImg2Input').value = '';
+            testModal.show();
+        }
+        async function saveTestimonials() {
+            currentDraft.testimonialsText.subtitle = document.getElementById('testSubtitleInput').value;
+            currentDraft.testimonialsText.title = document.getElementById('testTitleInput').value;
+            
+            for(let i=0; i<3; i++) {
+                const f = document.getElementById(`testImg${i}Input`).files[0];
+                if (f) currentDraft.testimonialsImages[i] = await readFileAsDataURL(f);
+            }
+            
+            saveDraft();
+            testModal.hide();
+        }
+
+        const storiesModal = new bootstrap.Modal(document.getElementById('storiesModal'));
+        function openStoriesModal() {
+            document.getElementById('storyImg0Input').value = '';
+            document.getElementById('storyImg1Input').value = '';
+            document.getElementById('storyImg2Input').value = '';
+            storiesModal.show();
+        }
+        async function saveStories() {
+            for(let i=0; i<3; i++) {
+                const f = document.getElementById(`storyImg${i}Input`).files[0];
+                if (f) currentDraft.storiesImages[i] = await readFileAsDataURL(f);
+            }
+            saveDraft();
+            storiesModal.hide();
+        }
+
+        const officersModal = new bootstrap.Modal(document.getElementById('officersModal'));
+        function openOfficersModal() {
+            document.getElementById('officerImg0Input').value = '';
+            document.getElementById('officerImg1Input').value = '';
+            document.getElementById('officerImg2Input').value = '';
+            document.getElementById('officerImg3Input').value = '';
+            officersModal.show();
+        }
+        async function saveOfficers() {
+            for(let i=0; i<4; i++) {
+                const f = document.getElementById(`officerImg${i}Input`).files[0];
+                if (f) currentDraft.officersImages[i] = await readFileAsDataURL(f);
+            }
+            saveDraft();
+            officersModal.hide();
+        }
+
+        const pricingModal = new bootstrap.Modal(document.getElementById('pricingModal'));
+        function openPricingModal() {
+            document.getElementById('pricingImg0Input').value = '';
+            document.getElementById('pricingImg1Input').value = '';
+            document.getElementById('pricingImg2Input').value = '';
+            pricingModal.show();
+        }
+        async function savePricing() {
+            for(let i=0; i<3; i++) {
+                const f = document.getElementById(`pricingImg${i}Input`).files[0];
+                if (f) currentDraft.pricingIcons[i] = await readFileAsDataURL(f);
+            }
+            saveDraft();
+            pricingModal.hide();
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '/features/auth/login.html';
+        }
+
+        function switchTab(tabId) {
+            document.getElementById('tab-landing').classList.remove('active');
+            document.getElementById('tab-home').classList.remove('active');
+            const tabTerms = document.getElementById('tab-terms');
+            if(tabTerms) tabTerms.classList.remove('active');
+            
+            document.getElementById('landingContentArea').style.display = 'none';
+            document.getElementById('homeContentArea').style.display = 'none';
+            if (document.getElementById('termsContentArea')) document.getElementById('termsContentArea').style.display = 'none';
+
+            if (tabId === 'landing') {
+                document.getElementById('tab-landing').classList.add('active');
+                document.getElementById('landingContentArea').style.display = 'block';
+            } else if (tabId === 'home') {
+                document.getElementById('tab-home').classList.add('active');
+                document.getElementById('homeContentArea').style.display = 'block';
+            } else if (tabId === 'terms') {
+                document.getElementById('tab-terms').classList.add('active');
+                document.getElementById('termsContentArea').style.display = 'block';
+                if(window.renderPoliciesTable) window.renderPoliciesTable();
+            }
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initCMS);
+    </script>
+    <script src="../../features/content-management/terms-management.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

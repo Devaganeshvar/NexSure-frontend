@@ -1,0 +1,1 @@
+- Always write styles directly in plain CSS files (.css). Do not create or use SCSS files (.scss) anywhere in this project.

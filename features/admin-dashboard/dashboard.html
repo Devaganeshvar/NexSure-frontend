@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+        <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="dashboard.html">
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                Admin &rsaquo; Dashboard
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." onkeypress="handleGlobalSearch(event)">
+            
+            <a href="javascript:void(0)" class="nav-icon" onclick="showAdminToast('No new messages', 'info')">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="fw-medium small">Admin User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link active">Dashboard</a>
+            
+            <div class="sidebar-section-title">Manage</div>
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link">Officers</a>
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link">Claims & Refunds</a>
+            <a href="../../features/content-management/content.html" class="sidebar-link">Content Management</a>
+            
+            <div class="sidebar-section-title">Operations</div>
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link">Reports & Audit</a>
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link">System Settings</a>
+            <a href="../../features/system/backup.html" class="sidebar-link">Backup & Recovery</a>
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link">Help Center</a>
+            
+            <div class="sidebar-section-title">Account</div>
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="mb-4">
+                <h1 class="admin-page-title mb-1">Welcome, Admin</h1>
+                <p class="text-muted">Full system overview across every module.</p>
+            </div>
+            
+            <!-- KPI Cards -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-4 col-lg-2">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-title">Active Policies</div>
+                        <div class="admin-stat-value">12,480</div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-title">Total Officers</div>
+                        <div class="admin-stat-value">214</div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-title">Open Claims</div>
+                        <div class="admin-stat-value">386</div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-title">Revenue MTD</div>
+                        <div class="admin-stat-value">₹84.2L</div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-title">Pending KYC</div>
+                        <div class="admin-stat-value">57</div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-title">Pending Imports</div>
+                        <div class="admin-stat-value">3</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Body -->
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="bg-white p-4 h-100">
+                        <h5 class="fw-bold mb-4">Recent System Activity</h5>
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Actor</th>
+                                        <th>Action</th>
+                                        <th>Module</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activityTable">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <h5 class="fw-bold mt-5 mb-4">Quick Actions</h5>
+                        <div class="d-flex flex-wrap gap-3">
+                            <button class="btn-admin-outline px-4" onclick="window.location.href='../../features/content-management/products.html'">+ Add Product</button>
+                            <button class="btn-admin-outline px-4" onclick="window.location.href='../../features/people-and-audit/officers.html'">Onboard Officer</button>
+                            <button class="btn-admin-outline px-4" onclick="window.location.href='../system/bulk-import.html'">Bulk Import</button>
+                            <button class="btn-admin-outline px-4" onclick="window.location.href='../../features/reports/reports.html'">Generate Report</button>
+                            <button class="btn-admin-outline px-4" onclick="window.location.href='../../features/people-and-audit/batch.html'">Run Batch Job</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="bg-white p-4 mb-4">
+                        <h5 class="fw-bold mb-4">Policies Issued — 30 Days</h5>
+                        <canvas id="barChart" height="200"></canvas>
+                    </div>
+                    <div class="bg-white p-4">
+                        <h5 class="fw-bold mb-4">Claims by Status</h5>
+                        <div class="d-flex align-items-center">
+                            <div style="width: 150px;">
+                                <canvas id="donutChart"></canvas>
+                            </div>
+                            <div class="ms-4">
+                                <div class="mb-2"><i class="fa-solid fa-circle text-primary me-2" style="font-size: 10px;"></i> <span class="small text-muted">Settled — 38%</span></div>
+                                <div class="mb-2"><i class="fa-solid fa-circle text-warning me-2" style="font-size: 10px;"></i> <span class="small text-muted">Under Review — 25%</span></div>
+                                <div class="mb-2"><i class="fa-solid fa-circle text-success me-2" style="font-size: 10px;"></i> <span class="small text-muted">Approved — 22%</span></div>
+                                <div><i class="fa-solid fa-circle text-secondary me-2" style="font-size: 10px;"></i> <span class="small text-muted">Submitted — 15%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Populate Activity Table
+            const activities = [
+                { actor: 'Gokul K (Officer)', action: 'Approved APP-2281', module: 'Policies', time: '10:42' },
+                { actor: 'Solai (Admin)', action: 'Bulk Imported 150 Policyholders', module: 'Bulk Import', time: '09:15' },
+                { actor: 'System', action: 'Auto-renewed 12', module: 'Batch', time: '09:00' },
+                { actor: 'Solai (Admin)', action: 'Deactivated PROP-04', module: 'Products', time: '08:31' },
+                { actor: 'Hephzibha A', action: 'Verified KYC Priya S.', module: 'Customers', time: '08:12' }
+            ];
+
+            const tbody = document.getElementById('activityTable');
+            activities.forEach(a => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${a.actor}</td>
+                        <td>${a.action}</td>
+                        <td>${a.module}</td>
+                        <td class="text-muted">${a.time}</td>
+                    </tr>
+                `;
+            });
+
+            // Init Charts
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#94a3b8' : '#64748b';
+            const gridColor = isDark ? '#334155' : '#e2e8f0';
+
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'],
+                    datasets: [{
+                        label: 'Policies',
+                        data: [140, 210, 185, 240, 310, 280],
+                        backgroundColor: '#1d4ed8',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            max: 350,
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        },
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            const donutCtx = document.getElementById('donutChart').getContext('2d');
+            new Chart(donutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Settled', 'Under Review', 'Approved', 'Submitted'],
+                    datasets: [{
+                        data: [38, 25, 22, 15],
+                        backgroundColor: ['#1d4ed8', '#f59e0b', '#10b981', '#cbd5e1'],
+                        borderWidth: 0,
+                        cutout: '70%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        });
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '/features/auth/login.html';
+        }
+    </script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

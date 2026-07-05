@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Login</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom CSS (Shared) -->
+    <link href="../shared/auth.css" rel="stylesheet">
+        <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="auth-layout container-fluid p-0 h-100">
+        <div class="row g-0 h-100">
+            <!-- Left Side Branding Panel -->
+            <div class="col-lg-5 d-none d-lg-flex flex-column justify-content-between branding-panel position-relative">
+                <!-- Overlay for dark blue tint -->
+                <div class="branding-overlay position-absolute w-100 h-100"></div>
+                
+                <div class="branding-content position-relative z-1 p-5 d-flex flex-column h-100">
+                    <!-- Logo Area -->
+                    <div class="logo-container mb-auto">
+                        <div class="logo d-inline-block">
+                            <img src="../../assets/images/Logo.png" alt="Nexsure Logo" height="55">
+                        </div>
+                    </div>
+                    
+                    <!-- Main Text Area -->
+                    <div class="main-text-area my-auto">
+                        <h1 class="display-3 fw-bold text-white mb-4 italic-serif">Protect What<br>Matters Most</h1>
+                        <p class="fs-5 text-light opacity-75 pe-5">
+                            Sign in to manage your policies, track claims, pay<br>premiums, and secure your future with confidence.
+                        </p>
+                    </div>
+
+                    <!-- Footer Stats -->
+                    <div class="stats-footer mt-auto d-flex gap-4 text-white">
+                        <div class="stat-item d-flex align-items-center">
+                            <span class="status-dot bg-success rounded-circle me-2"></span> 50,000+ Policies
+                        </div>
+                        <div class="stat-item d-flex align-items-center">
+                            <span class="status-dot bg-success rounded-circle me-2"></span> 98% Satisfaction
+                        </div>
+                        <div class="stat-item d-flex align-items-center">
+                            <span class="status-dot bg-success rounded-circle me-2"></span> IRDAI Compliant
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Login Panel -->
+            <div class="col-12 col-lg-7 d-flex align-items-center justify-content-center bg-white auth-panel">
+                <div class="auth-form-container w-100">
+                    <div class="text-center mb-4">
+                        <div class="shield-icon mb-2 mx-auto">
+                            <svg width="56" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#f8fafc" stroke="#1e293b" stroke-width="1"/>
+                                <circle cx="12" cy="10" r="2.5" fill="#1c385c" stroke="none"/>
+                                <path d="M7 16.5c0-1.5 2-3.5 5-3.5s5 2 5 3.5" fill="#1c385c" stroke="none"/>
+                            </svg>
+                        </div>
+                        <p class="fw-semibold text-dark mb-4">NexSure</p>
+                        <h2 class="fw-bold mb-3">Welcome Back!</h2>
+                        <p class="text-muted fs-6 px-4 mb-4">Sign in to manage your policies, track claims, pay premiums, and secure your future.</p>
+                    </div>
+
+                    <form id="loginForm">
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-semibold text-dark fs-6">Email</label>
+                            <div class="input-group custom-input-group">
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                <span class="input-group-text bg-transparent border-start-0">
+                                    <i class="fa-solid fa-envelope text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold text-dark fs-6">Password</label>
+                            <div class="input-group custom-input-group">
+                                <input type="password" class="form-control border-end-0" id="password" placeholder="Enter your password" required>
+                                <span class="input-group-text bg-transparent border-start-0 cursor-pointer" id="togglePassword">
+                                    <i class="fa-solid fa-eye-slash text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mb-4">
+                            <a href="../auth/forgot-password.html" class="text-decoration-none fw-semibold link-primary">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-auth w-100 py-2 fw-semibold fs-6 mb-4 btn-login">Login</button>
+
+                        <div class="divider d-flex align-items-center mb-4">
+                            <hr class="flex-grow-1 text-muted">
+                            <span class="mx-3 text-muted fs-7">or continue with</span>
+                            <hr class="flex-grow-1 text-muted">
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-social">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" width="20"> Google
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center gap-2 btn-social">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" width="20"> LinkedIn
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <span class="text-dark fw-semibold">Don't have an account?</span> 
+                            <a href="../auth/register.html" class="text-decoration-none fw-semibold link-primary ms-1">Create one</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="login.js"></script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

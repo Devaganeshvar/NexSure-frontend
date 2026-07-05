@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Bulk Import</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+    <style>
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--admin-border);
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+        .step {
+            position: relative;
+            z-index: 2;
+            background: var(--admin-bg);
+            padding: 0 1rem;
+            color: var(--admin-text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .step.active {
+            color: var(--admin-dark);
+        }
+        .step-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid var(--admin-border);
+            background: var(--admin-bg);
+        }
+        .step.active .step-circle {
+            border-color: var(--admin-dark);
+            background: var(--admin-dark);
+        }
+        
+        .upload-zone {
+            border: 2px dashed var(--admin-border);
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            background: var(--admin-bg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .upload-zone:hover {
+            background: #f1f5f9;
+            border-color: var(--admin-primary);
+        }
+        
+        .validation-box {
+            border: 1px solid var(--admin-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            background: var(--admin-bg);
+            border-top: 4px solid var(--admin-darker);
+        }
+        
+        .mapped-badge {
+            background-color: #f1f5f9;
+            color: var(--admin-text);
+            padding: 0.3em 1em;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--admin-border);
+        }
+        
+        [data-theme="dark"] .step { background: var(--admin-bg); }
+        [data-theme="dark"] .step-circle { background: var(--admin-bg); border-color: var(--admin-border); }
+        [data-theme="dark"] .step.active .step-circle { background: var(--admin-text); border-color: var(--admin-text); }
+        [data-theme="dark"] .step.active { color: var(--admin-text); }
+        [data-theme="dark"] .upload-zone { background: #0f172a; border-color: var(--admin-border); }
+        [data-theme="dark"] .upload-zone:hover { background: #1e293b; border-color: var(--admin-primary); }
+        [data-theme="dark"] .validation-box { background: #0f172a; border-color: var(--admin-border); border-top-color: #cbd5e1; }
+        [data-theme="dark"] .mapped-badge { background-color: #1e293b; border-color: var(--admin-border); color: var(--admin-text); }
+    </style>
+        <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                Admin &rsaquo; Reports & Audit &rsaquo; Bulk Import
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." onkeypress="handleGlobalSearch(event)">
+            <a href="javascript:void(0)" class="nav-icon" onclick="showAdminToast('No new messages', 'info')">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="fw-medium small">Admin User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Manage</div>
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link">Officers</a>
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link">Claims & Refunds</a>
+            <a href="../../features/content-management/content.html" class="sidebar-link">Content Management</a>
+            
+            <div class="sidebar-section-title">Operations</div>
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link active">Reports & Audit</a>
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link">System Settings</a>
+            <a href="../../features/system/backup.html" class="sidebar-link">Backup & Recovery</a>
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link">Help Center</a>
+            
+            <div class="sidebar-section-title">Account</div>
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="mb-4">
+                <h1 class="admin-page-title mb-1">Bulk Import Workspace</h1>
+                <p class="text-muted">Upload, validate, and import data into the platform.</p>
+            </div>
+            
+            <!-- Stepper -->
+            <div class="stepper" id="stepperContainer">
+                <div class="step active" id="step1">
+                    <div class="step-circle"></div> 1. Upload File
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-circle" style="background: transparent;"></div> 2. Schema Mapping
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-circle" style="background: transparent;"></div> 3. Validate & Preview
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-circle" style="background: transparent;"></div> 4. Run Import
+                </div>
+            </div>
+
+            <!-- Upload Zone -->
+            <div id="step1content">
+                <div class="bg-white p-4 mb-4">
+                    <input type="file" id="fileInput" accept=".csv,.xlsx" style="display: none;" onchange="handleFileUpload(event)">
+                    <div class="upload-zone mb-3" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                        <i class="fa-solid fa-cloud-arrow-up text-muted mb-3" style="font-size: 2rem;"></i>
+                        <h5 class="fw-bold text-dark">Drag & drop your CSV or XLSX file here, or click to browse</h5>
+                        <div class="text-muted small mt-2">Supported schemas: Policyholders, Claims, Officers, Products (Max 50MB)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Validation & Preview Zone -->
+            <div id="step3content" style="display: none;">
+                <div class="bg-white p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center p-3 border rounded">
+                        <div class="d-flex align-items-center gap-2 text-dark fw-medium">
+                            <i class="fa-regular fa-file-csv text-muted"></i>
+                            <span id="selectedFileName">policyholder_list_q2.csv (1.2 MB)</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 fw-medium">Selected</button>
+                    </div>
+                </div>
+
+            <div class="row g-4 mb-5" id="step3row" style="display: none;">
+                <!-- Field Schema Mapping -->
+                <div class="col-lg-8">
+                    <h5 class="fw-bold mb-3 text-dark">Field Schema Mapping</h5>
+                    <div class="bg-white">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr class="bg-primary text-white">
+                                        <th class="bg-transparent text-white" style="border-bottom:none">CSV Column Header</th>
+                                        <th class="bg-transparent text-white" style="border-bottom:none">NexSure Field</th>
+                                        <th class="bg-transparent text-white" style="border-bottom:none">Data Type</th>
+                                        <th class="bg-transparent text-white" style="border-bottom:none">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-muted">first_name</td>
+                                        <td class="text-dark fw-medium">first_name</td>
+                                        <td class="text-muted">String</td>
+                                        <td><span class="mapped-badge">Mapped</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">last_name</td>
+                                        <td class="text-dark fw-medium">last_name</td>
+                                        <td class="text-muted">String</td>
+                                        <td><span class="mapped-badge">Mapped</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">email_addr</td>
+                                        <td class="text-dark fw-medium">email</td>
+                                        <td class="text-muted">String (Email)</td>
+                                        <td><span class="mapped-badge">Mapped</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">mobile_no</td>
+                                        <td class="text-dark fw-medium">phone</td>
+                                        <td class="text-muted">String (Phone)</td>
+                                        <td><span class="mapped-badge">Mapped</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">dob_val</td>
+                                        <td class="text-dark fw-medium">dob</td>
+                                        <td class="text-muted">Date (YYYY-MM-DD)</td>
+                                        <td><span class="mapped-badge">Mapped</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Validation Complete & Errors -->
+                <div class="col-lg-4">
+                    <div class="validation-box mb-4">
+                        <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-square-check text-muted me-2"></i>Validation Complete</h6>
+                        <p class="text-muted small mb-3">488 of 500 rows passed automatic checks.</p>
+                        
+                        <div style="height: 10px; background: #fee2e2; border-radius: 5px; overflow: hidden; display: flex;">
+                            <div style="height: 100%; background: #10b981; width: 97.6%;"></div>
+                            <div style="height: 100%; background: #ef4444; width: 2.4%;"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span class="text-success fw-bold" style="font-size: 0.75rem;">488 Valid Rows</span>
+                            <span class="text-danger fw-bold" style="font-size: 0.75rem;">12 Invalid Rows</span>
+                        </div>
+                    </div>
+                    
+                    <h5 class="fw-bold mb-3 text-dark">Schema Validation Errors (12)</h5>
+                    <div class="bg-white">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr class="bg-primary text-white">
+                                        <th class="bg-transparent text-white" style="border-bottom:none">Row</th>
+                                        <th class="bg-transparent text-white" style="border-bottom:none">Field</th>
+                                        <th class="bg-transparent text-white" style="border-bottom:none">Error Message</th>
+                                        <th class="bg-transparent text-white" style="border-bottom:none">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-muted">42</td>
+                                        <td class="text-dark fw-medium">email</td>
+                                        <td class="text-muted">Invalid email format</td>
+                                        <td class="text-muted">rahul.m@com</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">105</td>
+                                        <td class="text-dark fw-medium">dob</td>
+                                        <td class="text-muted">Must be YYYY-MM-DD</td>
+                                        <td class="text-muted">12/04/1990</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">289</td>
+                                        <td class="text-dark fw-medium">phone</td>
+                                        <td class="text-muted">Must be 10 digits</td>
+                                        <td class="text-muted">98765</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">312</td>
+                                        <td class="text-dark fw-medium">first_name</td>
+                                        <td class="text-muted">Required field</td>
+                                        <td class="text-muted">null</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2 mt-4">
+                        <button class="btn-admin-primary flex-grow-1 py-2" id="importBtn" style="background: var(--admin-darker);" onclick="runImport()">Import 488 Valid Rows</button>
+                        <button class="btn-admin-outline flex-grow-1 py-2" onclick="resetWizard()">Re-upload</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Import History -->
+            <h5 class="fw-bold mb-3 text-dark">Recent Import Execution History</h5>
+            <div class="bg-white">
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th class="bg-transparent text-white" style="border-bottom:none">Import ID</th>
+                                <th class="bg-transparent text-white" style="border-bottom:none">File Name</th>
+                                <th class="bg-transparent text-white" style="border-bottom:none">Target Module</th>
+                                <th class="bg-transparent text-white" style="border-bottom:none">Records</th>
+                                <th class="bg-transparent text-white" style="border-bottom:none">Success Rate</th>
+                                <th class="bg-transparent text-white" style="border-bottom:none">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTable">
+                            <!-- JS Populated -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="admin-pagination pb-4 mt-3" id="paginationControls"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        const imports = [
+            { id: 'IMP-9021', name: 'policyholders_q2.csv', module: 'Policyholders', records: '500', rate: '97.6%', status: 'Success' },
+            { id: 'IMP-8991', name: 'products_v3.csv', module: 'Products', records: '45', rate: '100%', status: 'Success' },
+            { id: 'IMP-8954', name: 'claims_bulk_may.csv', module: 'Claims', records: '120', rate: '88.3%', status: 'Partial Fail' },
+            { id: 'IMP-8920', name: 'officer_batch.xlsx', module: 'Officers', records: '30', rate: '100%', status: 'Success' },
+            { id: 'IMP-8895', name: 'historical_claims.csv', module: 'Claims', records: '2500', rate: '92.1%', status: 'Success' }
+        ];
+
+        let currentPage = 1;
+        const rowsPerPage = 3;
+
+        function renderTable() {
+            const totalPages = Math.ceil(imports.length / rowsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginated = imports.slice(start, end);
+
+            const tbody = document.getElementById('historyTable');
+            tbody.innerHTML = '';
+
+            paginated.forEach(i => {
+                let statusClass = 'status-success';
+                if (i.status === 'Partial Fail') statusClass = 'status-warning';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="text-muted">${i.id}</td>
+                        <td class="text-dark fw-medium">${i.name}</td>
+                        <td class="text-muted">${i.module}</td>
+                        <td>${i.records}</td>
+                        <td class="text-muted">${i.rate}</td>
+                        <td><span class="status-badge ${statusClass}">${i.status}</span></td>
+                    </tr>
+                `;
+            });
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const controls = document.getElementById('paginationControls');
+            let html = `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage - 1})">&lsaquo;</a>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<a href="javascript:void(0)" class="admin-page-link ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
+            }
+            html += `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage + 1}, ${totalPages})">&rsaquo;</a>`;
+            controls.innerHTML = html;
+        }
+
+        function changePage(page, maxPage = null) {
+            if (page < 1 || (maxPage && page > maxPage)) return;
+            currentPage = page;
+            renderTable();
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '/features/auth/login.html';
+        }
+
+        // Wizard Logic
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                showAdminToast('No file selected', 'warning');
+                return;
+            }
+            
+            const validExtensions = ['csv', 'xlsx'];
+            const fileExt = file.name.split('.').pop().toLowerCase();
+            if (!validExtensions.includes(fileExt)) {
+                showAdminToast('Unsupported file format. Please upload CSV or XLSX', 'error');
+                // Reset input
+                event.target.value = '';
+                return;
+            }
+            
+            if (file.size > 50 * 1024 * 1024) {
+                showAdminToast('File exceeds 50MB limit', 'error');
+                event.target.value = '';
+                return;
+            }
+            
+            const sizeStr = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+            document.getElementById('selectedFileName').innerText = `${file.name} (${sizeStr})`;
+            
+            const uploadZone = document.getElementById('uploadZone');
+            const originalHTML = uploadZone.innerHTML;
+            uploadZone.onclick = null; // disable clicks during loading
+            uploadZone.innerHTML = '<div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div><h5 class="fw-bold text-dark">Uploading and validating...</h5>';
+            
+            setTimeout(() => {
+                uploadZone.innerHTML = originalHTML; // restore UI
+                uploadZone.onclick = () => document.getElementById('fileInput').click(); // restore click
+                showAdminToast('File uploaded successfully. Mapping schema...', 'info');
+                
+                // Advance UI
+                document.getElementById('step1content').style.display = 'none';
+                document.getElementById('step3content').style.display = 'block';
+                document.getElementById('step3row').style.display = 'flex';
+                
+                // Stepper update
+                document.getElementById('step2').classList.add('active');
+                document.getElementById('step2').querySelector('.step-circle').style.background = '';
+                
+                setTimeout(() => {
+                    document.getElementById('step3').classList.add('active');
+                    document.getElementById('step3').querySelector('.step-circle').style.background = '';
+                    showAdminToast('Validation complete!', 'success');
+                }, 1000);
+            }, 1500);
+        }
+
+        function resetWizard() {
+            document.getElementById('step1content').style.display = 'block';
+            document.getElementById('step3content').style.display = 'none';
+            document.getElementById('step3row').style.display = 'none';
+            
+            ['step2', 'step3', 'step4'].forEach(s => {
+                const step = document.getElementById(s);
+                step.classList.remove('active');
+                step.querySelector('.step-circle').style.background = 'transparent';
+            });
+        }
+
+        function runImport() {
+            const btn = document.getElementById('importBtn');
+            const originalText = btn.innerText;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Importing...';
+            btn.disabled = true;
+            
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('step4').querySelector('.step-circle').style.background = '';
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                showAdminToast('Import successful!', 'success');
+                
+                // Add to history table
+                const newId = 'IMP-' + Math.floor(Math.random() * 9000 + 1000);
+                const fullFileName = document.getElementById('selectedFileName').innerText;
+                const justName = fullFileName.split(' ')[0];
+                
+                imports.unshift({
+                    id: newId,
+                    name: justName,
+                    module: 'Policyholders',
+                    records: '488',
+                    rate: '100%',
+                    status: 'Success'
+                });
+                
+                renderTable();
+                resetWizard();
+            }, 1500);
+        }
+
+        document.addEventListener('DOMContentLoaded', renderTable);
+    </script>
+    <script src="../../features/shared/profile-sync.js"></script>
+</body>
+</html>

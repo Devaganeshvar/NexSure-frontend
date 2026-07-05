@@ -1,0 +1,52 @@
+.global-policy-context-banner {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #cbd5e1;
+    padding: 0.75rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0; /* Fallback */
+    z-index: 1010; /* Below nav but above content */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+/* If navbar is sticky, offset this banner */
+.navbar.sticky-top + .global-policy-context-banner {
+    top: 60px; /* Approximate height of navbar, adjust dynamically via JS if needed */
+}
+
+.gpc-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+}
+
+.gpc-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.gpc-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+}
+
+.gpc-close-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-size: 1rem;
+    padding: 0.5rem;
+}
+
+.gpc-close-btn:hover {
+    color: #ef4444;
+}

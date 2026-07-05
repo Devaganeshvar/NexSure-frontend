@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Claims & Refund Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <script src="../../../features/shared/auth-guard.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="../dashboard/dashboard.html">
+                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                Admin &rsaquo; Claims & Refunds
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" id="globalSearch" placeholder="Search..." onkeypress="handleGlobalSearch(event)">
+            <a href="javascript:void(0)" class="nav-icon" onclick="showAdminToast('No new messages', 'info')">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="javascript:void(0)" class="nav-icon text-white opacity-75 hover-opacity-100 transition-all ms-2" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            </a>
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:32px;height:32px">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="fw-medium small">Admin User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 8px;">
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile Settings</a></li>
+                    <li><a class="dropdown-item py-2" href="../../features/profile/admin-settings.html"><i class="fa-solid fa-gear me-2 text-muted"></i> System Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="../../features/admin-dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            
+            <div class="sidebar-section-title">Manage</div>
+            <a href="../../features/content-management/products.html" class="sidebar-link">Products</a>
+            <a href="../../features/people-and-audit/officers.html" class="sidebar-link">Officers</a>
+            <a href="../../features/people-and-audit/policyholders.html" class="sidebar-link">Policyholders</a>
+            <a href="../../features/policy-management/claims-refunds.html" class="sidebar-link active">Claims & Refunds</a>
+            <a href="../../features/content-management/content.html" class="sidebar-link">Content Management</a>
+            
+            <div class="sidebar-section-title">Operations</div>
+            <a href="../../features/reports/admin-reports.html" class="sidebar-link">Reports & Audit</a>
+            <a href="../../features/people-and-audit/batch.html" class="sidebar-link">Batch Operations</a>
+            <a href="../../features/profile/admin-settings.html" class="sidebar-link">System Settings</a>
+            <a href="../../features/system/backup.html" class="sidebar-link">Backup & Recovery</a>
+            <a href="../../features/help-center/admin-help.html" class="sidebar-link">Help Center</a>
+            
+            <div class="sidebar-section-title">Account</div>
+            <a href="../../features/profile/admin-profile.html" class="sidebar-link">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="admin-page-title mb-0">Claims & Refund Management</h1>
+                <div class="d-flex gap-3">
+                    <button class="btn-admin-outline" onclick="window.location.href='../system/bulk-import.html'">Bulk Import Claims</button>
+                </div>
+            </div>
+            
+            <div class="admin-tabs">
+                <a href="#" class="admin-tab active" onclick="switchTab(this, 'Claims')">Claims</a>
+                <a href="#" class="admin-tab" onclick="switchTab(this, 'Refunds')">Refunds</a>
+            </div>
+
+            <div class="bg-white p-4">
+                <div class="admin-filter-bar">
+                    <select class="admin-filter-select" id="statusFilter" onchange="renderTable()">
+                        <option value="All">Status: All</option>
+                        <option value="Under Review">Under Review</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Settled">Settled</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="Initiated">Initiated</option>
+                        <option value="Processed">Processed</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                    <select class="admin-filter-select" id="typeFilter" onchange="renderTable()">
+                        <option value="All">Claim Type: All</option>
+                        <option value="Motor">Motor</option>
+                        <option value="Health">Health</option>
+                        <option value="Life">Life</option>
+                    </select>
+                    <input type="text" class="admin-filter-search" id="searchFilter" placeholder="Search policy ID or name..." style="width: 300px;" onkeyup="renderTable()">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead id="tableHeader">
+                            <!-- JS Populated based on tab -->
+                        </thead>
+                        <tbody id="dataTable">
+                            <!-- JS Populated based on tab -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="admin-pagination" id="paginationControls">
+                    <!-- JS Populated -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script>
+        const claims = [
+            { id: 'CLM-1042', name: 'Rahul Mehta', type: 'Health', status: 'Under Review', amount: '—' },
+            { id: 'CLM-1044', name: 'Arjun Kumar', type: 'Life', status: 'Approved', amount: '₹2,00,000' },
+            { id: 'CLM-1039', name: 'Meera Raman', type: 'Motor', status: 'Settled', amount: '₹30,000' },
+            { id: 'CLM-1031', name: 'Priya Sharma', type: 'Health', status: 'Closed', amount: '₹80,000' },
+            { id: 'CLM-1028', name: 'Karan Singh', type: 'Motor', status: 'Submitted', amount: '—' },
+            { id: 'CLM-1027', name: 'Sneha Patel', type: 'Life', status: 'Under Review', amount: '—' }
+        ];
+
+        const refunds = [
+            { id: 'RFD-0041', policy: 'MOT-5587', type: 'Motor', amount: '₹9,800', status: 'Initiated' },
+            { id: 'RFD-0039', policy: 'HLT-3321', type: 'Health', amount: '₹6,500', status: 'Processed' },
+            { id: 'RFD-0038', policy: 'LIF-1190', type: 'Life', amount: '₹12,000', status: 'Failed' },
+            { id: 'RFD-0035', policy: 'MOT-5544', type: 'Motor', amount: '₹4,200', status: 'Processed' },
+            { id: 'RFD-0031', policy: 'HLT-3300', type: 'Health', amount: '₹1,500', status: 'Initiated' }
+        ];
+
+        let currentTab = 'Claims';
+        let currentPage = 1;
+        const rowsPerPage = 5;
+
+        function switchTab(el, tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            currentTab = tab;
+            currentPage = 1;
+            document.getElementById('statusFilter').value = 'All'; // reset filters
+            document.getElementById('searchFilter').value = '';
+            renderTable();
+        }
+
+        function renderTable() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+            
+            let dataList = currentTab === 'Claims' ? claims : refunds;
+
+            let filtered = dataList.filter(item => {
+                const matchStatus = statusFilter === 'All' || item.status === statusFilter;
+                const matchType = typeFilter === 'All' || item.type === typeFilter;
+                
+                let matchSearch = false;
+                if (currentTab === 'Claims') {
+                    matchSearch = item.name.toLowerCase().includes(searchFilter) || item.id.toLowerCase().includes(searchFilter);
+                } else {
+                    matchSearch = item.policy.toLowerCase().includes(searchFilter) || item.id.toLowerCase().includes(searchFilter);
+                }
+                
+                return matchStatus && matchType && matchSearch;
+            });
+
+            const totalPages = Math.ceil(filtered.length / rowsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginated = filtered.slice(start, end);
+
+            const thead = document.getElementById('tableHeader');
+            const tbody = document.getElementById('dataTable');
+            tbody.innerHTML = '';
+
+            if (currentTab === 'Claims') {
+                thead.innerHTML = `
+                    <tr>
+                        <th>Claim No</th>
+                        <th>Policyholder</th>
+                        <th>Status</th>
+                        <th>Settled Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                `;
+                
+                if (paginated.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No claims found.</td></tr>`;
+                } else {
+                    paginated.forEach(c => {
+                        let statusClass = 'status-secondary';
+                        if (c.status === 'Under Review') statusClass = 'status-warning';
+                        if (c.status === 'Approved') statusClass = 'status-success';
+                        if (c.status === 'Settled') statusClass = 'status-info';
+                        if (c.status === 'Submitted') statusClass = 'status-warning';
+                        if (c.status === 'Closed') statusClass = 'status-secondary';
+
+                        let actionHtml = '';
+                        if (c.status === 'Submitted' || c.status === 'Under Review') {
+                            actionHtml = `<a href="#" class="text-success text-decoration-none" onclick="updateStatus('${c.id}', 'Approved')">[Approve]</a>
+                                          <a href="#" class="text-danger text-decoration-none ms-2" onclick="updateStatus('${c.id}', 'Closed')">[Reject]</a>`;
+                        } else if (c.status === 'Approved') {
+                            actionHtml = `<a href="#" class="text-primary text-decoration-none" onclick="updateStatus('${c.id}', 'Settled')">[Settle]</a>`;
+                        } else if (c.status === 'Settled') {
+                            actionHtml = `<a href="#" class="text-muted text-decoration-none" onclick="updateStatus('${c.id}', 'Closed')">[Close]</a>`;
+                        } else {
+                            actionHtml = `<a href="#" class="text-primary text-decoration-none" onclick="showAdminToast('Viewing details')">[View]</a>`;
+                        }
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td class="text-dark fw-medium">${c.id}</td>
+                                <td>${c.name}</td>
+                                <td><span class="status-badge ${statusClass}">${c.status}</span></td>
+                                <td>${c.amount}</td>
+                                <td>${actionHtml}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            } else {
+                thead.innerHTML = `
+                    <tr>
+                        <th>Refund No</th>
+                        <th>Policy</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                `;
+
+                if (paginated.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No refunds found.</td></tr>`;
+                } else {
+                    paginated.forEach(r => {
+                        let statusClass = 'status-secondary';
+                        if (r.status === 'Initiated') statusClass = 'status-warning';
+                        if (r.status === 'Processed') statusClass = 'status-success';
+                        if (r.status === 'Failed') statusClass = 'status-danger';
+
+                        let actionHtml = '';
+                        if (r.status === 'Failed') {
+                            actionHtml = `<a href="#" class="text-primary text-decoration-none" onclick="showAdminToast('Retrying refund ${r.id}')">[Retry]</a>`;
+                        } else {
+                            actionHtml = `<a href="#" class="text-primary text-decoration-none" onclick="showAdminToast('Tracking refund ${r.id}')">[Track]</a>`;
+                        }
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td class="text-dark fw-medium">${r.id}</td>
+                                <td>${r.policy}</td>
+                                <td>${r.amount}</td>
+                                <td><span class="status-badge ${statusClass}">${r.status}</span></td>
+                                <td>${actionHtml}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const controls = document.getElementById('paginationControls');
+            let html = `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage - 1})">&lsaquo;</a>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<a href="javascript:void(0)" class="admin-page-link ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
+            }
+            html += `<a href="javascript:void(0)" class="admin-page-link" onclick="changePage(${currentPage + 1}, ${totalPages})">&rsaquo;</a>`;
+            controls.innerHTML = html;
+        }
+
+        function changePage(page, maxPage = null) {
+            if (page < 1 || (maxPage && page > maxPage)) return;
+            currentPage = page;
+            renderTable();
+        }
+
+        function updateStatus(id, newStatus) {
+            const claim = claims.find(c => c.id === id);
+            if (claim) {
+                claim.status = newStatus;
+                if (newStatus === 'Settled' && claim.amount === '—') {
+                    claim.amount = '₹' + Math.floor(Math.random() * 90000 + 10000);
+                }
+                showAdminToast(`${id} updated to ${newStatus}.`);
+                renderTable();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userRole');
+            window.location.href = '/features/auth/login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', renderTable);
+    </script>
+</body>
+</html>

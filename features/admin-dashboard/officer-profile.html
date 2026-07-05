@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <script src="../../features/shared/theme-manager.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexSure - Officer Profile & Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../assets/css/officer_v2.css" rel="stylesheet">
+    <script src="../../features/shared/auth-guard.js"></script>
+    <script src="../../assets/js/officer.js"></script>
+    <style>
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--officer-card-bg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .nav-tabs-custom .nav-link {
+            color: var(--officer-text-muted);
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .nav-tabs-custom .nav-link:hover {
+            color: var(--officer-primary);
+        }
+        .nav-tabs-custom .nav-link.active {
+            color: var(--officer-primary);
+            border-bottom-color: var(--officer-primary);
+            background: transparent;
+        }
+        .workload-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--officer-border);
+        }
+        .workload-item:last-child {
+            border-bottom: none;
+        }
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--officer-border);
+        }
+        .settings-row:last-child {
+            border-bottom: none;
+        }
+        .form-switch .form-check-input {
+            width: 3rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
+        .form-switch .form-check-input:checked {
+            background-color: var(--officer-primary);
+            border-color: var(--officer-primary);
+        }
+    </style>
+    <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            window.ThemeManager.setTheme(newTheme);
+            updateThemeIcon(newTheme);
+        }
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-toggle-icon');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+                updateThemeIcon(current);
+            }, 100);
+        });
+        window.addEventListener('themeChanged', (e) => {
+            updateThemeIcon(e.detail.theme);
+        });
+    </script>
+
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-5">
+            <a class="navbar-brand" href="officer-dashboard.html">
+                <img src="../../assets/images/Logo.png" alt="NexSure Logo">
+            </a>
+            <div class="breadcrumb-text">
+                <a href="officer-dashboard.html" class="text-decoration-none text-white opacity-75 hover-opacity-100 transition-all">Officer</a> &rsaquo; Profile & Settings
+            </div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-4">
+            <input type="text" class="search-bar" placeholder="Search...">
+            <a href="javascript:void(0)" class="nav-icon" onclick="showOfficerToast('No new notifications', 'info')">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge rounded-pill bg-danger">2</span>
+            </a>
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-white text-decoration-none gap-2 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
+                    <span class="fw-medium small">Gokul K</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-4 p-2">
+                    <li><a class="dropdown-item rounded-2 py-2" href="officer-profile.html"><i class="fa-regular fa-user me-2 text-muted"></i> Profile & Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger rounded-2 py-2" href="javascript:void(0)" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout -->
+    <div class="officer-layout">
+        
+        <!-- Sidebar -->
+        <aside class="officer-sidebar">
+            <a href="officer-dashboard.html" class="sidebar-link">
+                <i class="fa-solid fa-chart-pie me-3 opacity-75"></i> Dashboard
+            </a>
+            
+            <div class="sidebar-section-title">CUSTOMERS</div>
+            <a href="../people-and-audit/customer-management.html" class="sidebar-link">
+                <i class="fa-solid fa-users me-3 opacity-75"></i> Management
+            </a>
+            <a href="../people-and-audit/kyc-verification.html" class="sidebar-link">
+                <i class="fa-solid fa-id-card me-3 opacity-75"></i> KYC Verification
+            </a>
+            
+            <div class="sidebar-section-title">POLICIES</div>
+            <a href="../reports-and-policies/applications.html" class="sidebar-link">
+                <i class="fa-solid fa-file-signature me-3 opacity-75"></i> Applications
+            </a>
+            
+            <div class="sidebar-section-title">CLAIMS</div>
+            <a href="../policy-management/claims-processing.html" class="sidebar-link">
+                <i class="fa-solid fa-file-invoice-dollar me-3 opacity-75"></i> Processing
+            </a>
+            
+            <div class="sidebar-section-title">ACCOUNT</div>
+            <a href="officer-profile.html" class="sidebar-link active">
+                <i class="fa-solid fa-user-shield me-3 opacity-75"></i> Profile Settings
+            </a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link text-danger mt-4">
+                <i class="fa-solid fa-power-off me-3 opacity-75"></i> Logout
+            </a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="officer-content">
+            
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <h1 class="officer-page-title mb-1">Profile & Settings</h1>
+                    <p class="text-muted fw-medium">Manage your personal information, workload alerts, and account security.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                
+                <!-- Left Column: Avatar and Workload -->
+                <div class="col-xl-4">
+                    <!-- Profile Card -->
+                    <div class="officer-stat-card text-center mb-4">
+                        <img src="../../assets/images/LandingPage/landing11.png" alt="Avatar" class="profile-avatar-large mb-3">
+                        <h4 class="fw-bold text-dark mb-1">Gokul K</h4>
+                        <p class="text-primary fw-medium mb-1">Senior Underwriting Officer</p>
+                        <p class="text-muted small mb-3">Employee ID: <span class="fw-bold">OFF-8819</span></p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <button class="btn btn-action-primary w-100" onclick="showOfficerToast('Photo upload triggered', 'info')">Update Photo</button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Right Column: Tabs for Profile Details and Settings -->
+                <div class="col-xl-8">
+                    <div class="officer-stat-card p-0 overflow-visible h-100">
+                        
+                        <!-- Nav Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-custom px-4 pt-3 border-bottom" id="profileTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">Personal Details</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">Account Settings</button>
+                            </li>
+                        </ul>
+
+                        <!-- Tab Content -->
+                        <div class="tab-content p-4 p-md-5" id="profileTabsContent">
+                            
+                            <!-- Personal Details Tab -->
+                            <div class="tab-pane fade show active" id="details" role="tabpanel">
+                                <h5 class="fw-bold text-dark mb-4">Personal Information</h5>
+                                <form onsubmit="event.preventDefault(); showOfficerToast('Profile details updated successfully', 'success');">
+                                    <div class="row g-4 mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingName" value="Gokul K" placeholder="Full Name">
+                                                <label for="floatingName">Full Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="email" class="form-control" id="floatingEmail" value="gokul.k@nexsure.com" placeholder="Email Address">
+                                                <label for="floatingEmail">Email Address</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingPhone" value="+91 98765 43210" placeholder="Mobile Number">
+                                                <label for="floatingPhone">Mobile Number</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingDept" value="Underwriting & Risk" placeholder="Department" disabled>
+                                                <label for="floatingDept">Department</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingJoin" value="14 Jan 2024" placeholder="Date of Joining" disabled>
+                                                <label for="floatingJoin">Date of Joining</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-3">
+                                        <button type="submit" class="btn btn-primary-glow px-5 py-2">Save Changes</button>
+                                        <button type="button" class="btn btn-light px-4 py-2 fw-bold text-muted">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Account Settings Tab -->
+                            <div class="tab-pane fade" id="settings" role="tabpanel">
+                                
+                                <h5 class="fw-bold text-dark mb-4">Security & Authentication</h5>
+                                <div class="settings-row">
+                                    <div>
+                                        <div class="fw-bold text-dark mb-1">Two-Factor Authentication (2FA)</div>
+                                        <div class="text-muted small">Require an OTP when logging into the Officer Portal.</div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" checked>
+                                    </div>
+                                </div>
+                                <div class="settings-row">
+                                    <div>
+                                        <div class="fw-bold text-dark mb-1">Change Password</div>
+                                        <div class="text-muted small">Update your account password regularly to keep it secure.</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-custom px-3 fw-bold" onclick="showOfficerToast('Password reset email sent', 'info')">Update</button>
+                                </div>
+                                
+                                <h5 class="fw-bold text-dark mb-4 mt-5">Officer Notification Preferences</h5>
+                                <div class="settings-row">
+                                    <div>
+                                        <div class="fw-bold text-dark mb-1">New Claim Assignments</div>
+                                        <div class="text-muted small">Receive an email when a new high-value claim is assigned to you.</div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" checked>
+                                    </div>
+                                </div>
+                                <div class="settings-row">
+                                    <div>
+                                        <div class="fw-bold text-dark mb-1">KYC Escalation Alerts</div>
+                                        <div class="text-muted small">Get SMS notifications for urgent KYC re-verifications.</div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox">
+                                    </div>
+                                </div>
+
+                                <h5 class="fw-bold text-dark mb-4 mt-5">Appearance & System</h5>
+                                <div class="settings-row">
+                                    <div>
+                                        <div class="fw-bold text-dark mb-1">Dark Mode</div>
+                                        <div class="text-muted small">Switch the interface to a darker color scheme.</div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Bootstrap JS for Tabs and Dropdowns -->
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
+    
+    <!-- Script to dynamically load workload from mock storage -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const apps = JSON.parse(localStorage.getItem('mockApps') || '[]');
+                const kyc = JSON.parse(localStorage.getItem('mockKyc') || '[]');
+                const claims = JSON.parse(localStorage.getItem('mockClaims') || '[]');
+                
+
+            }, 100);
+        });
+    </script>
+
+    <!-- Dark Mode Theme Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.getElementById('darkModeToggle');
+            
+            // Sync initial state from ThemeManager
+            if(toggle && window.ThemeManager) {
+                const currentTheme = window.ThemeManager.getTheme() === 'system' 
+                    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') 
+                    : window.ThemeManager.getTheme();
+                toggle.checked = currentTheme === 'dark';
+            }
+
+            if(toggle) {
+                toggle.addEventListener('change', (e) => {
+                    const newTheme = e.target.checked ? 'dark' : 'light';
+                    if (window.ThemeManager) {
+                        window.ThemeManager.setTheme(newTheme);
+                        // Also update the navbar icon if it exists
+                        if (typeof updateThemeIcon === 'function') {
+                            updateThemeIcon(newTheme);
+                        }
+                    } else {
+                        document.documentElement.setAttribute('data-bs-theme', newTheme);
+                    }
+                    if (typeof showOfficerToast === 'function') {
+                        showOfficerToast(newTheme === 'dark' ? 'Dark mode enabled' : 'Light mode enabled', 'success');
+                    }
+                });
+            }
+
+            // Keep toggle in sync if theme is changed via the navbar icon
+            window.addEventListener('themeChanged', (e) => {
+                if (toggle) {
+                    toggle.checked = e.detail.theme === 'dark';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
