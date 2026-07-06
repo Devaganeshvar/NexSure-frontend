@@ -49,11 +49,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
                 <img src="../../assets/images/Logo.png" alt="NexSure Logo">
@@ -144,10 +147,6 @@
                     <option value="30">Last 30 Days</option>
                 </select>
             </div>
-            
-            <div class="d-flex justify-content-between align-items-end mb-2">
-                <div id="records-count" class="text-muted fs-6 fw-medium">Loading applications...</div>
-            </div>
 
             <!-- Data Table -->
             <div class="border rounded shadow-sm bg-white">
@@ -169,7 +168,86 @@
             </div>
 
             <!-- Pagination -->
-            <div id="pagination-controls" class="pagination-container">
+            <div id="pagination-controls" class="officer-pagination">
+            </div>
+
+            <!-- Application Review Modal -->
+            <div class="modal fade" id="applicationReviewModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow" style="border-radius: 12px; overflow: hidden;">
+                        <div class="modal-header border-0 bg-light pb-3 pt-4 px-4">
+                            <h5 class="modal-title fw-bold text-dark fs-4">Application Details</h5>
+                            <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body px-4 py-4">
+                            <div class="row g-4">
+                                <div class="col-6">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">App ID</p>
+                                    <p class="fw-medium text-dark mb-0 fs-6" id="modalAppId">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Status</p>
+                                    <div id="modalAppStatus"></div>
+                                </div>
+                                <div class="col-12">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Customer Name</p>
+                                    <p class="fw-bold text-dark mb-0 fs-5" id="modalAppCustomer">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Product</p>
+                                    <p class="fw-medium text-dark mb-0 fs-6" id="modalAppProduct">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Submitted</p>
+                                    <p class="fw-medium text-dark mb-0 fs-6" id="modalAppDate">-</p>
+                                </div>
+                                <div class="col-12">
+                                    <div class="p-3 bg-light rounded-3 d-flex justify-content-between align-items-center mt-2 border">
+                                        <div>
+                                            <p class="text-muted small text-uppercase mb-0 fw-bold">Quoted Premium</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <p class="fw-bold text-dark fs-5 mb-0" id="modalAppPremium">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 px-4 pb-4 pt-0" id="modalAppFooter">
+                            <!-- Populated by JS based on status -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rejection Reason Modal -->
+            <div class="modal fade" id="rejectionReasonModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg rounded-4">
+                        <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
+                            <h5 class="modal-title fw-bold text-danger"><i class="fa-solid fa-triangle-exclamation me-2"></i> Reject Application</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body px-4 py-4">
+                            <p class="text-muted mb-4 small">Please provide a reason for rejecting application <span class="fw-bold text-dark" id="rejectModalAppId"></span>.</p>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-muted">REASON FOR REJECTION <span class="text-danger">*</span></label>
+                                <textarea class="form-control bg-light border-0 shadow-sm" id="rejectReasonText" rows="3" placeholder="Enter the primary reason for rejection..." required></textarea>
+                                <div class="invalid-feedback">A rejection reason is required.</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-muted">ADDITIONAL COMMENTS (OPTIONAL)</label>
+                                <textarea class="form-control bg-light border-0 shadow-sm" id="rejectCommentsText" rows="2" placeholder="Any internal notes or further details..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
+                            <button type="button" class="btn btn-outline-secondary w-100 py-2 fw-medium mb-2" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
+                            <button type="button" class="btn btn-danger w-100 py-2 fw-medium m-0" style="border-radius: 8px;" id="confirmRejectBtn">Confirm Rejection</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </main>
@@ -181,24 +259,23 @@
     <script src="../../features/shared/officer-table.js?v=clean"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const mockData = [
-                { id: 'APP-2281', customer: 'Rahul Mehta', product: 'Motor — 4W', premium: '₹9,800', date: '17 Jun 2026', status: 'Pending' },
-                { id: 'APP-2282', customer: 'Priya Sharma', product: 'Health', premium: '₹6,500', date: '17 Jun 2026', status: 'Pending' },
-                { id: 'APP-2283', customer: 'Arjun Kumar', product: 'Life', premium: '₹12,000', date: '18 Jun 2026', status: 'Pending' },
-                { id: 'APP-2284', customer: 'Meera Raman', product: 'Property', premium: '₹5,000', date: '18 Jun 2026', status: 'Pending' }
-            ];
-            
-            const products = ['Motor — 4W', 'Health', 'Life', 'Property', 'Motor — 2W', 'Travel'];
-            const statuses = ['Pending', 'Approved', 'Rejected'];
-            for(let i=85; i<=135; i++) {
-                mockData.push({
-                    id: `APP-22${i}`,
-                    customer: `Customer ${i}`,
-                    product: products[Math.floor(Math.random() * products.length)],
-                    premium: `₹${Math.floor(Math.random() * 40) + 2},000`,
-                    date: `${Math.floor(Math.random() * 28) + 1} Jun 2026`,
-                    status: statuses[Math.floor(Math.random() * statuses.length)]
-                });
+            let mockData = [];
+            const localApps = localStorage.getItem('mockApps');
+            if (localApps) {
+                mockData = JSON.parse(localApps);
+            } else {
+                const getMockDate = (offset) => {
+                    const d = new Date();
+                    d.setDate(d.getDate() + offset);
+                    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                };
+                mockData = [
+                    { id: 'APP-2281', customer: 'Devaganeshvar', product: 'Motor — 4W', premium: '₹9,800', date: getMockDate(-3), status: 'Pending' },
+                    { id: 'APP-2282', customer: 'Priya Sharma', product: 'Health', premium: '₹6,500', date: getMockDate(-3), status: 'Pending' },
+                    { id: 'APP-2283', customer: 'Arjun Kumar', product: 'Life', premium: '₹12,000', date: getMockDate(-2), status: 'Pending' },
+                    { id: 'APP-2284', customer: 'Meera Raman', product: 'Property', premium: '₹5,000', date: getMockDate(-2), status: 'Pending' }
+                ];
+                localStorage.setItem('mockApps', JSON.stringify(mockData));
             }
 
             let activeTab = 'Pending';
@@ -218,7 +295,7 @@
                 paginationContainerId: 'pagination-controls',
                 searchInputId: 'search-input',
                 filterSelectIds: ['filter-product'],
-                itemsPerPage: 10,
+                itemsPerPage: 5,
                 data: mockData,
                 filterLogic: (item, selects) => {
                     if (item.status !== activeTab) return false;
@@ -237,7 +314,7 @@
                         return `<span class="pill-status text-bg-danger">Rejected</span>`;
                     }},
                     { key: 'date' },
-                    { key: 'actions', render: (row) => row.status === 'Pending' ? '<button class="btn btn-action-primary w-100">Review</button>' : '<button class="btn btn-action-outline w-100">View</button>' }
+                    { key: 'actions', render: (row) => row.status === 'Pending' ? `<button class="btn btn-action-primary w-100" onclick="reviewApplication('${row.id}')">Review</button>` : `<button class="btn btn-action-outline w-100" onclick="reviewApplication('${row.id}')">View</button>` }
                 ]
             });
 
@@ -252,6 +329,234 @@
                     appTable.applyFilters();
                 });
             });
+
+            // Global functions for modal
+            let currentAppModal = null;
+            
+            window.reviewApplication = (id) => {
+                const app = mockData.find(a => a.id === id);
+                if (!app) return;
+
+                document.getElementById('modalAppId').textContent = app.id;
+                document.getElementById('modalAppCustomer').textContent = app.customer;
+                document.getElementById('modalAppProduct').textContent = app.product;
+                document.getElementById('modalAppPremium').textContent = app.premium;
+                document.getElementById('modalAppDate').textContent = app.date;
+
+                let statusHtml = '';
+                if(app.status === 'Pending') statusHtml = `<span class="pill-status pill-pending">Pending</span>`;
+                else if(app.status === 'Approved') statusHtml = `<span class="pill-status pill-approved">Approved</span>`;
+                else statusHtml = `<span class="pill-status text-bg-danger">Rejected</span>`;
+                document.getElementById('modalAppStatus').innerHTML = statusHtml;
+
+                const footer = document.getElementById('modalAppFooter');
+                if (app.status === 'Pending') {
+                    footer.innerHTML = `
+                        <button type="button" class="btn btn-danger w-50 py-2 fw-medium" style="border-radius: 8px;" onclick="openRejectionModal('${app.id}')">Reject</button>
+                        <button type="button" class="btn btn-success w-50 py-2 fw-medium m-0 ms-2" style="border-radius: 8px;" onclick="updateApplicationStatus('${app.id}', 'Approved')">Approve</button>
+                    `;
+                } else {
+                    footer.innerHTML = `
+                        <button type="button" class="btn btn-outline-secondary w-100 py-2 fw-medium" data-bs-dismiss="modal" style="border-radius: 8px;">Close</button>
+                    `;
+                }
+
+                currentAppModal = new bootstrap.Modal(document.getElementById('applicationReviewModal'));
+                currentAppModal.show();
+            };
+
+            let rejectionModalInstance = null;
+            let currentRejectingAppId = null;
+
+            window.openRejectionModal = (id) => {
+                currentRejectingAppId = id;
+                document.getElementById('rejectModalAppId').textContent = id;
+                document.getElementById('rejectReasonText').value = '';
+                document.getElementById('rejectReasonText').classList.remove('is-invalid');
+                document.getElementById('rejectCommentsText').value = '';
+                
+                if (currentAppModal) {
+                    currentAppModal.hide();
+                }
+                
+                rejectionModalInstance = new bootstrap.Modal(document.getElementById('rejectionReasonModal'));
+                rejectionModalInstance.show();
+            };
+
+            document.getElementById('confirmRejectBtn').addEventListener('click', () => {
+                const reasonEl = document.getElementById('rejectReasonText');
+                const reason = reasonEl.value.trim();
+                if (!reason) {
+                    reasonEl.classList.add('is-invalid');
+                    return;
+                }
+                
+                if (rejectionModalInstance) {
+                    rejectionModalInstance.hide();
+                }
+                updateApplicationStatus(currentRejectingAppId, 'Rejected', reason);
+            });
+
+            window.updateApplicationStatus = (id, newStatus, reason = '') => {
+                const app = mockData.find(a => a.id === id);
+                if (app) {
+                    app.status = newStatus;
+                    if (reason) app.rejectionReason = reason;
+                    localStorage.setItem('mockApps', JSON.stringify(mockData));
+                    
+                    if (newStatus === 'Approved') {
+                        // Create policy in central store
+                        const policies = JSON.parse(localStorage.getItem('mockPolicies') || '[]');
+                        const productType = app.product.split(' ')[0] || 'Health';
+                        const prefix = productType.substring(0,3).toUpperCase();
+                        const newPolicyId = prefix + '-' + Math.floor(1000 + Math.random() * 9000);
+                        const newPolicy = {
+                            id: newPolicyId,
+                            type: productType,
+                            status: 'Pending Payment',
+                            coverage: app.premium ? (parseInt(app.premium.replace(/[^0-9]/g, '')) * 100).toString() : '500000',
+                            premium: app.premium ? app.premium.replace(/[^0-9]/g, '') : '5000',
+                            dueDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})
+                        };
+                        policies.unshift(newPolicy);
+                        localStorage.setItem('mockPolicies', JSON.stringify(policies));
+                        
+                        app.generatedPolicyId = newPolicyId;
+                        localStorage.setItem('mockApps', JSON.stringify(mockData)); // Resave with generatedPolicyId
+
+                        // If PolicySync is loaded (though not guaranteed in officer dashboard), also refresh
+                        if (window.PolicySync) {
+                            window.PolicySync.triggerSyncEvent();
+                        }
+
+                        const defaultNotifs = [
+                            {
+                                id: 1,
+                                icon: 'fa-rotate',
+                                iconBg: 'bg-warning',
+                                iconColor: 'text-dark',
+                                title: 'Motor policy renews in 7 days',
+                                body: 'MOT-5587 — Annual premium of ₹9,800 due on 12 Jul 2026.',
+                                time: '2 hours ago',
+                                read: false,
+                                action: '../payment/payments.html',
+                            },
+                            {
+                                id: 2,
+                                icon: 'fa-file-contract',
+                                iconBg: 'bg-primary',
+                                iconColor: 'text-white',
+                                title: 'Claim CLM-1042 moved to Under Review',
+                                body: 'Your motor accident claim is now under officer review.',
+                                time: '5 days ago',
+                                read: false,
+                                action: '../policy-management/claims.html',
+                            },
+                            {
+                                id: 3,
+                                icon: 'fa-id-card',
+                                iconBg: 'bg-danger',
+                                iconColor: 'text-white',
+                                title: 'KYC verification pending',
+                                body: 'Please upload your PAN card to complete KYC verification.',
+                                time: '1 week ago',
+                                read: false,
+                                action: '../kyc/kyc.html',
+                            },
+                        ];
+                        let notifications = [];
+                        const raw = localStorage.getItem('nexsure_notifications');
+                        if (raw) {
+                            notifications = JSON.parse(raw);
+                        } else {
+                            notifications = defaultNotifs;
+                        }
+
+                        const now = new Date();
+                        const newNotif = {
+                            id: 'NOTIF-' + Date.now(),
+                            icon: 'fa-check-circle',
+                            iconBg: 'bg-success',
+                            iconColor: 'text-white',
+                            title: 'Policy Application Approved',
+                            body: `Your policy application has been approved by the Insurance Officer.<br>
+                                   <b>Policy:</b> ${app.product}<br>
+                                   <b>App ID:</b> ${app.id}<br>
+                                   <b>Date:</b> ${now.toLocaleDateString()} ${now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}<br>
+                                   <b>Officer:</b> Insurance Officer<br>
+                                   <b>Status:</b> Approved`,
+                            time: 'Just now',
+                            read: false,
+                            action: '../payment/payments.html'
+                        };
+                        
+                        // Prevent duplicates (though unique by time, we can check if same app was just approved)
+                        const isDuplicate = notifications.some(n => n.body.includes(app.id) && n.title === 'Policy Application Approved');
+                        if (!isDuplicate) {
+                            notifications.unshift(newNotif);
+                            localStorage.setItem('nexsure_notifications', JSON.stringify(notifications));
+                            window.dispatchEvent(new Event('storage'));
+                        }
+                    } else if (newStatus === 'Rejected' && reason) {
+                        let notifications = [];
+                        const raw = localStorage.getItem('nexsure_notifications');
+                        if (raw) {
+                            notifications = JSON.parse(raw);
+                        } else {
+                            notifications = [
+                                {
+                                    id: 1,
+                                    icon: 'fa-rotate',
+                                    iconBg: 'bg-warning',
+                                    iconColor: 'text-dark',
+                                    title: 'Motor policy renews in 7 days',
+                                    body: 'MOT-5587 — Annual premium of ₹9,800 due on 12 Jul 2026.',
+                                    time: '2 hours ago',
+                                    read: false,
+                                    action: '../payment/payments.html',
+                                }
+                            ];
+                        }
+
+                        const now = new Date();
+                        const newNotif = {
+                            id: 'NOTIF-' + Date.now(),
+                            icon: 'fa-times-circle',
+                            iconBg: 'bg-danger',
+                            iconColor: 'text-white',
+                            title: 'Policy Application Rejected',
+                            body: `Your policy application has been rejected by the Insurance Officer.<br>
+                                   <b>Policy:</b> ${app.product}<br>
+                                   <b>App ID:</b> ${app.id}<br>
+                                   <b>Date:</b> ${now.toLocaleDateString()} ${now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}<br>
+                                   <b>Officer:</b> Insurance Officer<br>
+                                   <b>Status:</b> Rejected<br>
+                                   <b>Reason:</b> ${reason}`,
+                            time: 'Just now',
+                            read: false,
+                            action: '../policy-management/my-policies.html'
+                        };
+                        
+                        const isDuplicate = notifications.some(n => n.body.includes(app.id) && n.title === 'Policy Application Rejected');
+                        if (!isDuplicate) {
+                            notifications.unshift(newNotif);
+                            localStorage.setItem('nexsure_notifications', JSON.stringify(notifications));
+                            window.dispatchEvent(new Event('storage'));
+                        }
+                    }
+
+                    appTable.applyFilters();
+                    updateTabCounts();
+                    if (currentAppModal) {
+                        currentAppModal.hide();
+                    }
+                    if (typeof showOfficerToast === 'function') {
+                        showOfficerToast(`Application ${id} has been ${newStatus.toLowerCase()}.`);
+                    } else if (typeof showToast === 'function') {
+                        showToast(`Application ${id} has been ${newStatus.toLowerCase()}.`);
+                    }
+                }
+            };
         });
     </script>
     <script src="../../assets/js/officer.js"></script>
@@ -283,5 +588,6 @@
         </div>
     </div>
 
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

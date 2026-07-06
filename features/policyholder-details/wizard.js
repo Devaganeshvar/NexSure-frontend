@@ -4,43 +4,20 @@ let currentStep = 1;
 const totalSteps = 6;
 
 function updateStepper() {
-    // Update progress bar width
     const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
     document.getElementById('stepperProgress').style.width = `${progress}%`;
 
-    // Update icons
     for (let i = 1; i <= totalSteps; i++) {
         const stepEl = document.querySelector(`.step[data-step="${i}"] .step-icon`);
-        
-        // Remove all classes first
         stepEl.classList.remove('step-active', 'step-completed');
-        stepEl.innerHTML = i; // Default to number
+        stepEl.innerHTML = i; 
 
         if (i < currentStep) {
             stepEl.classList.add('step-completed');
-            stepEl.innerHTML = '<i class="fa-solid fa-check"></i>'; // Checkmark
+            stepEl.innerHTML = '<i class="fa-solid fa-check"></i>';
         } else if (i === currentStep) {
             stepEl.classList.add('step-active');
         }
-    }
-}
-
-function showStep(stepNum) {
-    // Hide all steps
-    document.querySelectorAll('.wizard-step').forEach(el => el.classList.add('d-none'));
-    
-    // Show target step
-    document.getElementById(`step${stepNum}`).classList.remove('d-none');
-    
-    // Smooth scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function nextStep(current) {
-    if (current < totalSteps) {
-        currentStep = current + 1;
-        updateStepper();
-        showStep(currentStep);
     }
 }
 
@@ -61,12 +38,51 @@ function showStep(stepNum) {
     }
 }
 
+function nextStep(current) {
+    if (current === 5) {
+        submitApplication();
+    }
+    if (current < totalSteps) {
+        currentStep = current + 1;
+        updateStepper();
+        showStep(currentStep);
+    }
+}
+
 function prevStep(current) {
     if (current > 1) {
         currentStep = current - 1;
         updateStepper();
         showStep(currentStep);
     }
+}
+
+function submitApplication() {
+    const apps = JSON.parse(localStorage.getItem('mockApps') || '[]');
+    const profile = JSON.parse(localStorage.getItem('nexsure_customer_profile') || '{}');
+    const customerName = profile.name || 'Devaganeshvar';
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('product');
+    let productName = 'Comprehensive Insurance';
+    
+    if (productId) {
+        const products = JSON.parse(localStorage.getItem('mockProducts') || '[]');
+        const prod = products.find(p => p.id === productId);
+        if (prod) productName = prod.name;
+    }
+    
+    const newApp = {
+        id: 'APP-' + Math.floor(1000 + Math.random() * 9000),
+        customer: customerName,
+        product: productName,
+        premium: '₹20,648',
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        status: 'Pending'
+    };
+    
+    apps.push(newApp);
+    localStorage.setItem('mockApps', JSON.stringify(apps));
 }
 
 // Selection logic
@@ -150,7 +166,6 @@ function toggleRider(element) {
 }
 
 function calculateRiderTotal() {
-    // Just count active cards across all visible tabs for mock purposes
     const activeRiders = document.querySelectorAll('#riderTabsContent .active-select').length;
     const pricePerRider = 500;
     const total = activeRiders * pricePerRider;
@@ -160,39 +175,28 @@ function calculateRiderTotal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize stepper
     updateStepper();
     
-    // Render mock riders
     renderRiders('healthRiderGrid', healthRiders);
     renderRiders('motorRiderGrid', motorRiders);
     renderRiders('propertyRiderGrid', propertyRiders);
     renderRiders('travelRiderGrid', travelRiders);
-    
-    // Initial calculation
-    calculateRiderTotal();
-    
-    // Custom Sum Insured focus logic
-    const customSumInput = document.getElementById('customSum');
-    if(customSumInput) {
-        customSumInput.addEventListener('focus', function() {
-            document.querySelectorAll('.cover-select').forEach(el => el.classList.remove('active-select'));
-            this.closest('.card').classList.add('border-primary');
-        });
-    
-        customSumInput.addEventListener('blur', function() {
-            this.closest('.card').classList.remove('border-primary');
-        });
-    }
 });
 
+let selectedTypes = [];
+
+function toggleInsuranceType(element) {
+    element.classList.toggle('active-select');
+    
+    const type = element.getAttribute('data-type');
+    if (element.classList.contains('active-select')) {
+        if (!selectedTypes.includes(type)) selectedTypes.push(type);
+    } else {
+        selectedTypes = selectedTypes.filter(t => t !== type);
+    }
+}
 
 function updateRiderTabs() {
-    // 1. Get selected insurance types from Step 1
-    const selectedCards = document.querySelectorAll('#step1 .select-card.active-select');
-    const selectedTypes = Array.from(selectedCards).map(card => card.getAttribute('data-type'));
-    
-    // 2. Hide all tabs
     const allTabs = document.querySelectorAll('#riderTabs .nav-item');
     allTabs.forEach(tab => tab.style.display = 'none');
     
@@ -202,7 +206,6 @@ function updateRiderTabs() {
     const navLinks = document.querySelectorAll('#riderTabs .nav-link');
     navLinks.forEach(link => link.classList.remove('active'));
 
-    // 3. Determine which tabs to show based on selected types
     let firstTabToShow = null;
     let firstPaneToShow = null;
 
@@ -247,12 +250,10 @@ function updateRiderTabs() {
         }
     }
 
-    // 4. Activate the first visible tab
     if (firstTabToShow && firstPaneToShow) {
         firstTabToShow.classList.add('active');
         firstPaneToShow.classList.add('show', 'active');
     } else {
-        // Fallback if none selected, show health
         const tab = document.getElementById('health-tab');
         if (tab) {
             tab.parentElement.style.display = 'block';
@@ -260,4 +261,10 @@ function updateRiderTabs() {
             document.getElementById('health-riders').classList.add('show', 'active');
         }
     }
+}
+
+function renderNominees() {
+}
+
+function updateReview() {
 }

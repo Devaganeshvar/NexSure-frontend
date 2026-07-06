@@ -3,30 +3,65 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 1. DUMMY DATA SETS
     // ==========================================
+    const policies = window.PolicySync ? window.PolicySync.getPolicies() : [];
+    const payments = JSON.parse(localStorage.getItem('mockPaymentHistory') || '[]');
+    const claims = JSON.parse(localStorage.getItem('mockClaims') || '[]');
+
     const datasets = {
-        policy: [
-            { id: 'HLT-3321', product: 'Health Insurance Standard', sum: '₹5,00,000', premium: '₹8,450', status: 'Active', expiry: '30 Jun 2026', type: 'Health', year: '2026' },
-            { id: 'MOT-5587', product: 'Motor Private Car', sum: '₹4,20,000', premium: '₹12,300', status: 'Active', expiry: '12 Sep 2026', type: 'Motor', year: '2026' },
-            { id: 'LIF-1190', product: 'Term Life Protection', sum: '₹1,00,00,000', premium: '₹18,200', status: 'Active', expiry: '15 Oct 2026', type: 'Life', year: '2026' },
-            { id: 'MOT-1122', product: 'Two Wheeler Comprehensive', sum: '₹85,000', premium: '₹1,200', status: 'Expired', expiry: '05 Jan 2025', type: 'Motor', year: '2025' }
-        ],
-        payment: [
-            { id: 'INV-8891', date: '12 Jan 2026', policy: 'MOT-5587', amount: '₹12,300', method: 'Credit Card', status: 'Paid', year: '2026' },
-            { id: 'INV-8892', date: '05 Feb 2026', policy: 'HLT-3321', amount: '₹8,450', method: 'UPI', status: 'Paid', year: '2026' },
-            { id: 'INV-8893', date: '20 Mar 2026', policy: 'LIF-1190', amount: '₹18,200', method: 'Net Banking', status: 'Pending', year: '2026' },
-            { id: 'INV-7741', date: '15 Dec 2025', policy: 'MOT-1122', amount: '₹1,200', method: 'Debit Card', status: 'Paid', year: '2025' }
-        ],
-        claim: [
-            { id: 'CLM-901', policy: 'HLT-3321', date: '10 Feb 2026', amount: '₹45,000', status: 'Approved', payout: '₹45,000', year: '2026' },
-            { id: 'CLM-902', policy: 'MOT-5587', date: '22 Mar 2026', amount: '₹12,500', status: 'In Progress', payout: '₹0', year: '2026' },
-            { id: 'CLM-850', policy: 'MOT-1122', date: '14 Nov 2025', amount: '₹8,000', status: 'Rejected', payout: '₹0', year: '2025' }
-        ],
-        renewal: [
-            { id: 'HLT-3321', product: 'Health Insurance Standard', premium: '₹8,450', due: '30 Jun 2026', grace: '30 Jul 2026', status: 'Upcoming', type: 'Health', year: '2026' },
-            { id: 'MOT-5587', product: 'Motor Private Car', premium: '₹12,300', due: '12 Sep 2026', grace: '12 Oct 2026', status: 'Upcoming', type: 'Motor', year: '2026' },
-            { id: 'LIF-1190', product: 'Term Life Protection', premium: '₹18,200', due: '15 Oct 2026', grace: '14 Nov 2026', status: 'Upcoming', type: 'Life', year: '2026' },
-            { id: 'MOT-1122', product: 'Two Wheeler Comprehensive', premium: '₹1,200', due: '05 Jan 2025', grace: '05 Feb 2025', status: 'Overdue', type: 'Motor', year: '2025' }
-        ]
+        policy: policies.map(p => {
+            const yearMatch = (p.dueDate || '').match(/\d{4}/);
+            const year = yearMatch ? yearMatch[0] : new Date().getFullYear().toString();
+            return {
+                id: p.id,
+                product: p.type + ' Insurance',
+                sum: '₹' + p.coverage,
+                premium: '₹' + p.premium,
+                status: p.status,
+                expiry: p.dueDate || '-',
+                type: p.type.split(' ')[0], // Life, Motor, Health
+                year: year
+            };
+        }),
+        payment: payments.map(pmt => {
+            const yearMatch = (pmt.date || '').match(/\d{4}/);
+            const year = yearMatch ? yearMatch[0] : new Date().getFullYear().toString();
+            return {
+                id: pmt.id,
+                date: pmt.date,
+                policy: pmt.policy,
+                amount: pmt.amount,
+                method: pmt.mode,
+                status: pmt.status === 'Successful' ? 'Paid' : pmt.status,
+                year: year
+            };
+        }),
+        claim: claims.map(c => {
+            const yearMatch = (c.date || '').match(/\d{4}/);
+            const year = yearMatch ? yearMatch[0] : new Date().getFullYear().toString();
+            return {
+                id: c.id,
+                policy: c.policyId || 'Unknown',
+                date: c.date,
+                amount: c.amount,
+                status: c.status,
+                payout: c.status === 'Settled' || c.status === 'Closed' ? c.amount : '₹0',
+                year: year
+            };
+        }),
+        renewal: policies.filter(p => p.status === 'Active' || p.status === 'Expired').map(p => {
+            const yearMatch = (p.dueDate || '').match(/\d{4}/);
+            const year = yearMatch ? yearMatch[0] : new Date().getFullYear().toString();
+            return {
+                id: p.id,
+                product: p.type + ' Insurance',
+                premium: '₹' + p.premium,
+                due: p.dueDate,
+                grace: p.dueDate, // Mock grace period same as due date for now
+                status: p.status === 'Active' ? 'Upcoming' : 'Overdue',
+                type: p.type.split(' ')[0],
+                year: year
+            };
+        })
     };
 
     let currentReport = 'policy';

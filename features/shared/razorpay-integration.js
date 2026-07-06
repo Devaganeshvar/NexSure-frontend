@@ -57,7 +57,7 @@ window.initiateRazorpayPayment = function(amount, policyId, description, success
             }
         },
         "prefill": {
-            "name": "Rahul Mehta",
+            "name": "Devaganeshvar",
             "email": "rahul.m@example.com",
             "contact": "9876543210"
         },

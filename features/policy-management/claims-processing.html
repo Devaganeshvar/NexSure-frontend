@@ -49,11 +49,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
                 <img src="../../assets/images/Logo.png" alt="NexSure Logo">
@@ -161,12 +164,9 @@
             
             </div>
 
-            <!-- Pagination and Counts -->
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <div id="records-count" class="text-muted fs-6 fw-medium">Loading records...</div>
-                <div id="pagination-controls" class="pagination-container mt-0">
-                    <!-- Populated by JS -->
-                </div>
+            <!-- Pagination -->
+            <div id="pagination-controls" class="officer-pagination">
+                <!-- Populated by JS -->
             </div>
 
 
@@ -189,7 +189,7 @@
                     paginationContainerId: 'pagination-controls',
                     searchInputId: 'search-input',
                     filterSelectIds: ['filter-status', 'filter-date'],
-                    itemsPerPage: 6,
+                    itemsPerPage: 5,
                     data: claimsData,
                     filterLogic: (item, selects) => {
                         const statusF = selects[0] ? selects[0].value : '';
@@ -215,9 +215,14 @@
                             const badge = getBadgeClass(row.status);
                             return `<span class="status-badge ${badge}">${row.status}</span>`;
                         }},
-                        { key: 'actions', render: (row) => `
-                            <button class="btn btn-sm btn-outline-primary fw-bold px-3" data-bs-toggle="modal" data-bs-target="#actionModal">Review</button>
-                        `}
+                        { key: 'actions', render: (row) => {
+                            if (row.status === 'Submitted' || row.status === 'Under Review') {
+                                return `<button class="btn btn-sm btn-outline-primary fw-bold px-3" data-bs-toggle="modal" data-bs-target="#actionModal">Review</button>`;
+                            } else {
+                                const isRejected = row.status === 'Rejected';
+                                return `<button class="btn btn-sm btn-outline-secondary fw-bold px-3" onclick="document.getElementById('claim-rejection-reason-box').style.display = '${isRejected ? 'block' : 'none'}'" data-bs-toggle="modal" data-bs-target="#viewClaimModal">View Details</button>`;
+                            }
+                        }}
                     ]
                 });
 
@@ -277,5 +282,37 @@
         </div>
     </div>
 
+    <!-- View Claim Modal -->
+    <div class="modal fade" id="viewClaimModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
+                    <h5 class="modal-title fw-bold">Claim Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-4 py-4 text-center">
+                    <div id="claim-rejection-reason-box" class="alert alert-danger text-start mb-4" style="display: none;">
+                        <h6 class="fw-bold mb-1"><i class="fa-solid fa-triangle-exclamation me-2"></i>Rejection Reason</h6>
+                        <p class="mb-0 small">The submitted invoices lack the authorized hospital seal. Please review and provide valid documents.</p>
+                    </div>
+                    <div class="p-4 bg-light rounded-3 border mb-3">
+                        <i class="fa-solid fa-file-invoice-dollar fs-1 text-success mb-2"></i>
+                        <h6 class="fw-bold mb-1">Claim_Form.pdf</h6>
+                        <span class="text-muted small">Processed</span>
+                    </div>
+                    <div class="p-4 bg-light rounded-3 border">
+                        <i class="fa-solid fa-file-prescription fs-1 text-primary mb-2"></i>
+                        <h6 class="fw-bold mb-1">Medical_Bills.pdf</h6>
+                        <span class="text-muted small">Processed</span>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
+                    <button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

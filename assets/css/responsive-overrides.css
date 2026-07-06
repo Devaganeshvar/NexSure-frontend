@@ -1,0 +1,96 @@
+/* responsive-overrides.css - Additive responsive layer */
+
+/* Global Sticky Navbar Enforcement */
+.dashboard-nav, .admin-navbar, .officer-navbar, .navbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1030 !important;
+}
+
+/* Ensure smooth transitions for sidebars */
+.admin-sidebar, .officer-sidebar {
+    transition: left 0.3s ease, transform 0.3s ease;
+}
+
+/* Base Hamburger button styling */
+.mobile-nav-toggler {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--bs-body-color, #333);
+    cursor: pointer;
+    padding: 0.25rem 0.75rem;
+}
+[data-theme="dark"] .mobile-nav-toggler {
+    color: #e2e8f0;
+}
+
+/* Mobile Overlay */
+.mobile-sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 1030;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.mobile-sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+@media (max-width: 991px) {
+    /* Show togglers on mobile */
+    .mobile-nav-toggler {
+        display: block !important;
+    }
+
+    /* Admin/Officer Sidebar Off-Canvas */
+    .admin-sidebar, .officer-sidebar {
+        position: fixed !important;
+        top: 0;
+        left: -300px;
+        height: 100vh;
+        z-index: 1040;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    
+    .admin-sidebar.sidebar-open, .officer-sidebar.sidebar-open {
+        left: 0 !important;
+    }
+
+    /* Adjust main content areas to take full width */
+    .admin-content, .officer-content, .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Force tables to be horizontally scrollable to prevent layout breaks */
+    .table-responsive, .table-card, .bg-white {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        min-width: 600px; /* Ensures tables don't squish too much */
+    }
+
+    /* Fix sticky navbars taking too much space or overlapping incorrectly */
+    .dashboard-nav, .admin-navbar, .officer-navbar {
+        flex-wrap: wrap !important;
+    }
+}
+
+/* Global override to ensure dashboard nav links (like 'More' dropdown) stay visible when active/hovered */
+.dashboard-nav .nav-link.show, 
+.dashboard-nav .nav-link:focus, 
+.dashboard-nav .nav-link:hover {
+    color: #fff !important;
+}

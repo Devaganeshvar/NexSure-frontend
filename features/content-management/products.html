@@ -48,11 +48,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="../dashboard/dashboard.html">
                 <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
@@ -125,7 +128,8 @@
             </div>
             
             <div class="admin-tabs">
-                <a href="#" class="admin-tab active" onclick="switchTab(this, 'Life')">Life</a>
+                <a href="#" class="admin-tab active" onclick="switchTab(this, 'All')">All</a>
+                <a href="#" class="admin-tab" onclick="switchTab(this, 'Life')">Life</a>
                 <a href="#" class="admin-tab" onclick="switchTab(this, 'Motor')">Motor</a>
                 <a href="#" class="admin-tab" onclick="switchTab(this, 'Health')">Health</a>
                 <a href="#" class="admin-tab" onclick="switchTab(this, 'Property')">Property</a>
@@ -195,8 +199,16 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small fw-medium">Base Premium (e.g. ₹5,000/yr)</label>
-                            <input type="text" class="form-control" id="newProductPremium" required>
+                            <label class="form-label text-muted small fw-medium">Base Premium Price (Numeric e.g. 5000)</label>
+                            <input type="number" class="form-control" id="newProductPremium" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-medium">Description</label>
+                            <textarea class="form-control" id="newProductDesc" rows="2" placeholder="Product description..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-medium">Features (comma separated)</label>
+                            <input type="text" class="form-control" id="newProductFeatures" placeholder="Feature 1, Feature 2">
                         </div>
                         <div class="mb-4">
                             <label class="form-label text-muted small fw-medium">Status</label>
@@ -265,15 +277,12 @@
         ];
 
         let products = [];
-        const storedProducts = localStorage.getItem('nexsure_products_v2');
+        const storedProducts = localStorage.getItem('mockProducts');
         if (storedProducts) {
             products = JSON.parse(storedProducts);
-        } else {
-            products = [...initialProducts];
-            localStorage.setItem('nexsure_products_v2', JSON.stringify(products));
         }
 
-        let currentCategory = 'Life';
+        let currentCategory = 'All';
         let currentPage = 1;
         const rowsPerPage = 6;
 
@@ -290,8 +299,10 @@
             const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
             
             let filtered = products.filter(p => {
-                const matchCategory = p.category === currentCategory || currentCategory === 'All';
-                const matchStatus = statusFilter === 'All' || p.status === statusFilter;
+                const pCategory = p.type || p.category;
+                const matchCategory = pCategory === currentCategory || currentCategory === 'All';
+                const pStatus = p.status || 'Active';
+                const matchStatus = statusFilter === 'All' || pStatus === statusFilter;
                 const matchSearch = p.name.toLowerCase().includes(searchFilter);
                 return matchCategory && matchStatus && matchSearch;
             });
@@ -318,10 +329,10 @@
                     tbody.innerHTML += `
                         <tr>
                             <td class="text-dark fw-medium">${p.name}</td>
-                            <td>${p.category}</td>
-                            <td>${p.premium}</td>
-                            <td><span class="status-badge ${statusClass}">${p.status}</span></td>
-                            <td class="text-muted">${p.updated}</td>
+                            <td>${p.type || p.category}</td>
+                            <td>₹${(p.price || 0).toLocaleString('en-IN')}/yr</td>
+                            <td><span class="status-badge ${statusClass}">${p.status || 'Active'}</span></td>
+                            <td class="text-muted">${p.updated || 'Just now'}</td>
                             <td>
                                 <a href="#" class="text-primary text-decoration-none" onclick="openEditModal('${p.name}')">[Edit]</a>
                                 ${actionBtn}
@@ -408,9 +419,11 @@
             document.getElementById('editOriginalName').value = product.name;
             
             document.getElementById('newProductName').value = product.name;
-            document.getElementById('newProductCategory').value = product.category;
-            document.getElementById('newProductPremium').value = product.premium;
-            document.getElementById('newProductStatus').value = product.status;
+            document.getElementById('newProductCategory').value = product.type || product.category;
+            document.getElementById('newProductPremium').value = product.price;
+            document.getElementById('newProductDesc').value = product.description || '';
+            document.getElementById('newProductFeatures').value = (product.features || []).join(', ');
+            document.getElementById('newProductStatus').value = product.status || 'Active';
             
             const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
             modal.show();
@@ -422,26 +435,48 @@
             const originalName = document.getElementById('editOriginalName').value;
             const name = document.getElementById('newProductName').value;
             const category = document.getElementById('newProductCategory').value;
-            const premium = document.getElementById('newProductPremium').value;
+            const price = document.getElementById('newProductPremium').value;
+            const desc = document.getElementById('newProductDesc').value;
+            const featuresStr = document.getElementById('newProductFeatures').value;
             const status = document.getElementById('newProductStatus').value;
             
+            const features = featuresStr.split(',').map(f => f.trim()).filter(f => f);
+            
+            const imgMap = {
+                'Life': '../../assets/images/LandingPage/landing1.png',
+                'Health': '../../assets/images/LandingPage/landing2.png',
+                'Motor': '../../assets/images/LandingPage/landing3.png',
+                'Property': '../../assets/images/LandingPage/landing4.png',
+                'Travel': '../../assets/images/LandingPage/landing5.png'
+            };
+            const image = imgMap[category] || imgMap['Life'];
+
             if (originalName) {
                 // Edit existing
                 const index = products.findIndex(p => p.name === originalName);
                 if (index !== -1) {
                     products[index].name = name;
-                    products[index].category = category;
-                    products[index].premium = premium;
+                    products[index].type = category;
+                    products[index].category = category; // fallback for ui
+                    products[index].price = parseInt(price);
+                    products[index].description = desc;
+                    products[index].features = features;
                     products[index].status = status;
+                    products[index].image = products[index].image || image;
                     products[index].updated = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
                     showAdminToast(`${name} updated successfully!`, 'success');
                 }
             } else {
                 // Add new
                 const newProduct = {
+                    id: 'PROD-' + Date.now(),
                     name: name,
+                    type: category,
                     category: category,
-                    premium: premium,
+                    price: parseInt(price),
+                    description: desc,
+                    features: features,
+                    image: image,
                     status: status,
                     updated: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
                 };
@@ -449,7 +484,7 @@
                 showAdminToast(`${name} added successfully!`, 'success');
             }
             
-            localStorage.setItem('nexsure_products_v2', JSON.stringify(products));
+            localStorage.setItem('mockProducts', JSON.stringify(products));
             
             // Switch to the correct category tab
             document.querySelectorAll('.admin-tab').forEach(t => {
@@ -470,6 +505,24 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Load products from localStorage again since profile-sync.js might have just initialized them
+            const stored = localStorage.getItem('mockProducts');
+            if (stored) {
+                products = JSON.parse(stored);
+            }
+            // If somehow products is still empty (e.g. from a previous bad save), let's clear it and force a reload if needed
+            if (products.length === 0) {
+                localStorage.removeItem('mockProducts');
+                if (typeof initGlobalDB === 'function') {
+                    initGlobalDB();
+                    products = JSON.parse(localStorage.getItem('mockProducts') || '[]');
+                }
+            }
+            // Auto-inject Travel data if missing (so the user sees it immediately without clearing cache)
+            if (!products.some(p => p.type === 'Travel' || p.category === 'Travel')) {
+                products.push({ id: 'PROD-5', name: 'Global Explorer Premium', type: 'Travel', category: 'Travel', price: 3500, description: 'Complete cover for international travel and holidays.', features: ['Flight delay cover', 'Medical emergency cover', 'Loss of baggage'], status: 'Active', image: '../../assets/images/LandingPage/landing5.png', updated: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) });
+                localStorage.setItem('mockProducts', JSON.stringify(products));
+            }
             if (window.DataStore) {
                 products = window.DataStore.getProducts();
             }
@@ -477,5 +530,6 @@
         });
     </script>
     <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

@@ -49,11 +49,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
                 <img src="../../assets/images/Logo.png" alt="NexSure Logo">
@@ -189,8 +192,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="report-tab-card" onclick="switchReportTab('Dashboard Summary', this)">
-                        Dashboard Summary
+                    <div class="report-tab-card" onclick="switchReportTab('Revenue Report', this)">
+                        Revenue Report
                     </div>
                 </div>
             </div>
@@ -221,19 +224,29 @@
 
             <!-- Bottom Controls -->
             <div class="d-flex mb-5 gap-3">
-                <select class="filter-select">
-                    <option>Date Range &blacktriangledown;</option>
+                <select class="filter-select" id="filter-date" onchange="applyFilters()">
+                    <option value="all">Date Range (All)</option>
+                    <option value="7">Last 7 Days</option>
+                    <option value="30" selected>Last 30 Days</option>
+                    <option value="90">Last 90 Days</option>
                 </select>
-                <select class="filter-select">
-                    <option>Product &blacktriangledown;</option>
+                <select class="filter-select" id="filter-product" onchange="applyFilters()">
+                    <option value="all">Product (All)</option>
+                    <option value="motor">Motor</option>
+                    <option value="health">Health</option>
+                    <option value="life">Life</option>
+                    <option value="property">Property</option>
                 </select>
-                <select class="filter-select">
-                    <option>Status &blacktriangledown;</option>
+                <select class="filter-select" id="filter-status" onchange="applyFilters()">
+                    <option value="all">Status (All)</option>
+                    <option value="active">Active/Approved</option>
+                    <option value="pending">Pending</option>
+                    <option value="inactive">Inactive/Rejected</option>
                 </select>
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-5 pt-3">
-                <div class="text-muted fs-5">
+                <div class="text-muted fs-5" id="records-count">
                     142 records match current filters
                 </div>
                 <div class="d-flex gap-3">
@@ -264,32 +277,59 @@
                 max: 100,
                 data: [20, 45, 30, 85, 60, 40, 50]
             },
-            'Dashboard Summary': {
-                title: 'Overall Revenue ($k) — Last 30 Days',
+            'Revenue Report': {
+                title: 'Overall Revenue (₹k) — Last 30 Days',
                 max: 300,
                 data: [120, 150, 200, 180, 250, 280, 220]
             }
         };
 
+        let currentTab = 'Policy Report';
+
         function switchReportTab(tabName, element) {
-            document.querySelectorAll('.report-tab-card').forEach(e => e.classList.remove('active'));
-            if(element) element.classList.add('active');
-            
-            const info = reportData[tabName];
+            if(element) {
+                document.querySelectorAll('.report-tab-card').forEach(e => e.classList.remove('active'));
+                element.classList.add('active');
+            }
+            currentTab = tabName;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const info = reportData[currentTab];
             if(!info) return;
 
+            const dateFilter = document.getElementById('filter-date').value;
+            const productFilter = document.getElementById('filter-product').value;
+            const statusFilter = document.getElementById('filter-status').value;
+
+            let multiplier = 1.0;
+            if(dateFilter === '7') multiplier *= 0.25;
+            if(dateFilter === '90') multiplier *= 2.5;
+
+            if(productFilter !== 'all') multiplier *= 0.35;
+            if(statusFilter !== 'all') multiplier *= 0.6;
+
+            // Scramble data naturally
+            const filteredData = info.data.map(v => Math.max(0, Math.floor(v * multiplier * (0.8 + (Math.random() * 0.4)))));
+            
+            let max = info.max;
+            if(multiplier < 0.5) max = Math.ceil(info.max * 0.5);
+            if(multiplier > 1.5) max = Math.ceil(info.max * 2.5);
+            max = Math.ceil(max / 10) * 10;
+            if(max < 10) max = 10;
+
             document.getElementById('chart-title').textContent = info.title;
-            document.getElementById('y-axis-max').textContent = info.max;
-            document.getElementById('y-axis-mid').textContent = Math.round(info.max / 2);
+            document.getElementById('y-axis-max').textContent = max;
+            document.getElementById('y-axis-mid').textContent = Math.round(max / 2);
 
             const container = document.getElementById('chart-bars-container');
             container.innerHTML = '';
             
-            // The chart height is roughly 240px max for the bar
             const maxBarHeight = 240;
 
-            info.data.forEach((val, index) => {
-                const heightPx = Math.max((val / info.max) * maxBarHeight, 5); // Ensure min height
+            filteredData.forEach((val, index) => {
+                const heightPx = Math.max((val / max) * maxBarHeight, 5);
                 const html = `
                     <div class="text-center z-1 w-100 px-3 d-flex flex-column justify-content-end" style="height: 100%;">
                         <div class="fw-bold text-dark mb-2" style="font-size: 0.8rem;">${val}</div>
@@ -306,11 +346,16 @@
                 `;
                 container.insertAdjacentHTML('beforeend', html);
             });
+
+            const baseRecords = currentTab === 'Claim Report' ? 84 : (currentTab === 'Revenue Report' ? 210 : 142);
+            const finalRecords = Math.max(0, Math.floor(baseRecords * multiplier * (0.8 + (Math.random() * 0.4))));
+            document.getElementById('records-count').textContent = `${finalRecords} records match current filters`;
         }
 
         // Initialize first tab
         document.addEventListener('DOMContentLoaded', () => {
-            switchReportTab('Policy Report', null);
+            const activeTab = document.querySelector('.report-tab-card.active');
+            switchReportTab(activeTab ? activeTab.textContent.trim() : 'Policy Report', activeTab);
         });
 
         function downloadReport(type) {
@@ -321,12 +366,12 @@
             if (type === 'csv') {
                 filename += '.csv';
                 mimeType = 'text/csv;charset=utf-8;';
-                content = "Policy ID,Policy Name,Status,Premium\nPOL-8491,Comprehensive Auto,Active,$1200\nPOL-2234,Basic Health,Pending,$800\n";
+                content = "Policy ID,Policy Name,Status,Premium\nPOL-8491,Comprehensive Auto,Active,₹1200\nPOL-2234,Basic Health,Pending,₹800\n";
             } else if (type === 'excel') {
                 filename += '.xlsx';
                 // Mock excel using csv format as fallback for demo
                 mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-                content = "Policy ID,Policy Name,Status,Premium\nPOL-8491,Comprehensive Auto,Active,$1200\nPOL-2234,Basic Health,Pending,$800\n";
+                content = "Policy ID,Policy Name,Status,Premium\nPOL-8491,Comprehensive Auto,Active,₹1200\nPOL-2234,Basic Health,Pending,₹800\n";
             } else if (type === 'pdf') {
                 filename += '.pdf';
                 mimeType = 'application/pdf';
@@ -353,5 +398,6 @@
         }
     </script>
 
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

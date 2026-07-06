@@ -3,7 +3,7 @@ window.NEXSURE_MOCK_DB = {
         {
             id: 'APP-9901',
             type: 'Health Insurance',
-            policyholder: 'Rahul Mehta',
+            policyholder: 'Devaganeshvar',
             coverage: '10,00,000',
             premium: '12,450',
             date: '2026-06-10',
@@ -13,7 +13,7 @@ window.NEXSURE_MOCK_DB = {
     customers: [
         {
             id: 'CUST-1001',
-            name: 'Rahul Mehta',
+            name: 'Devaganeshvar',
             email: 'rahul.mehta@example.com',
             phone: '+91 98765 43210',
             dob: '1985-05-15',
@@ -34,7 +34,7 @@ window.NEXSURE_MOCK_DB = {
         {
             id: 'HLT-3321',
             type: 'Health Insurance',
-            policyholder: 'Rahul Mehta',
+            policyholder: 'Devaganeshvar',
             coverage: '5,00,000',
             premium: '8,450/yr',
             dueDate: '30 June 2026',
@@ -45,7 +45,7 @@ window.NEXSURE_MOCK_DB = {
         {
             id: 'MOT-5587',
             type: 'Motor Insurance (Private Car)',
-            policyholder: 'Rahul Mehta',
+            policyholder: 'Devaganeshvar',
             coverage: '4,20,000',
             coverageLabel: 'Insured Declared Value (IDV)',
             premium: '12,300/yr',
@@ -57,7 +57,7 @@ window.NEXSURE_MOCK_DB = {
         {
             id: 'LIF-1190',
             type: 'Term Life Insurance',
-            policyholder: 'Rahul Mehta',
+            policyholder: 'Devaganeshvar',
             coverage: '1,00,00,000',
             coverageLabel: 'Sum Assured',
             premium: '18,200/yr',
@@ -69,7 +69,7 @@ window.NEXSURE_MOCK_DB = {
         {
             id: 'TRV-9012',
             type: 'Travel Insurance',
-            policyholder: 'Rahul Mehta',
+            policyholder: 'Devaganeshvar',
             coverage: '50,000',
             premium: '1,200/trip',
             dueDate: '01 Jan 2026',

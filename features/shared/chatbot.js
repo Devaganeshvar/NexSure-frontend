@@ -172,7 +172,7 @@
             const fallbackHTML = `
                 Sorry, I couldn't find an answer to your question. Please visit our Help Center for further assistance or contact our support team.
                 <div class="mt-3">
-                    <a href="../help-center/help.html" class="chatbot-action-link"><i class="fa-solid fa-circle-info me-1"></i> Go to Help Center</a>
+                    <a href="../help-center/customer-help.html" class="chatbot-action-link"><i class="fa-solid fa-circle-info me-1"></i> Go to Help Center</a>
                 </div>
             `;
             appendMessage('bot', fallbackHTML);

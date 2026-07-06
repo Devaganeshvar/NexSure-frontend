@@ -50,11 +50,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="dashboard.html">
                 <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
@@ -165,21 +168,22 @@
         
         <!-- Sidebar -->
         <aside class="officer-sidebar">
-            <a href="/features/officer/dashboard/dashboard.html" class="sidebar-link">Dashboard</a>
+            <a href="../admin-dashboard/officer-dashboard.html" class="sidebar-link">Dashboard</a>
             
-            <div class="sidebar-section-title">Customers</div>
-            <a href="/features/officer/customers/customer-management.html" class="sidebar-link">Customer Management</a>
-            <a href="/features/officer/customers/kyc-verification.html" class="sidebar-link">KYC Verification</a>
+            <div class="sidebar-section-title">CUSTOMERS</div>
+            <a href="../officer/customers/customer-management.html" class="sidebar-link">Customer Management</a>
+            <a href="../officer/customers/kyc-verification.html" class="sidebar-link">KYC Verification</a>
             
-            <div class="sidebar-section-title">Policies</div>
+            <div class="sidebar-section-title">POLICIES</div>
             <a href="../policy-management/search-policy.html" class="sidebar-link">Policy Details</a>
-            <a href="/features/officer/policies/applications.html" class="sidebar-link">Policy Applications</a>
-            <div class="sidebar-section-title">Claims</div>
-            <a href="/features/officer/claims/claims-processing.html" class="sidebar-link">Claims Processing</a>
+            <a href="../reports-and-policies/applications.html" class="sidebar-link">Policy Applications</a>
             
-            <div class="sidebar-section-title">More</div>
-            <a href="/features/officer/reports/reports.html" class="sidebar-link">Reports & Renewals</a>
-            <a href="/features/officer/profile/profile.html" class="sidebar-link">Profile</a>
+            <div class="sidebar-section-title">CLAIMS</div>
+            <a href="../policy-management/claims-processing.html" class="sidebar-link">Claims Processing</a>
+            
+            <div class="sidebar-section-title">MORE</div>
+            <a href="../officer/reports/reports.html" class="sidebar-link">Reports & Renewals</a>
+            <a href="../admin-dashboard/officer-profile.html" class="sidebar-link active">Profile</a>
             <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
         </aside>
 
@@ -256,6 +260,7 @@
             window.location.href = '/features/login/login.html';
         }
     </script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>
 

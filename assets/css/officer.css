@@ -352,3 +352,50 @@ body {
     color: var(--officer-text);
     border-color: var(--officer-border);
 }
+
+
+/* Officer Pagination */
+.officer-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.officer-page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--officer-border);
+    background-color: var(--officer-card-bg);
+    color: var(--officer-text-muted);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.officer-page-link.active {
+    background: var(--officer-primary);
+    color: white;
+    border-color: transparent;
+}
+
+.officer-page-link:hover:not(.active) {
+    background-color: #f1f5f9;
+    color: var(--officer-dark);
+}
+
+[data-bs-theme="dark"] .officer-page-link {
+    border-color: #334155;
+    background-color: #1e293b;
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .officer-page-link:hover:not(.active) {
+    background-color: #334155;
+    color: white;
+}

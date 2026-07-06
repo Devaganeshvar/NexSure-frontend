@@ -6,18 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NexSure - Reports & Audit</title>
     <!-- Bootstrap CSS -->
-    <link href="../../../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="../../../assets/css/global_v2.css" rel="stylesheet">
-    <link href="../../../assets/css/admin_v2.css" rel="stylesheet">
+    <link href="../../assets/css/global_v2.css" rel="stylesheet">
+    <link href="../../assets/css/admin_v2.css" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../../features/shared/auth-guard.js"></script>
-    <script src="../../../assets/js/admin.js"></script>
+    <script src="../../features/shared/auth-guard.js"></script>
+    <script src="../../assets/js/admin.js"></script>
     <style>
         .report-card {
             background-color: var(--admin-bg);
@@ -110,14 +110,17 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="../dashboard/dashboard.html">
-                <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
+                <img src="../../assets/images/Logo.png" alt="NexSure Logo">
             </a>
             <div class="breadcrumb-text">
                 Admin &rsaquo; Reports & Audit
@@ -195,7 +198,7 @@
                     <div class="report-card" onclick="selectReport(this)">Bulk Import Logs</div>
                 </div>
                 <div class="col-md-2">
-                    <div class="report-card" onclick="selectReport(this)">Dashboard Summary</div>
+                    <div class="report-card" onclick="selectReport(this)">Revenue Report</div>
                 </div>
                 <div class="col-md-2">
                     <div class="report-card" onclick="selectReport(this)">Premium Receipt</div>
@@ -204,17 +207,19 @@
 
             <div class="bg-white p-4 mb-4">
                 <div class="admin-filter-bar mb-4">
-                    <select class="admin-filter-select" style="width: 150px;">
-                        <option>Actor</option>
-                        <option>Admin</option>
-                        <option>Officer</option>
-                        <option>System</option>
+                    <select class="admin-filter-select" style="width: 150px;" id="actorFilter">
+                        <option value="all">Actor</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Officer">Officer</option>
+                        <option value="System">System</option>
                     </select>
-                    <select class="admin-filter-select" style="width: 150px;">
-                        <option>Action Type</option>
-                        <option>Create</option>
-                        <option>Update</option>
-                        <option>Delete</option>
+                    <select class="admin-filter-select" style="width: 150px;" id="actionTypeFilter">
+                        <option value="all">Action Type / Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Create">Create</option>
                     </select>
                     <select class="admin-filter-select" style="width: 150px;" id="dateRangeFilter">
                         <option value="all">Date Range</option>
@@ -223,11 +228,15 @@
                         <option value="365">Last Year</option>
                         <option value="all">All Time</option>
                     </select>
-                    <select class="admin-filter-select" style="width: 150px;">
-                        <option>Module</option>
-                        <option>Policies</option>
-                        <option>Claims</option>
-                        <option>Users</option>
+                    <select class="admin-filter-select" style="width: 150px;" id="moduleFilter">
+                        <option value="all">Module / Product</option>
+                        <option value="Life">Life</option>
+                        <option value="Health">Health</option>
+                        <option value="Motor">Motor</option>
+                        <option value="Property">Property</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Policies">Policies</option>
+                        <option value="Claims">Claims</option>
                     </select>
                 </div>
                 
@@ -273,9 +282,10 @@
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="../../../assets/js/bootstrap.bundle.js"></script>
+    <script src="../../assets/js/bootstrap.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="reports-engine.js"></script>
     <script src="admin-reports.js"></script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

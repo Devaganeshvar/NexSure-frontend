@@ -103,11 +103,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="officer-dashboard.html">
                 <img src="../../assets/images/Logo.png" alt="NexSure Logo">
@@ -142,35 +145,23 @@
         
         <!-- Sidebar -->
         <aside class="officer-sidebar">
-            <a href="officer-dashboard.html" class="sidebar-link">
-                <i class="fa-solid fa-chart-pie me-3 opacity-75"></i> Dashboard
-            </a>
+            <a href="officer-dashboard.html" class="sidebar-link">Dashboard</a>
             
             <div class="sidebar-section-title">CUSTOMERS</div>
-            <a href="../people-and-audit/customer-management.html" class="sidebar-link">
-                <i class="fa-solid fa-users me-3 opacity-75"></i> Management
-            </a>
-            <a href="../people-and-audit/kyc-verification.html" class="sidebar-link">
-                <i class="fa-solid fa-id-card me-3 opacity-75"></i> KYC Verification
-            </a>
+            <a href="../officer/customers/customer-management.html" class="sidebar-link">Customer Management</a>
+            <a href="../officer/customers/kyc-verification.html" class="sidebar-link">KYC Verification</a>
             
             <div class="sidebar-section-title">POLICIES</div>
-            <a href="../reports-and-policies/applications.html" class="sidebar-link">
-                <i class="fa-solid fa-file-signature me-3 opacity-75"></i> Applications
-            </a>
+            <a href="../policy-management/search-policy.html" class="sidebar-link">Policy Details</a>
+            <a href="../reports-and-policies/applications.html" class="sidebar-link">Policy Applications</a>
             
             <div class="sidebar-section-title">CLAIMS</div>
-            <a href="../policy-management/claims-processing.html" class="sidebar-link">
-                <i class="fa-solid fa-file-invoice-dollar me-3 opacity-75"></i> Processing
-            </a>
+            <a href="../policy-management/claims-processing.html" class="sidebar-link">Claims Processing</a>
             
-            <div class="sidebar-section-title">ACCOUNT</div>
-            <a href="officer-profile.html" class="sidebar-link active">
-                <i class="fa-solid fa-user-shield me-3 opacity-75"></i> Profile Settings
-            </a>
-            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link text-danger mt-4">
-                <i class="fa-solid fa-power-off me-3 opacity-75"></i> Logout
-            </a>
+            <div class="sidebar-section-title">MORE</div>
+            <a href="../officer/reports/reports.html" class="sidebar-link">Reports & Renewals</a>
+            <a href="officer-profile.html" class="sidebar-link active">Profile</a>
+            <a href="javascript:void(0)" onclick="logout()" class="sidebar-link">Logout</a>
         </aside>
 
         <!-- Main Content -->
@@ -379,5 +370,6 @@
         });
     </script>
 
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

@@ -48,11 +48,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="admin-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="../dashboard/dashboard.html">
                 <img src="../../../assets/images/Logo.png" alt="NexSure Logo">
@@ -174,7 +177,7 @@
     <script src="../../../assets/js/bootstrap.bundle.js"></script>
     <script>
         const claims = [
-            { id: 'CLM-1042', name: 'Rahul Mehta', type: 'Health', status: 'Under Review', amount: '—' },
+            { id: 'CLM-1042', name: 'Devaganeshvar', type: 'Health', status: 'Under Review', amount: '—' },
             { id: 'CLM-1044', name: 'Arjun Kumar', type: 'Life', status: 'Approved', amount: '₹2,00,000' },
             { id: 'CLM-1039', name: 'Meera Raman', type: 'Motor', status: 'Settled', amount: '₹30,000' },
             { id: 'CLM-1031', name: 'Priya Sharma', type: 'Health', status: 'Closed', amount: '₹80,000' },
@@ -360,5 +363,6 @@
 
         document.addEventListener('DOMContentLoaded', renderTable);
     </script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

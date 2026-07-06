@@ -53,6 +53,7 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body class="bg-light">
 
@@ -69,11 +70,11 @@
                 <ul class="navbar-nav mx-auto gap-3">
                     <li class="nav-item"><a class="nav-link" href="../landing/landing-page.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" href="#">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../plan-listings/dashboard-plans.html">Plans</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../plan-listings/plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <a href="#" class="nav-link text-white opacity-75 text-decoration-none fw-medium me-4">Help</a>
+                    <a href="../help-center/help.html" class="nav-link text-white opacity-75 text-decoration-none fw-medium me-4">Help</a>
                     <a href="../auth/login.html" class="btn btn-outline-light px-4 py-2 fw-medium rounded-pill">Sign In</a>
                 </div>
             </div>
@@ -255,59 +256,58 @@
         </div>
     </section>
 
-    <!-- Footer from Landing Page -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 pe-lg-5">
-                    <img src="../../assets/images/Logo.png" alt="NexSure" class="footer-logo mb-3" height="40">
-                    <p class="text-muted fs-7">Protecting what matters most - from policy to claim, we're with you every step of the way.</p>
-                    <div class="d-flex gap-2 mt-3">
-                        <a href="#" class="btn btn-outline-secondary rounded-circle text-dark" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="#" class="btn btn-outline-secondary rounded-circle text-dark" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="btn btn-outline-secondary rounded-circle text-dark" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="btn btn-outline-secondary rounded-circle text-dark" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-instagram"></i></a>
+                    <img src="../../assets/images/Logo.png" alt="NexSure" class="footer-logo">
+                    <p>Protecting what matters most — from policy to claim, we're with you every step of the way.</p>
+                    <div class="d-flex gap-2">
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-outline-light rounded-circle" style="width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-instagram"></i></a>
                     </div>
                 </div>
                 
                 <div class="col-lg-2 col-md-4">
-                    <h6 class="fw-bold text-dark-blue mb-3 fs-7">INFORMATION</h6>
-                    <ul class="list-unstyled d-flex flex-column gap-2 fs-7">
-                        <li><a href="../landing/landing-page.html" class="text-muted text-decoration-none">Home</a></li>
-                        <li><a href="#" class="text-muted text-decoration-none">About</a></li>
-                        <li><a href="../plan-listings/dashboard-plans.html" class="text-muted text-decoration-none">Plans</a></li>
-                        <li><a href="#" class="text-muted text-decoration-none">Claim</a></li>
-                        <li><a href="#" class="text-muted text-decoration-none">Contact</a></li>
+                    <h6>INFORMATION</h6>
+                    <ul class="footer-links">
+                        <li><a href="../landing/landing-page.html">Home</a></li>
+                        <li><a href="../help-center/about.html">About</a></li>
+                        <li><a href="../plan-listings/plans.html">Plans</a></li>
+                        <li><a href="../help-center/contact.html">Contact</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-3 col-md-4">
-                    <h6 class="fw-bold text-dark-blue mb-3 fs-7">CONTACT</h6>
-                    <p class="text-muted fs-7 mb-3">Have any questions? Feel free to contact our administration team.</p>
-                    <ul class="list-unstyled d-flex flex-column gap-2 fs-7 text-muted">
-                        <li><i class="fa-solid fa-envelope me-2"></i> support@nexsure.com</li>
-                        <li><i class="fa-solid fa-phone me-2"></i> +91 12345 67890</li>
-                        <li><i class="fa-solid fa-location-dot me-2"></i> India</li>
+                    <h6>CONTACT</h6>
+                    <p>Have any questions? Feel free to contact our administration team.</p>
+                    <ul class="contact-info">
+                        <li><i class="fa-solid fa-envelope"></i> support@nexsure.com</li>
+                        <li><i class="fa-solid fa-phone"></i> +91 12345 67890</li>
+                        <li><i class="fa-solid fa-location-dot"></i> India</li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-3 col-md-4">
-                    <h6 class="fw-bold text-dark-blue mb-3 fs-7">QUICK HELP</h6>
-                    <div class="card border-0 bg-light rounded-4 overflow-hidden">
-                        <div class="card-body text-center p-3">
-                            <img src="../../assets/images/LandingPage/landing19.png" alt="Support" class="img-fluid mb-3 rounded-3">
-                            <a href="#" class="btn btn-sm btn-dark w-100 rounded-pill"><i class="fa-solid fa-headset me-2"></i> Speak to an Officer</a>
+                    <h6>QUICK HELP</h6>
+                    <div class="quick-help">
+                        <div class="help-card text-center">
+                            <img src="../../assets/images/LandingPage/landing19.png" alt="Support">
+                            <a href="javascript:void(0)" class="btn btn-sm"><i class="fa-solid fa-headset me-2"></i> Speak to an Officer</a>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center border-top pt-4 mt-4 text-muted fs-7">
-                <div class="mb-2 mb-md-0">&copy; 2026 NexSure, All Rights Reserved.</div>
-                <div class="d-flex gap-3">
-                    <a href="#" class="text-muted text-decoration-none">Terms</a>
-                    <a href="#" class="text-muted text-decoration-none">Privacy</a>
-                    <a href="#" class="text-muted text-decoration-none">Cookie Policy</a>
+            <div class="footer-bottom">
+                <div>&copy; 2026 NexSure, All Rights Reserved.</div>
+                <div class="footer-bottom-links">
+                    <a href="javascript:void(0)" onclick="alert('Terms & Conditions are currently being updated.')">Terms</a>
+                    <a href="javascript:void(0)" onclick="alert('Privacy Policy is currently being updated.')">Privacy</a>
+                    <a href="javascript:void(0)" onclick="alert('Cookie Policy is currently being updated.')">Cookie Policy</a>
                 </div>
             </div>
         </div>
@@ -316,5 +316,6 @@
     <!-- Bootstrap JS -->
     <script src="../../assets/js/bootstrap.bundle.js"></script>
     <script src="../../features/shared/profile-sync.js"></script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

@@ -1,0 +1,147 @@
+/* ==========================================================================
+   NexSure Professional Enhancements CSS
+   ========================================================================== */
+
+/* 1. Subtle Page Load Transition */
+body {
+    animation: nexsure-fade-in 0.4s cubic-bezier(0.39, 0.57, 0.56, 1) forwards;
+}
+
+@keyframes nexsure-fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* 2. Professional Card Hover Effects */
+/* We target common card classes gently. */
+.card, .policy-card, .list-card, .dashboard-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover, .policy-card:hover, .list-card:hover, .dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Dark mode adjustment for professional card hover */
+[data-bs-theme="dark"] .card:hover,
+[data-bs-theme="dark"] .policy-card:hover,
+[data-bs-theme="dark"] .list-card:hover,
+[data-bs-theme="dark"] .dashboard-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 3. Refined Input Focus States */
+.form-control, .form-select {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* 4. Button Interactions */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Button Ripple Effect */
+.nexsure-ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    background-color: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+
+[data-bs-theme="dark"] .btn-light .nexsure-ripple,
+.btn-outline-primary .nexsure-ripple,
+.btn-outline-secondary .nexsure-ripple,
+.btn-light .nexsure-ripple {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* 5. Professional Scroll Reveals */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 6. Skeleton Loading State */
+.skeleton-loading {
+    position: relative;
+    overflow: hidden;
+    background-color: #e2e8f0 !important;
+    color: transparent !important;
+    border-color: transparent !important;
+    pointer-events: none;
+    border-radius: 4px;
+}
+
+.skeleton-loading * {
+    visibility: hidden !important;
+}
+
+.skeleton-loading::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.4) 20%,
+        rgba(255, 255, 255, 0.6) 60%,
+        rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 1.5s infinite;
+    content: '';
+}
+
+[data-bs-theme="dark"] .skeleton-loading {
+    background-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .skeleton-loading::after {
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.05) 20%,
+        rgba(255, 255, 255, 0.1) 60%,
+        rgba(255, 255, 255, 0)
+    );
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* 7. Subtle Row Hovers in Tables */
+.table-hover tbody tr {
+    transition: background-color 0.2s ease;
+}

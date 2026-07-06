@@ -2,7 +2,7 @@ class OfficerTable {
     constructor(config) {
         this.data = config.data || [];
         this.columns = config.columns || [];
-        this.itemsPerPage = config.itemsPerPage || 10;
+        this.itemsPerPage = config.itemsPerPage || 5;
         this.currentPage = 1;
         this.filteredData = [...this.data];
         
@@ -116,7 +116,7 @@ class OfficerTable {
         // Prev btn
         const prevBtn = document.createElement('a');
         prevBtn.href = 'javascript:void(0)';
-        prevBtn.className = `page-btn ${this.currentPage === 1 ? 'disabled opacity-50' : ''}`;
+        prevBtn.className = `officer-page-link ${this.currentPage === 1 ? 'disabled opacity-50' : ''}`;
         prevBtn.innerHTML = '&lsaquo;';
         prevBtn.onclick = () => {
             if(this.currentPage > 1) {
@@ -130,7 +130,7 @@ class OfficerTable {
         for(let i = 1; i <= totalPages; i++) {
             const pageBtn = document.createElement('a');
             pageBtn.href = 'javascript:void(0)';
-            pageBtn.className = `page-btn ${this.currentPage === i ? 'active' : ''}`;
+            pageBtn.className = `officer-page-link ${this.currentPage === i ? 'active' : ''}`;
             pageBtn.textContent = i;
             pageBtn.onclick = () => {
                 this.currentPage = i;
@@ -142,7 +142,7 @@ class OfficerTable {
         // Next btn
         const nextBtn = document.createElement('a');
         nextBtn.href = 'javascript:void(0)';
-        nextBtn.className = `page-btn ${this.currentPage === totalPages ? 'disabled opacity-50' : ''}`;
+        nextBtn.className = `officer-page-link ${this.currentPage === totalPages ? 'disabled opacity-50' : ''}`;
         nextBtn.innerHTML = '&rsaquo;';
         nextBtn.onclick = () => {
             if(this.currentPage < totalPages) {

@@ -97,8 +97,44 @@ function loadTermsData() {
 
     termsHistory = hist ? JSON.parse(hist) : [];
     
+    // Seed history if empty for demonstration purposes
+    if (termsHistory.length === 0 && termsPublished.length > 0) {
+        termsHistory.push({
+            versionId: 'v1',
+            date: new Date('2026-01-01T10:00:00Z').toISOString(),
+            policies: JSON.parse(JSON.stringify(termsPublished))
+        });
+        localStorage.setItem('termsPoliciesHistory', JSON.stringify(termsHistory));
+    }
+    
     renderPoliciesTable();
+    renderAdminLegalPolicy();
     window.updateTermsHeaderState();
+}
+
+function renderAdminLegalPolicy() {
+    const dynamicContent = document.getElementById('dynamicAdminPrivacyContent');
+    if (!dynamicContent) return;
+
+    let policyHtml = '';
+    const activePolicies = termsPublished.filter(p => p.enabled);
+    
+    if (activePolicies.length > 0) {
+        activePolicies.forEach((p, index) => {
+            policyHtml += `
+                <div class="mb-4" id="policy-${index + 1}">
+                    <h6 class="fw-bold text-dark d-flex align-items-center gap-2 mb-2 border-bottom pb-2">
+                        <i class="fa-solid fa-circle-${index + 1} fs-5 text-secondary" style="font-size: 1.1rem;"></i> ${p.title}
+                    </h6>
+                    <div class="text-muted">${p.content}</div>
+                </div>
+            `;
+        });
+    } else {
+        policyHtml = '<p class="text-muted">No policies are currently published.</p>';
+    }
+
+    dynamicContent.innerHTML = policyHtml;
 }
 
 window.updateTermsHeaderState = function() {
@@ -261,6 +297,7 @@ window.publishTermsChanges = function() {
         
         // Clear draft distinction since they match now
         window.updateTermsHeaderState();
+        renderAdminLegalPolicy();
         showAdminToast('Terms & Policies published successfully!', 'success');
     }
 }

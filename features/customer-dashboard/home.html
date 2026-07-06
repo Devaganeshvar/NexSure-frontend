@@ -109,7 +109,7 @@
                     <div class="text-uppercase text-success fw-bold small tracking-wider mb-2 d-flex align-items-center gap-2">
                         <span class="dot bg-success"></span> GOOD MORNING, WELCOME BACK
                     </div>
-                    <h1 class="display-4 text-white fw-bold mb-3">Rahul Mehta</h1>
+                    <h1 class="display-4 text-white fw-bold mb-3 profile-name">Devaganeshvar</h1>
                     <p class="text-white-50 fs-5 mb-4 max-w-75">Here's a complete overview of your insurance portfolio. 3 active policies, 1 open claim, and your motor policy renews in 7 days.</p>
                     
                     <!-- Alert Pills -->
@@ -250,69 +250,8 @@
                     <a id="btn-view-all-policies" href="../policy-management/my-policies.html" class="text-decoration-none fw-semibold small">View All &rarr;</a>
                 </div>
                 
-                <div class="row g-4 mb-5">
-                    <!-- Policy 1: Active -->
-                    <div class="col-md-4">
-                        <div class="card policy-card border-0 shadow-sm h-100">
-                            <div class="position-relative">
-                                <img src="../../assets/images/LandingPage/landing4.png" class="card-img-top" alt="Life" style="height: 120px; object-fit: cover;">
-                                <span class="badge bg-success position-absolute top-0 start-0 m-2 rounded-pill px-3">Active</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-muted small mb-1">LIF-1190</div>
-                                <h6 class="fw-bold text-dark mb-3">Life Insurance &mdash; Standard</h6>
-                                <div class="small text-muted mb-1">Sum Insured: ₹25,00,000</div>
-                                <div class="small text-muted mb-1">Annual Premium: ₹9,999</div>
-                                <div class="small text-muted mb-3">Expires: 12 Dec 2045</div>
-                                <div class="d-flex gap-2 mt-auto">
-                                    <button id="btn-view-lif" class="btn btn-dark-blue btn-sm flex-grow-1">View Details</button>
-                                    <button id="btn-download-lif" class="btn btn-outline-secondary btn-sm flex-grow-1">Download</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Policy 2: Renew Soon -->
-                    <div class="col-md-4">
-                        <div class="card policy-card border-0 shadow-sm h-100 border-warning" style="border: 1px solid #f59e0b !important;">
-                            <div class="position-relative">
-                                <img src="../../assets/images/LandingPage/landing6.png" class="card-img-top" alt="Motor" style="height: 120px; object-fit: cover;">
-                                <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 rounded-pill px-3">Renew Soon</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-muted small mb-1">MOT-5587</div>
-                                <h6 class="fw-bold text-dark mb-3">Motor Insurance &mdash; Comp.</h6>
-                                <div class="small text-muted mb-1">Sum Insured: ₹5,00,000</div>
-                                <div class="small text-muted mb-1">Annual Premium: ₹9,800</div>
-                                <div class="small text-muted mb-3 text-danger fw-medium">Expires: 12 Jul 2026</div>
-                                <div class="d-flex gap-2 mt-auto">
-                                    <button id="btn-renew-mot" class="btn btn-warning btn-sm flex-grow-1 text-dark fw-bold">Renew Now</button>
-                                    <button id="btn-view-mot" class="btn btn-outline-secondary btn-sm flex-grow-1">View</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Policy 3: Lapsed -->
-                    <div class="col-md-4">
-                        <div class="card policy-card border-0 shadow-sm h-100 opacity-75">
-                            <div class="position-relative">
-                                <img src="../../assets/images/LandingPage/landing5.png" class="card-img-top" alt="Health" style="height: 120px; object-fit: cover; filter: grayscale(80%);">
-                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 rounded-pill px-3">Lapsed</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-muted small mb-1">HLT-3321</div>
-                                <h6 class="fw-bold text-dark mb-3">Health Insurance &mdash; Basic</h6>
-                                <div class="small text-muted mb-1">Sum Insured: ₹10,00,000</div>
-                                <div class="small text-muted mb-1">Annual Premium: ₹6,500</div>
-                                <div class="small text-muted mb-3">Expired: 05 Jan 2026</div>
-                                <div class="d-flex gap-2 mt-auto">
-                                    <button id="btn-renew-hlt" class="btn btn-dark-blue btn-sm flex-grow-1">Renew</button>
-                                    <button id="btn-view-hlt" class="btn btn-outline-secondary btn-sm flex-grow-1">View</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row g-4 mb-5" id="dashboard-policies-list">
+                    <!-- Policies injected by JS to maintain exact UI -->
                 </div>
 
                 <!-- Promotional Upgrade Section -->
@@ -423,22 +362,8 @@
                         <h6 class="fw-bold text-dark mb-0"><i class="fa-regular fa-credit-card text-primary me-2"></i> Premium Due</h6>
                         <a id="btn-pay-all" href="../payment/payments.html" class="text-decoration-none fw-semibold small">Pay All</a>
                     </div>
-                    <div class="card-body p-4">
-                        <div class="bg-warning bg-opacity-10 p-3 rounded-3 mb-3 d-flex justify-content-between align-items-center border border-warning border-opacity-25">
-                            <div>
-                                <h6 class="fw-bold text-dark mb-1">Motor &mdash; MOT-5587</h6>
-                                <div class="small text-muted">Annual &middot; Due: 12 Jul 2026</div>
-                            </div>
-                            <h5 class="fw-bold text-dark mb-0">₹9,800</h5>
-                        </div>
-                        <div class="bg-danger bg-opacity-10 p-3 rounded-3 mb-4 d-flex justify-content-between align-items-center border border-danger border-opacity-25">
-                            <div>
-                                <h6 class="fw-bold text-dark mb-1">Health &mdash; HLT-3321</h6>
-                                <div class="small text-danger">Overdue since Jan 2026</div>
-                            </div>
-                            <h5 class="fw-bold text-dark mb-0">₹6,500</h5>
-                        </div>
-                        <button id="btn-pay-now" class="btn btn-warning w-100 fw-bold shadow-sm">Pay &#8377;16,300 Now &rarr;</button>
+                    <div class="card-body p-4" id="dashboard-premium-due-list">
+                        <!-- Due policies injected by JS -->
                     </div>
                 </div>
 
@@ -606,5 +531,114 @@
     <script src="../../features/shared/profile-sync.js"></script>
     <script src="../shared/a11y-core.js"></script>
     <script src="../shared/chatbot.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const list = document.getElementById('dashboard-policies-list');
+            if (list && window.PolicySync) {
+                const policies = window.PolicySync.getPolicies();
+                list.innerHTML = '';
+                
+                if (policies.length === 0) {
+                    list.innerHTML = '<div class="col-12 text-muted">No policies found.</div>';
+                } else {
+                    const displayPolicies = policies.slice(0, 3);
+                    displayPolicies.forEach(p => {
+                        let imgSrc = '../../assets/images/LandingPage/landing4.png';
+                        let subName = 'Standard';
+                        if (p.type.toLowerCase().includes('health')) { imgSrc = '../../assets/images/LandingPage/landing5.png'; subName = 'Basic'; }
+                        else if (p.type.toLowerCase().includes('motor')) { imgSrc = '../../assets/images/LandingPage/landing6.png'; subName = 'Comp.'; }
+                        
+                        const isActive = p.status === 'Active';
+                        const isDueSoon = p.dueDate && (p.dueDate.includes('Jul') || p.dueDate.includes('Jun'));
+                        const isLapsed = !isActive;
+                        
+                        let cardClass = '';
+                        let imgStyle = 'height: 120px; object-fit: cover;';
+                        let badgeHtml = '';
+                        let btnHtml = '';
+                        let expireLabel = 'Expires:';
+                        let expireClass = '';
+                        
+                        if (isActive && isDueSoon) {
+                            cardClass = 'border-warning';
+                            badgeHtml = '<span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 rounded-pill px-3">Renew Soon</span>';
+                            expireClass = 'text-danger fw-medium';
+                            btnHtml = `<button class="btn btn-warning btn-sm flex-grow-1 text-dark fw-bold" onclick="window.location.href='../payment/payments.html'">Renew Now</button>
+                                       <button class="btn btn-outline-secondary btn-sm flex-grow-1" onclick="window.location.href='../policy-management/my-policies.html'">View</button>`;
+                        } else if (isActive) {
+                            badgeHtml = '<span class="badge bg-success position-absolute top-0 start-0 m-2 rounded-pill px-3">Active</span>';
+                            btnHtml = `<button class="btn btn-dark-blue btn-sm flex-grow-1" onclick="window.location.href='../policy-management/my-policies.html'">View Details</button>
+                                       <button class="btn btn-outline-secondary btn-sm flex-grow-1" onclick="alert('Downloading...')">Download</button>`;
+                        } else {
+                            cardClass = 'opacity-75';
+                            imgStyle += ' filter: grayscale(80%);';
+                            badgeHtml = '<span class="badge bg-danger position-absolute top-0 start-0 m-2 rounded-pill px-3">Lapsed</span>';
+                            expireLabel = 'Expired:';
+                            btnHtml = `<button class="btn btn-dark-blue btn-sm flex-grow-1" onclick="window.location.href='../payment/payments.html'">Renew</button>
+                                       <button class="btn btn-outline-secondary btn-sm flex-grow-1" onclick="window.location.href='../policy-management/my-policies.html'">View</button>`;
+                        }
+                        
+                        const covFmt = parseInt(p.coverage || 0).toLocaleString('en-IN');
+                        const premFmt = parseInt(p.premium || 0).toLocaleString('en-IN');
+                        
+                        const html = `
+                        <div class="col-md-4">
+                            <div class="card policy-card border-0 shadow-sm h-100 ${cardClass}" ${cardClass.includes('warning') ? 'style="border: 1px solid #f59e0b !important;"' : ''}>
+                                <div class="position-relative">
+                                    <img src="${imgSrc}" class="card-img-top" alt="${p.type}" style="${imgStyle}">
+                                    ${badgeHtml}
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-muted small mb-1">${p.id}</div>
+                                    <h6 class="fw-bold text-dark mb-3">${p.type} Insurance &mdash; ${subName}</h6>
+                                    <div class="small text-muted mb-1">Sum Insured: ₹${covFmt}</div>
+                                    <div class="small text-muted mb-1">Annual Premium: ₹${premFmt}</div>
+                                    <div class="small text-muted mb-3 ${expireClass}">${expireLabel} ${p.dueDate}</div>
+                                    <div class="d-flex gap-2 mt-auto">
+                                        ${btnHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                        list.insertAdjacentHTML('beforeend', html);
+                    });
+                }
+            }
+            
+            const dueList = document.getElementById('dashboard-premium-due-list');
+            if (dueList && window.PolicySync) {
+                const policies = window.PolicySync.getPolicies();
+                dueList.innerHTML = '';
+                let totalDue = 0;
+                
+                const duePolicies = policies.filter(p => !p.status.includes('Paid') && p.status !== 'Pending Payment' && (p.status !== 'Active' || (p.dueDate && (p.dueDate.includes('Jul') || p.dueDate.includes('Jun')))));
+                
+                if (duePolicies.length === 0) {
+                    dueList.innerHTML = '<div class="text-muted p-3 text-center">No premiums due.</div>';
+                } else {
+                    duePolicies.forEach(p => {
+                        const premInt = parseInt(p.premium || 0);
+                        totalDue += premInt;
+                        const isLapsed = p.status !== 'Active';
+                        const premFmt = premInt.toLocaleString('en-IN');
+                        
+                        const html = `
+                        <div class="${isLapsed ? 'bg-danger border-danger' : 'bg-warning border-warning'} bg-opacity-10 p-3 rounded-3 mb-${isLapsed ? '4' : '3'} d-flex justify-content-between align-items-center border border-opacity-25">
+                            <div>
+                                <h6 class="fw-bold text-dark mb-1">${p.type} &mdash; ${p.id}</h6>
+                                <div class="small ${isLapsed ? 'text-danger' : 'text-muted'}">${isLapsed ? 'Overdue since ' + p.dueDate : 'Annual &middot; Due: ' + p.dueDate}</div>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-0">₹${premFmt}</h5>
+                        </div>`;
+                        dueList.insertAdjacentHTML('beforeend', html);
+                    });
+                    const payFmt = totalDue.toLocaleString('en-IN');
+                    dueList.insertAdjacentHTML('beforeend', `<button id="btn-pay-now" class="btn btn-warning w-100 fw-bold shadow-sm" onclick="window.location.href='../payment/payments.html'">Pay ₹${payFmt} Now &rarr;</button>`);
+                }
+            }
+        }, 50);
+    });
+    </script>
 </body>
 </html>

@@ -53,6 +53,7 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
@@ -671,5 +672,33 @@ document.addEventListener('DOMContentLoaded', () => {
 <script src="../shared/profile-sync.js"></script>
 
     <script src="../shared/notifications.js"></script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top-btn" title="Go to top" aria-label="Back to Top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+            
+            // Show or hide button based on scroll position
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+            
+            // Smooth scroll to top on click
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -2,7 +2,7 @@ body, html {
   font-family: "Inter", sans-serif;
   color: #0f172a;
   background-color: #f4f7fb;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -830,6 +830,14 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   height: 350px;
   cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid transparent;
+}
+.story-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.2);
+  border-color: rgba(15, 23, 42, 0.05);
 }
 .story-card img {
   width: 100%;
@@ -842,23 +850,85 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
-  background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0) 100%);
+  padding: 4rem 130px 1.5rem 1.5rem; /* 130px right padding prevents overlap with the absolute Read More button */
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.5) 60%, rgba(15, 23, 42, 0) 100%);
   color: #fff;
+  transition: background 0.4s ease, padding 0.4s ease;
+  z-index: 1;
+}
+.story-card:hover .story-overlay {
+  background: linear-gradient(to top, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.8) 70%, rgba(15, 23, 42, 0) 100%);
+  padding-bottom: 1.8rem; /* Slight upward shift of text on hover */
 }
 .story-card .story-overlay h4 {
   font-family: "Inter", sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s ease;
 }
 .story-card .story-overlay p {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
   margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s ease;
+}
+.story-card:hover .story-overlay h4,
+.story-card:hover .story-overlay p {
+  transform: translateY(-2px);
 }
 .story-card:hover img {
   transform: scale(1.05);
+}
+
+.story-card .story-preview-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.95);
+  color: #fff;
+  padding: 2.5rem 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.story-card:hover .story-preview-container {
+  opacity: 1;
+  visibility: visible;
+}
+.story-card .story-preview-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.story-card .read-more-wrapper {
+  display: none;
+}
+.story-card .read-more-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+.story-card .read-more-btn:hover {
+  background: #fff;
+  color: #0f172a;
 }
 
 .swiper-container-wrapper {
@@ -1015,7 +1085,6 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   max-width: 700px;
   margin: 0 auto;
-  position: relative;
   padding-top: 3rem;
 }
 .testimonial-card .quote-icon {
@@ -1036,6 +1105,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 .testimonial-card .testimonial-box {
+  position: relative;
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 1rem;
@@ -1405,3 +1475,44 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*# sourceMappingURL=landing-page.css.map */
+
+/* Back to Top Button */
+#back-to-top-btn {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease, background-color 0.2s ease;
+  z-index: 1050;
+}
+
+#back-to-top-btn:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-3px);
+}
+
+#back-to-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-bs-theme="dark"] #back-to-top-btn {
+  background-color: #3b82f6;
+}
+
+[data-bs-theme="dark"] #back-to-top-btn:hover {
+  background-color: #2563eb;
+}

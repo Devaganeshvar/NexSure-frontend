@@ -9,17 +9,24 @@
 
 // 1. Initialize Mock Database
 const initializeMockData = () => {
+    const getMockDate = (offset) => {
+        const d = new Date();
+        d.setDate(d.getDate() + offset);
+        return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    };
+
     // Claims Data
     if (!localStorage.getItem('mockClaims')) {
         const claims = [
-            { id: 'CLM-1042', name: 'Rahul Mehta', type: 'Accident Damage', date: '12 Jun 2026', amount: '₹45,000', status: 'Under Review' },
-            { id: 'CLM-1043', name: 'Priya Sharma', type: 'Hospitalization', date: '13 Jun 2026', amount: '₹80,000', status: 'Submitted' },
-            { id: 'CLM-1044', name: 'Arjun Kumar', type: 'Critical Illness', date: '14 Jun 2026', amount: '₹2,00,000', status: 'Approved' },
-            { id: 'CLM-1045', name: 'Meera Raman', type: 'Theft', date: '15 Jun 2026', amount: '₹30,000', status: 'Under Review' },
-            { id: 'CLM-1046', name: 'Sneha Patel', type: 'Accident Damage', date: '16 Jun 2026', amount: '₹12,000', status: 'Open' },
-            { id: 'CLM-1047', name: 'Vikram Singh', type: 'Health', date: '16 Jun 2026', amount: '₹55,000', status: 'Approved' },
-            { id: 'CLM-1048', name: 'Anita Roy', type: 'Life', date: '17 Jun 2026', amount: '₹5,00,000', status: 'Open' },
-            { id: 'CLM-1049', name: 'Rahul Mehta', type: 'Motor', date: '18 Jun 2026', amount: '₹8,500', status: 'Submitted' }
+            { id: 'CLM-1042', policyId: 'MOT-5587', name: 'Devaganeshvar', type: 'Motor Accident Damage', date: getMockDate(-10), amount: '₹45,000', status: 'Under Review' },
+            { id: 'CLM-1043', policyId: 'HLT-1022', name: 'Priya Sharma', type: 'Health Hospitalization', date: getMockDate(-9), amount: '₹80,000', status: 'Submitted' },
+            { id: 'CLM-1044', policyId: 'HLT-2033', name: 'Arjun Kumar', type: 'Critical Illness', date: getMockDate(-8), amount: '₹2,00,000', status: 'Approved' },
+            { id: 'CLM-1045', policyId: 'MOT-3044', name: 'Meera Raman', type: 'Motor Theft', date: getMockDate(-7), amount: '₹30,000', status: 'Under Review' },
+            { id: 'CLM-1046', policyId: 'MOT-4055', name: 'Sneha Patel', type: 'Motor Accident Damage', date: getMockDate(-6), amount: '₹12,000', status: 'Open' },
+            { id: 'CLM-1047', policyId: 'HLT-5066', name: 'Vikram Singh', type: 'Health', date: getMockDate(-6), amount: '₹55,000', status: 'Approved' },
+            { id: 'CLM-1048', policyId: 'LIF-6077', name: 'Anita Roy', type: 'Life', date: getMockDate(-5), amount: '₹5,00,000', status: 'Open' },
+            { id: 'CLM-1049', policyId: 'LIF-1190', name: 'Devaganeshvar', type: 'Life', date: getMockDate(-4), amount: '₹8,500', status: 'Submitted' },
+            { id: 'CLM-0901', policyId: 'HLT-3321', name: 'Devaganeshvar', type: 'Health Hospitalization', date: getMockDate(-30), amount: '₹35,000', status: 'Rejected', rejectionReason: 'Claim rejected due to pre-existing condition non-disclosure.' }
         ];
         localStorage.setItem('mockClaims', JSON.stringify(claims));
     }
@@ -27,27 +34,30 @@ const initializeMockData = () => {
     // KYC Data
     if (!localStorage.getItem('mockKyc')) {
         const kyc = [
-            { id: 'K-001', name: 'Priya S.', policy: 'HLT-3321', docs: 'Aadhaar, PAN', status: 'Pending', date: '14 Jun 2026' },
-            { id: 'K-002', name: 'Arjun K.', policy: 'MOT-5587', docs: 'Aadhaar, RC', status: 'Pending', date: '15 Jun 2026' },
-            { id: 'K-003', name: 'Meera R.', policy: 'LIF-1190', docs: 'Aadhaar, PAN', status: 'Pending', date: '16 Jun 2026' },
-            { id: 'K-004', name: 'Rahul M.', policy: 'PRO-2204', docs: 'Aadhaar, PAN, Sale Deed', status: 'Pending', date: '17 Jun 2026' },
-            { id: 'K-005', name: 'Vikram S.', policy: 'HLT-1011', docs: 'Aadhaar, Passport', status: 'Verified', date: '10 Jun 2026' },
-            { id: 'K-006', name: 'Sneha P.', policy: 'LIF-9022', docs: 'PAN, Voter ID', status: 'Rejected', date: '12 Jun 2026' }
+            { id: 'K-001', name: 'Priya S.', policy: 'HLT-3321', docs: 'Aadhaar, PAN', status: 'Pending', date: getMockDate(-8) },
+            { id: 'K-002', name: 'Arjun K.', policy: 'MOT-5587', docs: 'Aadhaar, RC', status: 'Pending', date: getMockDate(-7) },
+            { id: 'K-003', name: 'Meera R.', policy: 'LIF-1190', docs: 'Aadhaar, PAN', status: 'Pending', date: getMockDate(-6) },
+            { id: 'K-004', name: 'Devaganeshvar', policy: 'PRO-2204', docs: 'Aadhaar, PAN, Sale Deed', status: 'Pending', date: getMockDate(-5) },
+            { id: 'K-005', name: 'Vikram S.', policy: 'HLT-1011', docs: 'Aadhaar, Passport', status: 'Verified', date: getMockDate(-12) },
+            { id: 'K-006', name: 'Sneha P.', policy: 'LIF-9022', docs: 'PAN, Voter ID', status: 'Rejected', date: getMockDate(-10) }
         ];
         localStorage.setItem('mockKyc', JSON.stringify(kyc));
     }
 
     // Applications Data
-    if (!localStorage.getItem('mockApps')) {
+    if (!localStorage.getItem('mockApps_v3')) {
         const apps = [
-            { id: 'APP-2281', name: 'Rahul Mehta', product: 'Motor — 4W', premium: '₹9,800', date: '17 Jun 2026', status: 'Pending' },
-            { id: 'APP-2282', name: 'Priya Sharma', product: 'Health', premium: '₹6,500', date: '17 Jun 2026', status: 'Pending' },
-            { id: 'APP-2283', name: 'Arjun Kumar', product: 'Life', premium: '₹12,000', date: '18 Jun 2026', status: 'Pending' },
-            { id: 'APP-2284', name: 'Meera Raman', product: 'Property', premium: '₹5,000', date: '18 Jun 2026', status: 'Pending' },
-            { id: 'APP-2285', name: 'Sneha Patel', product: 'Health', premium: '₹7,200', date: '15 Jun 2026', status: 'Approved' },
-            { id: 'APP-2286', name: 'Vikram Singh', product: 'Motor — 2W', premium: '₹1,500', date: '14 Jun 2026', status: 'Rejected' }
+            { id: 'APP-2281', customer: 'Devaganeshvar', product: 'Motor — 4W', premium: '₹9,800', date: getMockDate(-3), status: 'Pending' },
+            { id: 'APP-2287', customer: 'Devaganeshvar', product: 'Property', premium: '₹4,500', date: getMockDate(-1), status: 'Pending' },
+            { id: 'APP-2288', customer: 'Devaganeshvar', product: 'Life', premium: '₹15,000', date: getMockDate(-2), status: 'Pending' },
+            { id: 'APP-2282', customer: 'Priya Sharma', product: 'Health', premium: '₹6,500', date: getMockDate(-3), status: 'Pending' },
+            { id: 'APP-2283', customer: 'Arjun Kumar', product: 'Life', premium: '₹12,000', date: getMockDate(-2), status: 'Pending' },
+            { id: 'APP-2284', customer: 'Meera Raman', product: 'Property', premium: '₹5,000', date: getMockDate(-2), status: 'Pending' },
+            { id: 'APP-2285', customer: 'Sneha Patel', product: 'Health', premium: '₹7,200', date: getMockDate(-7), status: 'Approved' },
+            { id: 'APP-2286', customer: 'Vikram Singh', product: 'Motor — 2W', premium: '₹1,500', date: getMockDate(-8), status: 'Rejected' }
         ];
         localStorage.setItem('mockApps', JSON.stringify(apps));
+        localStorage.setItem('mockApps_v3', 'true');
     }
 };
 

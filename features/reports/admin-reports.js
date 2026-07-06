@@ -3,6 +3,9 @@
 
 let currentReportType = 'Audit Log';
 let currentDateRange = '30'; // default Last 30 Days
+let currentActor = 'all';
+let currentAction = 'all';
+let currentModule = 'all';
 let currentDataset = [];
 let currentPage = 1;
 const rowsPerPage = 6;
@@ -19,17 +22,35 @@ function selectReport(el) {
     updateReportData();
 }
 
-function handleDateRangeChange() {
-    const select = document.getElementById('dateRangeFilter');
-    currentDateRange = select.value;
+function handleFiltersChange() {
+    currentDateRange = document.getElementById('dateRangeFilter').value;
+    currentActor = document.getElementById('actorFilter').value;
+    currentAction = document.getElementById('actionTypeFilter').value;
+    currentModule = document.getElementById('moduleFilter').value;
     currentPage = 1;
     updateReportData();
 }
 
 function updateReportData() {
-    // Fetch filtered data from engine
-    currentDataset = ReportsEngine.filterData(currentReportType, currentDateRange);
+    // Fetch filtered data from engine (dates)
+    let dataset = ReportsEngine.filterData(currentReportType, currentDateRange);
     
+    // Apply UI filters
+    currentDataset = dataset.filter(item => {
+        if (currentActor !== 'all' && item.actor && item.actor !== currentActor) return false;
+        if (currentAction !== 'all') {
+            const statusMatch = item.status && item.status === currentAction;
+            const actionMatch = item.action && item.action.includes(currentAction);
+            if (!statusMatch && !actionMatch) return false;
+        }
+        if (currentModule !== 'all') {
+            const moduleMatch = item.module && item.module === currentModule;
+            const typeMatch = item.type && item.type === currentModule;
+            if (!moduleMatch && !typeMatch) return false;
+        }
+        return true;
+    });
+
     // Update chart
     updateChart();
     
@@ -289,11 +310,12 @@ function logout() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Add event listener to Date Range select
-    const dateSelect = document.getElementById('dateRangeFilter');
-    if (dateSelect) {
-        dateSelect.addEventListener('change', handleDateRangeChange);
-    }
+    // Add event listeners to filters
+    const filters = ['dateRangeFilter', 'actorFilter', 'actionTypeFilter', 'moduleFilter'];
+    filters.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', handleFiltersChange);
+    });
     
     // Initial Load
     updateReportData();

@@ -45,11 +45,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
                 <img src="../../assets/images/Logo.png" alt="NexSure Logo">
@@ -97,7 +100,7 @@
         <!-- Main Content -->
         <main class="officer-content p-5 w-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="page-header m-0 fw-bold">Policy Details (Read-Only)</h1>
+                <h1 class="page-header m-0 fw-bold">Policy Details</h1>
             </div>
 
             <!-- Filters -->
@@ -131,10 +134,58 @@
                 </table>
             </div>
             
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <div id="records-count" class="text-muted fs-6 fw-medium">Loading records...</div>
-                <div id="pagination-controls" class="pagination-container mt-0"></div>
+            <!-- Pagination -->
+            <div id="pagination-controls" class="officer-pagination"></div>
+
+            <!-- Policy Details Modal -->
+            <div class="modal fade" id="policyDetailsModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow" style="border-radius: 12px; overflow: hidden;">
+                        <div class="modal-header border-0 bg-light pb-3 pt-4 px-4">
+                            <h5 class="modal-title fw-bold text-dark fs-4">Policy Details</h5>
+                            <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body px-4 py-4">
+                            <div class="row g-4">
+                                <div class="col-6">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Policy ID</p>
+                                    <p class="fw-medium text-dark mb-0 fs-6" id="modalPolicyId">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Status</p>
+                                    <div id="modalPolicyStatus"></div>
+                                </div>
+                                <div class="col-12">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Policy Name</p>
+                                    <p class="fw-bold text-dark mb-0 fs-5" id="modalPolicyName">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Type</p>
+                                    <p class="fw-medium text-dark mb-0 fs-6" id="modalPolicyType">-</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-muted small text-uppercase mb-1 fw-bold">Coverage</p>
+                                    <p class="fw-bold text-primary mb-0 fs-6" id="modalPolicyCoverage">-</p>
+                                </div>
+                                <div class="col-12">
+                                    <div class="p-3 bg-light rounded-3 d-flex justify-content-between align-items-center mt-2 border">
+                                        <div>
+                                            <p class="text-muted small text-uppercase mb-0 fw-bold">Premium</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <p class="fw-bold text-dark fs-5 mb-0" id="modalPolicyPremium">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 px-4 pb-4 pt-0">
+                            <button type="button" class="btn btn-outline-secondary w-100 py-2 fw-medium" data-bs-dismiss="modal" style="border-radius: 8px;">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </main>
     </div>
 
@@ -142,13 +193,18 @@
     <script src="../../assets/js/bootstrap.bundle.js"></script>
     <script src="../../features/shared/officer-table.js?v=clean"></script>
     <script>
+        let mockPolicies = [];
+        
         document.addEventListener('DOMContentLoaded', () => {
-            const mockPolicies = [
-                { id: 'POL-1001', name: 'Comprehensive Auto', type: 'Motor', coverage: '$50,000', premium: '$1,200/yr', status: 'Active' },
-                { id: 'POL-1002', name: 'Basic Health', type: 'Health', coverage: '$100,000', premium: '$800/yr', status: 'Active' },
-                { id: 'POL-1003', name: 'Term Life 20', type: 'Life', coverage: '$500,000', premium: '$450/yr', status: 'Active' },
-                { id: 'POL-1004', name: 'Property Plus', type: 'Property', coverage: '$300,000', premium: '$1,500/yr', status: 'Active' },
-                { id: 'POL-1005', name: 'Travel Safe', type: 'Travel', coverage: '$25,000', premium: '$150/yr', status: 'Inactive' },
+            mockPolicies = [
+                { id: 'POL-1001', name: 'Comprehensive Auto', type: 'Motor', coverage: '₹50,000', premium: '₹1,200/yr', status: 'Active' },
+                { id: 'POL-1002', name: 'Basic Health', type: 'Health', coverage: '₹100,000', premium: '₹800/yr', status: 'Active' },
+                { id: 'POL-1003', name: 'Term Life 20', type: 'Life', coverage: '₹500,000', premium: '₹450/yr', status: 'Active' },
+                { id: 'POL-1004', name: 'Property Plus', type: 'Property', coverage: '₹300,000', premium: '₹1,500/yr', status: 'Active' },
+                { id: 'POL-1005', name: 'Travel Safe', type: 'Travel', coverage: '₹25,000', premium: '₹150/yr', status: 'Inactive' },
+                { id: 'POL-1006', name: 'Family Health', type: 'Health', coverage: '₹250,000', premium: '₹2,500/yr', status: 'Active' },
+                { id: 'POL-1007', name: 'Secure Home', type: 'Property', coverage: '₹400,000', premium: '₹2,000/yr', status: 'Active' },
+                { id: 'POL-1008', name: 'Two-Wheeler Standard', type: 'Motor', coverage: '₹15,000', premium: '₹200/yr', status: 'Inactive' },
             ];
             
             new OfficerTable({
@@ -172,12 +228,32 @@
                     { key: 'status', render: row => {
                         return row.status === 'Active' ? `<span class="pill-status pill-approved">Active</span>` : `<span class="pill-status text-bg-secondary">Inactive</span>`;
                     }},
-                    { key: 'actions', render: () => `
-                        <button class="btn btn-sm btn-outline-custom border-0"><i class="fa-regular fa-eye me-2"></i> View</button>
+                    { key: 'actions', render: (row) => `
+                        <button class="btn btn-sm btn-outline-custom border-0" onclick="viewPolicyDetails('${row.id}')"><i class="fa-regular fa-eye me-2"></i> View</button>
                     `}
                 ]
             });
         });
+
+        function viewPolicyDetails(id) {
+            const policy = mockPolicies.find(p => p.id === id);
+            if (!policy) return;
+
+            document.getElementById('modalPolicyId').textContent = policy.id;
+            document.getElementById('modalPolicyName').textContent = policy.name;
+            document.getElementById('modalPolicyType').textContent = policy.type;
+            document.getElementById('modalPolicyCoverage').textContent = policy.coverage;
+            document.getElementById('modalPolicyPremium').textContent = policy.premium;
+            
+            const statusHtml = policy.status === 'Active' 
+                ? `<span class="pill-status pill-approved">Active</span>` 
+                : `<span class="pill-status text-bg-secondary">Inactive</span>`;
+            document.getElementById('modalPolicyStatus').innerHTML = statusHtml;
+
+            const modal = new bootstrap.Modal(document.getElementById('policyDetailsModal'));
+            modal.show();
+        }
     </script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

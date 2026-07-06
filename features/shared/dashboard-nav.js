@@ -75,7 +75,7 @@
                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="${BASE}assets/images/LandingPage/landing11.png" alt="User"
                          class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit:cover;">
-                    <span class="fw-medium small pe-1">Rahul M.</span>
+                    <span class="fw-medium small pe-1">Devaganeshvar</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                     <li><a class="dropdown-item" href="${BASE}profile/profile.html"><i class="fa-regular fa-user me-2"></i>Profile</a></li>

@@ -1,3 +1,31 @@
+
+// --- Global UI Enhancements Injection ---
+(function() {
+    const scripts = document.getElementsByTagName('script');
+    let basePath = '../../assets'; // fallback
+    for (let i = 0; i < scripts.length; i++) {
+        const src = scripts[i].getAttribute('src');
+        if (src && src.includes('theme-manager.js')) {
+            const parts = src.split('features')[0];
+            basePath = parts + 'assets';
+            break;
+        }
+    }
+
+    if (!document.querySelector('link[href*="enhancements.css"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = basePath + '/css/enhancements.css';
+        document.head.appendChild(link);
+    }
+
+    if (!document.querySelector('script[src*="enhancements.js"]')) {
+        const js = document.createElement('script');
+        js.src = basePath + '/js/enhancements.js';
+        document.head.appendChild(js);
+    }
+})();
+
 /**
  * theme-manager.js
  * Handles global theme switching (Light, Dark, System) using Bootstrap 5.3.

@@ -161,143 +161,186 @@
     <main class="container-fluid px-4 px-xl-5 pb-5">
         
         <!-- Tabs -->
-        <ul class="nav nav-pills mb-4 gap-2 border-bottom pb-3">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Active Policies</a>
+        <ul class="nav nav-pills mb-4 gap-2 border-bottom pb-3" id="policiesTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="active-tab" data-bs-toggle="pill" data-bs-target="#active-policies" type="button" role="tab" aria-controls="active-policies" aria-selected="true">Active Policies</button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link border bg-white text-dark" href="#">Expired Policies</a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link border bg-light text-dark" id="expired-tab" data-bs-toggle="pill" data-bs-target="#expired-policies" type="button" role="tab" aria-controls="expired-policies" aria-selected="false" onclick="this.classList.remove('bg-light','text-dark')">Expired Policies</button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link border bg-white text-dark" href="#">Nominee Details</a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link border bg-light text-dark" id="applied-tab" data-bs-toggle="pill" data-bs-target="#applied-policies" type="button" role="tab" aria-controls="applied-policies" aria-selected="false" onclick="this.classList.remove('bg-light','text-dark')">Applied Policies</button>
             </li>
         </ul>
 
-        <!-- Policy List -->
-        <div class="row g-4 max-w-1000 mx-auto ms-xl-0">
+        <div class="tab-content" id="policiesTabsContent">
+            <!-- Active Policies -->
+            <div class="tab-pane fade show active" id="active-policies" role="tabpanel" aria-labelledby="active-tab">
+                <div class="row g-4 max-w-1000 mx-auto ms-xl-0" id="active-policies-list">
+                    <!-- Dynamic Active Policies -->
+                </div>
+            </div>
             
-            <!-- Health Insurance Card -->
-            <div class="col-12">
-                <div class="policy-card p-4 p-md-5">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; font-size: 1.5rem;">
-                                <i class="fa-solid fa-heart-pulse"></i>
-                            </div>
-                            <h4 class="fw-bold mb-0 text-dark-blue">Health Insurance (HLT-3321)</h4>
-                        </div>
-                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">Active</span>
-                    </div>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Policyholder</div>
-                            <div class="detail-value">Rahul Mehta</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Sum Insured</div>
-                            <div class="detail-value">₹5,00,000</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Base Premium</div>
-                            <div class="detail-value">₹8,450/yr</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Next Due Date</div>
-                            <div class="detail-value text-danger">30 June 2026</div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-wrap gap-3 pt-4 border-top">
-                        <button class="btn btn-dark-blue px-4 py-2 fw-medium rounded-3">Renew Policy</button>
-                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">File Claim</button>
-                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Download Certificate</button>
-                    </div>
+            <!-- Expired Policies -->
+            <div class="tab-pane fade" id="expired-policies" role="tabpanel" aria-labelledby="expired-tab">
+                <div class="row g-4 max-w-1000 mx-auto ms-xl-0" id="expired-policies-list">
+                    <!-- Dynamic Expired Policies -->
                 </div>
             </div>
-
-            <!-- Motor Insurance Card -->
-            <div class="col-12">
-                <div class="policy-card p-4 p-md-5">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; font-size: 1.5rem;">
-                                <i class="fa-solid fa-car"></i>
-                            </div>
-                            <h4 class="fw-bold mb-0 text-dark-blue">Motor Insurance (Private Car) (MOT-5587)</h4>
-                        </div>
-                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">Active</span>
-                    </div>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Policyholder</div>
-                            <div class="detail-value">Rahul Mehta</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Insured Declared Value (IDV)</div>
-                            <div class="detail-value">₹4,20,000</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Annual Premium</div>
-                            <div class="detail-value">₹12,300</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Next Due Date</div>
-                            <div class="detail-value">12 Sept 2026</div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-wrap gap-3 pt-4 border-top">
-                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">File Claim</button>
-                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Download Certificate</button>
-                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">View Details</button>
-                    </div>
+            
+            <!-- Applied Policies -->
+            <div class="tab-pane fade" id="applied-policies" role="tabpanel" aria-labelledby="applied-tab">
+                <div class="row g-4 max-w-1000 mx-auto ms-xl-0" id="applied-policies-list">
+                    <!-- Dynamic Applied Policies -->
                 </div>
             </div>
-
-            <!-- Term Life Insurance Card -->
-            <div class="col-12">
-                <div class="policy-card p-4 p-md-5">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; font-size: 1.5rem;">
-                                <i class="fa-solid fa-shield-halved"></i>
-                            </div>
-                            <h4 class="fw-bold mb-0 text-dark-blue">Term Life Insurance (LIF-1190)</h4>
-                        </div>
-                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">Active</span>
-                    </div>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Policyholder</div>
-                            <div class="detail-value">Rahul Mehta</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Sum Assured</div>
-                            <div class="detail-value">₹1,00,00,000</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Annual Premium</div>
-                            <div class="detail-value">₹18,200</div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="detail-label">Next Due Date</div>
-                            <div class="detail-value">15 Oct 2026</div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-wrap gap-3 pt-4 border-top">
-                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Edit Nominee</button>
-                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Download Receipt</button>
-                        <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">View Details</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
+
+    <!-- Track Application Modal -->
+    <div class="modal fade" id="trackApplicationModal" tabindex="-1" aria-labelledby="trackApplicationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header border-bottom-0 pb-0 pt-4 px-4 position-relative z-1">
+                    <h5 class="fw-bold text-dark-blue mb-0" id="trackApplicationModalLabel">Track Application</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-4 py-4">
+                    <p class="text-muted small mb-4">Your application for Property Insurance is currently under review by our underwriting team. We will notify you once a decision is made.</p>
+                    
+                    <!-- 4-Step Tracker -->
+                    <div class="position-relative d-flex justify-content-between align-items-center mb-2" style="padding: 0 4px;">
+                        <div class="position-absolute" style="top:12px;left:12px;right:12px;height:2px;background:#e2e8f0;z-index:0;"></div>
+                        <div class="position-absolute" style="top:12px;left:12px;width:calc(33% + 4px);height:2px;background:#3b82f6;z-index:1;"></div>
+
+                        <!-- Step 1: Filed -->
+                        <div class="text-center position-relative" style="z-index:2;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto text-white" style="width:24px;height:24px;background:#3b82f6;font-size:0.7rem;"><i class="fa-solid fa-check"></i></div>
+                            <div class="mt-2 text-muted" style="font-size:0.78rem;">Applied</div>
+                        </div>
+
+                        <!-- Step 2: Review -->
+                        <div class="text-center position-relative" style="z-index:2;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto text-white" style="width:24px;height:24px;background:#3b82f6;font-size:0.7rem;"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                            <div class="mt-2 fw-bold" style="font-size:0.78rem;color:#3b82f6;">Under Review</div>
+                        </div>
+
+                        <!-- Step 3: Approved -->
+                        <div class="text-center position-relative" style="z-index:2;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width:24px;height:24px;background:#fff;border:2px solid #cbd5e1;">&nbsp;</div>
+                            <div class="mt-2 text-muted" style="font-size:0.78rem;">Approved</div>
+                        </div>
+
+                        <!-- Step 4: Policy Issued -->
+                        <div class="text-center position-relative" style="z-index:2;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width:24px;height:24px;background:#fff;border:2px solid #cbd5e1;">&nbsp;</div>
+                            <div class="mt-2 text-muted" style="font-size:0.78rem;">Issued</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                    <button type="button" class="btn btn-dark-blue rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function renderPolicies() {
+                const policies = window.PolicySync ? window.PolicySync.getPolicies() : [];
+                const activeList = document.getElementById('active-policies-list');
+                const expiredList = document.getElementById('expired-policies-list');
+                const appliedList = document.getElementById('applied-policies-list');
+                
+                if(!activeList || !expiredList || !appliedList) return;
+                
+                activeList.innerHTML = '';
+                expiredList.innerHTML = '';
+                appliedList.innerHTML = '';
+                
+                const profile = JSON.parse(localStorage.getItem('nexsure_customer_profile') || '{}');
+                const pName = profile.name || 'Devaganeshvar';
+                
+                policies.forEach(p => {
+                    const isActive = p.status === 'Active';
+                    const isApplied = p.status === 'Applied' || p.status === 'Pending';
+                    const badgeClass = isActive ? 'bg-success text-success border-success' : (isApplied ? 'bg-warning text-warning border-warning' : 'bg-secondary text-secondary border-secondary');
+                    const iconColor = p.color || 'primary';
+                    const coverageLabel = p.coverageLabel || 'Sum Insured';
+                    
+                    const buttons = isActive 
+                        ? `<button class="btn btn-dark-blue px-4 py-2 fw-medium rounded-3" onclick="window.location.href='../payment/payments.html'">Renew Policy</button>
+                           <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark" onclick="window.location.href='../policy-management/claims.html'">File Claim</button>
+                           <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark" onclick="alert('Downloading...')">Download Certificate</button>`
+                        : (isApplied ? `<button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark" data-bs-toggle="modal" data-bs-target="#trackApplicationModal">Track Application</button>`
+                                     : `<button class="btn btn-outline-primary px-4 py-2 fw-medium rounded-3" onclick="window.location.href='../plan-listings/plans.html'">Buy New Policy</button>`);
+                        
+                    const opacityStyle = isActive || isApplied ? '' : 'opacity: 0.8;';
+                    
+                    const html = `
+                    <div class="col-12">
+                        <div class="policy-card p-4 p-md-5" style="${opacityStyle}">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-${iconColor} bg-opacity-10 text-${iconColor} rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; font-size: 1.5rem;">
+                                        <i class="fa-solid ${p.icon || 'fa-shield'}"></i>
+                                    </div>
+                                    <h4 class="fw-bold mb-0 text-dark-blue">${p.type} (${p.id})</h4>
+                                </div>
+                                <span class="badge ${badgeClass} bg-opacity-10 border border-opacity-25 px-3 py-2 rounded-pill">${p.status}</span>
+                            </div>
+
+                            <div class="row g-4 mb-4">
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="detail-label">Policyholder</div>
+                                    <div class="detail-value">${pName}</div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="detail-label">${coverageLabel}</div>
+                                    <div class="detail-value">₹${p.coverage}</div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="detail-label">Premium</div>
+                                    <div class="detail-value">₹${p.premium}</div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="detail-label">${isActive ? 'Next Due Date' : (isApplied ? 'Applied On' : 'Expired On')}</div>
+                                    <div class="detail-value ${isActive ? 'text-danger' : 'text-muted'}">${p.dueDate}</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-3 pt-4 border-top">
+                                ${buttons}
+                            </div>
+                        </div>
+                    </div>`;
+                    
+                    if (isActive) {
+                        activeList.insertAdjacentHTML('beforeend', html);
+                    } else if (isApplied) {
+                        appliedList.insertAdjacentHTML('beforeend', html);
+                    } else {
+                        expiredList.insertAdjacentHTML('beforeend', html);
+                    }
+                });
+                
+                if (activeList.children.length === 0) {
+                    activeList.innerHTML = '<div class="text-muted text-center py-5">No active policies found.</div>';
+                }
+                if (expiredList.children.length === 0) {
+                    expiredList.innerHTML = '<div class="text-muted text-center py-5">No expired policies found.</div>';
+                }
+                if (appliedList.children.length === 0) {
+                    appliedList.innerHTML = '<div class="text-muted text-center py-5">No applied policies found.</div>';
+                }
+            }
+            
+            // Run rendering
+            // We give profile-sync.js a tiny bit of time to init if needed
+            setTimeout(renderPolicies, 50);
+        });
+    </script>
 
     <!-- Bootstrap JS -->
     <script src="../../assets/js/bootstrap.bundle.js"></script>

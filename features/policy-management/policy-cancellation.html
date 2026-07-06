@@ -89,6 +89,7 @@
 
     <link href="../shared/a11y-core.css" rel="stylesheet">
     <link href="../../assets/css/chatbot.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body class="bg-light">
 
@@ -125,7 +126,7 @@
                     <div class="dropdown user-dropdown">
                         <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
                             <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
-                            <span class="fw-medium small pe-1">Rahul M.</span>
+                            <span class="fw-medium small pe-1">Devaganeshvar</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
@@ -153,7 +154,7 @@
                     </nav>
                     <h1 class="display-5 fw-bold font-playfair mb-0">Policy Cancellation</h1>
                 </div>
-                <button class="btn btn-light fw-bold px-4 py-2 text-dark-blue rounded-3 shadow-sm">Request Cancellation</button>
+                <button class="btn btn-light fw-bold px-4 py-2 text-dark-blue rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#requestCancelModal">Request Cancellation</button>
             </div>
         </div>
     </header>
@@ -168,59 +169,386 @@
             </div>
         </div>
 
-        <!-- Request 1 -->
-        <div class="list-card p-4 p-md-5">
-            <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom flex-wrap gap-3">
-                <h5 class="fw-bold text-dark-blue mb-0">Cancellation Request CAN-0012 &mdash; Health Policy HLT-3321</h5>
-                <span class="badge badge-under-review px-3 py-2 rounded-pill fw-medium">Under Review</span>
-            </div>
+        <div id="cancellations-list">
+            <!-- Cancellations injected by JS -->
+        </div>
 
-            <div class="row g-4 mb-4">
-                <div class="col-sm-6 col-md-4">
-                    <div class="detail-label">Reason for Cancellation</div>
-                    <div class="detail-value text-dark fw-medium">Premium affordability issues</div>
+        <!-- Request Cancellation Modal -->
+        <div class="modal fade" id="requestCancelModal" tabindex="-1" aria-labelledby="requestCancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 rounded-4 shadow">
+                    <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                        <h5 class="modal-title fw-bold text-dark-blue fs-4" id="requestCancelModalLabel">Request Policy Cancellation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body px-4 py-4">
+                        <form id="cancellationForm">
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-dark">Select Policy</label>
+                                <select class="form-select border rounded-3 py-2" id="cancelPolicySelect" required>
+                                    <option value="">Choose a policy to cancel...</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-dark">Reason for Cancellation</label>
+                                <select class="form-select border rounded-3 py-2" id="cancelReasonSelect" required>
+                                    <option value="">Select a reason...</option>
+                                    <option value="Premium affordability issues">Premium affordability issues</option>
+                                    <option value="Found a better deal elsewhere">Found a better deal elsewhere</option>
+                                    <option value="Coverage no longer needed">Coverage no longer needed</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-dark">Additional Comments</label>
+                                <textarea class="form-control border rounded-3" rows="3" placeholder="Please provide any additional details..."></textarea>
+                            </div>
+                            <div id="policyDetailsContainer" class="d-none p-3 bg-light border rounded-3 mb-0">
+                                <!-- Details injected by JS -->
+                            </div>
+                            <div id="generalWarningNote" class="alert alert-warning bg-warning bg-opacity-10 border-0 rounded-3 mb-0">
+                                <i class="fa-solid fa-triangle-exclamation text-warning me-2"></i> <strong>Note:</strong> Refunds will be processed according to the policy terms and conditions.
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                        <button type="button" class="btn btn-light border px-4 py-2 fw-medium rounded-3" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger px-4 py-2 fw-medium rounded-3" id="submitCancellationBtn">Submit Request</button>
+                    </div>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                    <div class="detail-label">Refund Amount</div>
-                    <div class="detail-value fw-bold text-dark">₹6,760 (Pro-rata)</div>
-                </div>
-                <div class="col-sm-6 col-md-4">
-                    <div class="detail-label">Expected Refund Date</div>
-                    <div class="detail-value fw-bold text-dark">05 July 2026</div>
-                </div>
-            </div>
-
-            <div class="d-flex gap-3">
-                <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Download Receipt</button>
-                <button class="btn border px-4 py-2 fw-medium rounded-3 bg-white text-danger border-danger hover-bg-light">Withdraw Request</button>
             </div>
         </div>
 
-        <!-- Request 2 -->
-        <div class="list-card p-4 p-md-5">
-            <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom flex-wrap gap-3">
-                <h5 class="fw-bold text-dark-blue mb-0">Cancellation Request CAN-0009 &mdash; Travel Policy TRV-0021</h5>
-                <span class="badge badge-completed px-3 py-2 rounded-pill fw-medium">Completed</span>
-            </div>
+        <script>
+            window.showReceipt = function(id, amount, status) {
+                document.getElementById('rm-id').textContent = id;
+                document.getElementById('rm-amount').textContent = amount;
+                document.getElementById('rm-status').textContent = status;
+                new bootstrap.Modal(document.getElementById('receiptModal')).show();
+            };
+            window.showWithdraw = function(id, policyId) {
+                document.getElementById('wm-id').textContent = id;
+                document.getElementById('wm-btn').onclick = function() {
+                    let mockCancellations = JSON.parse(localStorage.getItem('mockCancellations') || '[]');
+                    mockCancellations = mockCancellations.filter(x => x.id !== id);
+                    localStorage.setItem('mockCancellations', JSON.stringify(mockCancellations));
+                    if (window.PolicySync) window.PolicySync.updatePolicyStatus(policyId, 'Active');
+                    bootstrap.Modal.getInstance(document.getElementById('withdrawModal')).hide();
+                    window.location.reload();
+                };
+                new bootstrap.Modal(document.getElementById('withdrawModal')).show();
+            };
+            window.showCertificate = function(id, policyId, date) {
+                document.getElementById('cm-policy').textContent = "Policy " + policyId;
+                document.getElementById('cm-desc').textContent = "This certifies that the policy " + policyId + " has been successfully cancelled as of " + date + ".";
+                new bootstrap.Modal(document.getElementById('certificateModal')).show();
+            };
+            window.showInvoice = function(id, policyId, amount, date) {
+                document.getElementById('im-date').textContent = "Date: " + date;
+                document.getElementById('im-policy').textContent = "Policy Premium Refund (" + policyId + ")";
+                document.getElementById('im-amount1').textContent = amount;
+                document.getElementById('im-amount2').textContent = amount;
+                new bootstrap.Modal(document.getElementById('invoiceModal')).show();
+            };
 
-            <div class="row g-4 mb-4">
-                <div class="col-sm-6 col-md-4">
-                    <div class="detail-label">Reason for Cancellation</div>
-                    <div class="detail-value text-dark fw-medium">Trip cancelled by airline</div>
-                </div>
-                <div class="col-sm-6 col-md-4">
-                    <div class="detail-label">Refund Amount</div>
-                    <div class="detail-value fw-bold text-success">₹1,200 (Full Refund)</div>
-                </div>
-                <div class="col-sm-6 col-md-4">
-                    <div class="detail-label">Completed Date</div>
-                    <div class="detail-value fw-bold text-dark">18 May 2026</div>
+            document.addEventListener('DOMContentLoaded', () => {
+                const list = document.getElementById('cancellations-list');
+                if (!list) return;
+
+                let mockCancellations = JSON.parse(localStorage.getItem('mockCancellations') || '[]');
+                if (mockCancellations.length === 0) {
+                    mockCancellations = [
+                        { id: 'CAN-0012', policyId: 'HLT-3321', type: 'Health', reason: 'Premium affordability issues', amount: '₹6,760 (Pro-rata)', date: '05 July 2026', status: 'Under Review' },
+                        { id: 'CAN-0009', policyId: 'TRV-0021', type: 'Travel', reason: 'Trip cancelled by airline', amount: '₹1,200 (Full Refund)', date: '18 May 2026', status: 'Completed' }
+                    ];
+                    localStorage.setItem('mockCancellations', JSON.stringify(mockCancellations));
+                }
+
+                function renderCancellations() {
+                    let html = '';
+                    if (mockCancellations.length === 0) {
+                        list.innerHTML = '<div class="alert alert-info border-0 rounded-3 text-info bg-info bg-opacity-10">No cancellation requests found.</div>';
+                        return;
+                    }
+
+                    mockCancellations.forEach(c => {
+                        let badgeClass = 'badge-under-review';
+                        if (c.status === 'Completed') badgeClass = 'badge-completed';
+                        else if (c.status === 'Rejected') badgeClass = 'badge-rejected';
+
+                        let dateLabel = c.status === 'Completed' ? 'Completed Date' : 'Expected Refund Date';
+                        let amountColor = c.status === 'Completed' ? 'text-success' : 'text-dark';
+
+                        html += `
+                        <div class="list-card p-4 p-md-5 mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom flex-wrap gap-3">
+                                <h5 class="fw-bold text-dark-blue mb-0">Cancellation Request ${c.id} &mdash; ${c.type} Policy ${c.policyId}</h5>
+                                <span class="badge ${badgeClass} px-3 py-2 rounded-pill fw-medium">${c.status}</span>
+                            </div>
+
+                            <div class="row g-4 mb-4">
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="detail-label">Reason for Cancellation</div>
+                                    <div class="detail-value text-dark fw-medium">${c.reason}</div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="detail-label">Refund Amount</div>
+                                    <div class="detail-value fw-bold ${amountColor}">${c.amount}</div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="detail-label">${dateLabel}</div>
+                                    <div class="detail-value fw-bold text-dark">${c.date}</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-3">
+                                ${c.status === 'Completed' ? `
+                                <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark" onclick="showCertificate('${c.id}', '${c.policyId}', '${c.date}')">Download Certificate</button>
+                                <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark" onclick="showInvoice('${c.id}', '${c.policyId}', '${c.amount}', '${c.date}')">View Invoice</button>
+                                ` : `
+                                <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark" onclick="showReceipt('${c.id}', '${c.amount}', '${c.status}')">Download Receipt</button>
+                                <button class="btn border px-4 py-2 fw-medium rounded-3 bg-white text-danger border-danger hover-bg-light" onclick="showWithdraw('${c.id}', '${c.policyId}')">Withdraw Request</button>
+                                `}
+                            </div>
+                        </div>
+                        `;
+                    });
+                    list.innerHTML = html;
+                }
+                renderCancellations();
+
+                // Populate Dropdown
+                const select = document.getElementById('cancelPolicySelect');
+                select.addEventListener('focus', () => {
+                    const policies = window.PolicySync ? window.PolicySync.getPolicies() : [];
+                    const activePolicies = policies.filter(p => p.status === 'Active');
+                    select.innerHTML = '<option value="">Choose a policy to cancel...</option>';
+                    activePolicies.forEach(p => {
+                        const opt = document.createElement('option');
+                        opt.value = p.id;
+                        opt.textContent = `${p.type} Insurance (${p.id})`;
+                        select.appendChild(opt);
+                    });
+                });
+
+                select.addEventListener('change', (e) => {
+                    const policyId = e.target.value;
+                    const container = document.getElementById('policyDetailsContainer');
+                    const warningNote = document.getElementById('generalWarningNote');
+                    
+                    if (!policyId) {
+                        container.classList.add('d-none');
+                        warningNote.classList.remove('d-none');
+                        return;
+                    }
+                    
+                    const policies = window.PolicySync ? window.PolicySync.getPolicies() : [];
+                    const p = policies.find(x => x.id === policyId);
+                    if (p) {
+                        warningNote.classList.add('d-none');
+                        container.classList.remove('d-none');
+                        
+                        let detailsHtml = '';
+                        const typeStr = p.type || '';
+                        
+                        if (typeStr.includes('Health')) {
+                            detailsHtml = `<h6 class="fw-bold mb-2 text-dark"><i class="fa-solid fa-heart-pulse text-success me-2"></i>Health Insurance Cancellation Terms</h6>
+                            <ul class="small text-muted mb-0 ps-3">
+                                <li class="mb-1">100% refund if cancelled within 15 days of policy issuance (Free-look period).</li>
+                                <li class="mb-1">Pro-rata refund applicable after 15 days if no claims have been made.</li>
+                                <li>No refund if any claims were filed during the policy term.</li>
+                            </ul>`;
+                        } else if (typeStr.includes('Motor')) {
+                            detailsHtml = `<h6 class="fw-bold mb-2 text-dark"><i class="fa-solid fa-car text-primary me-2"></i>Motor Insurance Cancellation Terms</h6>
+                            <ul class="small text-muted mb-0 ps-3">
+                                <li class="mb-1">Cancellation allowed only if an alternative policy is presented or vehicle ownership is transferred.</li>
+                                <li class="mb-1">Pro-rata refund applicable, subject to minimum premium retention.</li>
+                                <li>No refund if any claims were filed.</li>
+                            </ul>`;
+                        } else if (typeStr.includes('Life')) {
+                            detailsHtml = `<h6 class="fw-bold mb-2 text-dark"><i class="fa-solid fa-shield-halved text-info me-2"></i>Term Life Cancellation Terms</h6>
+                            <ul class="small text-muted mb-0 ps-3">
+                                <li class="mb-1">100% refund during the 30-day free-look period.</li>
+                                <li>After 30 days, surrender value (if any) will be calculated as per policy terms.</li>
+                            </ul>`;
+                        } else if (typeStr.includes('Travel')) {
+                            detailsHtml = `<h6 class="fw-bold mb-2 text-dark"><i class="fa-solid fa-umbrella text-secondary me-2"></i>Travel Insurance Cancellation Terms</h6>
+                            <ul class="small text-muted mb-0 ps-3">
+                                <li class="mb-1">Full refund if cancelled before the trip start date.</li>
+                                <li>No refund after the trip has commenced.</li>
+                            </ul>`;
+                        } else if (typeStr.includes('Property')) {
+                            detailsHtml = `<h6 class="fw-bold mb-2 text-dark"><i class="fa-solid fa-house-chimney text-warning me-2"></i>Property Insurance Cancellation Terms</h6>
+                            <ul class="small text-muted mb-0 ps-3">
+                                <li class="mb-1">15-day free-look period applies for 100% refund.</li>
+                                <li>Short-period scales apply for cancellations after 15 days.</li>
+                            </ul>`;
+                        } else {
+                            detailsHtml = `<h6 class="fw-bold mb-2 text-dark"><i class="fa-solid fa-file-contract text-dark-blue me-2"></i>Standard Cancellation Terms</h6>
+                            <ul class="small text-muted mb-0 ps-3">
+                                <li class="mb-1">Refunds are subject to the specific terms and conditions of your policy.</li>
+                                <li>A processing fee may apply.</li>
+                            </ul>`;
+                        }
+                        
+                        container.innerHTML = detailsHtml;
+                    }
+                });
+
+                // Handle Submit
+                const submitBtn = document.getElementById('submitCancellationBtn');
+                submitBtn.addEventListener('click', () => {
+                    const form = document.getElementById('cancellationForm');
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
+                    
+                    const policyId = select.value;
+                    const reason = document.getElementById('cancelReasonSelect').value;
+                    const policies = window.PolicySync ? window.PolicySync.getPolicies() : [];
+                    const p = policies.find(x => x.id === policyId);
+                    
+                    if (p) {
+                        mockCancellations.unshift({
+                            id: 'CAN-' + Math.floor(Math.random()*10000),
+                            policyId: p.id,
+                            type: p.type,
+                            reason: reason,
+                            amount: '₹0 (Under Processing)',
+                            date: 'Pending',
+                            status: 'Under Review'
+                        });
+                        localStorage.setItem('mockCancellations', JSON.stringify(mockCancellations));
+                        
+                        // Update policy status
+                        if (window.PolicySync) {
+                            window.PolicySync.updatePolicyStatus(p.id, 'Cancelled');
+                        }
+                        
+                        renderCancellations();
+                        alert('Cancellation request submitted successfully.');
+                        bootstrap.Modal.getInstance(document.getElementById('requestCancelModal')).hide();
+                        form.reset();
+                    }
+                });
+            });
+        </script>
+
+        <!-- Receipt Modal -->
+        <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow bg-light">
+                    <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                        <h5 class="modal-title fw-bold text-dark-blue fs-4" id="receiptModalLabel">Cancellation Receipt</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body px-4 py-4 text-center">
+                        <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+                            <div class="text-primary mb-3"><i class="fa-solid fa-file-invoice-dollar fs-1"></i></div>
+                            <h5 class="fw-bold mb-1" id="rm-id">CAN-0012</h5>
+                            <p class="text-muted small">Request Receipt</p>
+                            <hr class="my-4">
+                            <div class="d-flex justify-content-between text-start mb-2">
+                                <span class="text-muted">Expected Refund:</span>
+                                <span class="fw-bold" id="rm-amount">₹6,760</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-start mb-2">
+                                <span class="text-muted">Status:</span>
+                                <span class="fw-bold text-warning" id="rm-status">Under Review</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-dark-blue px-4 py-2 fw-medium rounded-3 w-100" onclick="alert('Receipt downloaded.'); bootstrap.Modal.getInstance(document.getElementById('receiptModal')).hide();"><i class="fa-solid fa-download me-2"></i> Download PDF</button>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="d-flex gap-3">
-                <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">Download Certificate</button>
-                <button class="btn border px-4 py-2 fw-medium rounded-3 bg-light hover-bg-white text-dark">View Invoice</button>
+        <!-- Withdraw Modal -->
+        <div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow">
+                    <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                        <h5 class="modal-title fw-bold text-danger fs-4" id="withdrawModalLabel">Withdraw Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body px-4 py-4">
+                        <p class="text-dark mb-0">Are you sure you want to withdraw the cancellation request <strong id="wm-id">CAN-0012</strong>? This action cannot be undone, and your policy will remain active.</p>
+                    </div>
+                    <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                        <button type="button" class="btn btn-light border px-4 py-2 fw-medium rounded-3" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger px-4 py-2 fw-medium rounded-3" id="wm-btn">Yes, Withdraw</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificate Modal -->
+        <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow bg-light">
+                    <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                        <h5 class="modal-title fw-bold text-dark-blue fs-4" id="certificateModalLabel">Cancellation Certificate</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body px-4 py-4 text-center">
+                        <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+                            <div class="text-success mb-3"><i class="fa-solid fa-certificate fs-1"></i></div>
+                            <h5 class="fw-bold mb-1" id="cm-policy">Policy TRV-0021</h5>
+                            <p class="text-muted small">Officially Cancelled</p>
+                            <hr class="my-4">
+                            <p class="small text-muted text-start mb-0" id="cm-desc">This certifies that the travel insurance policy TRV-0021 has been successfully cancelled as of 18 May 2026.</p>
+                        </div>
+                        <button class="btn btn-dark-blue px-4 py-2 fw-medium rounded-3 w-100" onclick="alert('Certificate downloaded.'); bootstrap.Modal.getInstance(document.getElementById('certificateModal')).hide();"><i class="fa-solid fa-download me-2"></i> Download PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Modal -->
+        <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 rounded-4 shadow">
+                    <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                        <h5 class="modal-title fw-bold text-dark-blue fs-4" id="invoiceModalLabel">Refund Invoice</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body px-4 py-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold mb-0">NexSure Insurance</h4>
+                            <div class="text-end text-muted small">
+                                Invoice #INV-<script>document.write(Math.floor(Math.random()*9000)+1000)</script><br>
+                                <span id="im-date">Date: 18 May 2026</span>
+                            </div>
+                        </div>
+                        <table class="table table-bordered mb-4">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Description</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="im-policy">Travel Policy Premium Refund (TRV-0021)</td>
+                                    <td class="text-end" id="im-amount1">₹1,200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Cancellation Fees</td>
+                                    <td class="text-end text-danger">- ₹0.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-end">Total Refund Processed</td>
+                                    <td class="fw-bold text-end text-success" id="im-amount2">₹1,200.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="text-muted small mb-0 text-center">This amount has been credited to your original payment method.</p>
+                    </div>
+                    <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                        <button type="button" class="btn btn-light border px-4 py-2 fw-medium rounded-3 w-100" data-bs-dismiss="modal">Close Invoice</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -232,5 +560,6 @@
     <script src="../../features/shared/profile-sync.js"></script>
     <script src="../shared/a11y-core.js"></script>
     <script src="../shared/chatbot.js"></script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

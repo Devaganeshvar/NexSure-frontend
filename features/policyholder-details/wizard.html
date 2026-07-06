@@ -21,6 +21,7 @@
     <link href="../../assets/css/dark-theme_v2.css" rel="stylesheet">
 
     <link href="../../assets/css/chatbot.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body class="bg-light">
 
@@ -44,7 +45,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
                         <ul class="dropdown-menu shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
-                            <li><a class="dropdown-item" href="../reports/reports.html">Report Management</a></li>
+                            <li><a class="dropdown-item" href="../reports/reports-center.html">Reports Center</a></li>
                             <li><a class="dropdown-item" href="../policy-management/policy-cancellation.html">Policy Cancellation</a></li>
                         </ul>
                     </li>
@@ -56,7 +57,7 @@
                     <div class="dropdown user-dropdown">
                         <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
                             <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
-                            <span class="fw-medium small pe-1">Rahul M.</span>
+                            <span class="fw-medium small pe-1">Devaganeshvar</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
@@ -125,7 +126,7 @@
             <div class="row g-4 mb-5">
                 <!-- Life Insurance -->
                 <div class="col-md-6">
-                    <div class="card select-card h-100 border rounded-4 p-4 cursor-pointer" data-type="Life" onclick="toggleSelection(this)">
+                    <div class="card select-card h-100 border rounded-4 p-4 cursor-pointer" data-type="Life" onclick="toggleInsuranceType(this)">
                         <div class="icon-circle bg-light mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:50px; height:50px; font-size:1.5rem;">🛡️</div>
                         <h5 class="fw-bold text-dark">Life Insurance</h5>
                         <p class="text-muted small mb-0">Secure your family's future with comprehensive life cover.</p>
@@ -133,7 +134,7 @@
                 </div>
                 <!-- Health Insurance -->
                 <div class="col-md-6">
-                    <div class="card select-card h-100 border rounded-4 p-4 cursor-pointer" data-type="Health" onclick="toggleSelection(this)">
+                    <div class="card select-card h-100 border rounded-4 p-4 cursor-pointer" data-type="Health" onclick="toggleInsuranceType(this)">
                         <div class="icon-circle bg-light mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:50px; height:50px; font-size:1.5rem;">🏥</div>
                         <h5 class="fw-bold text-dark">Health Insurance</h5>
                         <p class="text-muted small mb-0">Cashless treatment and hospitalization cover, simplified.</p>
@@ -141,7 +142,7 @@
                 </div>
                 <!-- Motor Insurance -->
                 <div class="col-md-6">
-                    <div class="card select-card h-100 border rounded-4 p-4 cursor-pointer" data-type="Motor" onclick="toggleSelection(this)">
+                    <div class="card select-card h-100 border rounded-4 p-4 cursor-pointer" data-type="Motor" onclick="toggleInsuranceType(this)">
                         <div class="icon-circle bg-light mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:50px; height:50px; font-size:1.5rem;">🚗</div>
                         <h5 class="fw-bold text-dark">Motor Insurance</h5>
                         <p class="text-muted small mb-0">Complete protection for your two, three or four-wheeler.</p>
@@ -149,7 +150,7 @@
                 </div>
                 <!-- Property Insurance -->
                 <div class="col-md-6">
-                    <div class="card select-card h-100 border rounded-4 p-4 cursor-pointer" data-type="Property" onclick="toggleSelection(this)">
+                    <div class="card select-card h-100 border rounded-4 p-4 cursor-pointer" data-type="Property" onclick="toggleInsuranceType(this)">
                         <div class="icon-circle bg-light mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:50px; height:50px; font-size:1.5rem;">🏠</div>
                         <h5 class="fw-bold text-dark">Property Insurance</h5>
                         <p class="text-muted small mb-0">Safeguard your home and belongings against the unexpected.</p>
@@ -157,7 +158,7 @@
                 </div>
                 <!-- Travel Insurance -->
                 <div class="col-12">
-                    <div class="card select-card border rounded-4 p-4 cursor-pointer" data-type="Travel" onclick="toggleSelection(this)">
+                    <div class="card select-card border rounded-4 p-4 cursor-pointer" data-type="Travel" onclick="toggleInsuranceType(this)">
                         <div class="icon-circle bg-light mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:50px; height:50px; font-size:1.5rem;">✈️</div>
                         <h5 class="fw-bold text-dark">Travel Insurance</h5>
                         <p class="text-muted small mb-0">Stay covered for trip delays, medical emergencies and lost baggage.</p>
@@ -522,5 +523,6 @@
     <script src="../../features/shared/profile-sync.js"></script>
 
     <script src="wizard.js"></script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

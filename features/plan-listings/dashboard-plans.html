@@ -310,6 +310,11 @@
 
     <link href="../shared/a11y-core.css" rel="stylesheet">
     <link href="../../assets/css/chatbot.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
+</head>
+<body>
+
+
 </head>
 <body>
 
@@ -333,7 +338,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
                         <ul class="dropdown-menu shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
-                            <li><a class="dropdown-item" href="../reports/reports.html">Report Management</a></li>
+                            <li><a class="dropdown-item" href="../reports/reports-center.html">Reports Center</a></li>
                             <li><a class="dropdown-item" href="../policy-management/policy-cancellation.html">Policy Cancellation</a></li>
                         </ul>
                     </li>
@@ -345,7 +350,7 @@
                     <div class="dropdown user-dropdown">
                         <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
                             <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
-                            <span class="fw-medium small pe-1">Rahul M.</span>
+                            <span class="fw-medium small pe-1">Devaganeshvar</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
@@ -369,118 +374,8 @@
 
     <!-- Main Content -->
     <div class="container px-4 py-5 mb-5">
-        <div class="row g-4 justify-content-center">
-            
-            <!-- Life Insurance -->
-            <div class="col-md-6 col-lg-4">
-                <div class="plan-card">
-                    <div class="plan-image-wrapper">
-                        <img src="../../assets/images/LandingPage/landing1.png" alt="Life Insurance">
-                        <span class="plan-badge">Life</span>
-                    </div>
-                    <div class="plan-content">
-                        <div class="plan-title">Life Insurance</div>
-                        <div class="plan-price">Starting <strong>₹4,999</strong> /yr</div>
-                        
-                        <ul class="plan-features">
-                            <li><i class="fa-solid fa-check"></i> Comprehensive life cover</li>
-                            <li><i class="fa-solid fa-check"></i> Nominee protection guarantee</li>
-                            <li><i class="fa-solid fa-check"></i> Critical illness add-on</li>
-                        </ul>
-                        
-                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Health Insurance -->
-            <div class="col-md-6 col-lg-4">
-                <div class="plan-card">
-                    <div class="plan-image-wrapper">
-                        <img src="../../assets/images/LandingPage/landing2.png" alt="Health Insurance">
-                        <span class="plan-badge">Health</span>
-                    </div>
-                    <div class="plan-content">
-                        <div class="plan-title">Health Insurance</div>
-                        <div class="plan-price">Starting <strong>₹6,500</strong> /yr</div>
-                        
-                        <ul class="plan-features">
-                            <li><i class="fa-solid fa-check"></i> Cashless hospitalization</li>
-                            <li><i class="fa-solid fa-check"></i> 500+ network hospitals</li>
-                            <li><i class="fa-solid fa-check"></i> Free annual checkup</li>
-                        </ul>
-                        
-                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Motor Insurance -->
-            <div class="col-md-6 col-lg-4">
-                <div class="plan-card">
-                    <div class="plan-image-wrapper">
-                        <img src="../../assets/images/LandingPage/landing3.png" alt="Motor Insurance">
-                        <span class="plan-badge">Motor</span>
-                    </div>
-                    <div class="plan-content">
-                        <div class="plan-title">Motor Insurance</div>
-                        <div class="plan-price">Starting <strong>₹2,200</strong> /yr</div>
-                        
-                        <ul class="plan-features">
-                            <li><i class="fa-solid fa-check"></i> Third-party + own damage</li>
-                            <li><i class="fa-solid fa-check"></i> Zero depreciation cover</li>
-                            <li><i class="fa-solid fa-check"></i> 24x7 roadside assistance</li>
-                        </ul>
-                        
-                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Property Insurance -->
-            <div class="col-md-6 col-lg-4">
-                <div class="plan-card">
-                    <div class="plan-image-wrapper">
-                        <img src="../../assets/images/LandingPage/landing4.png" alt="Property Insurance">
-                        <span class="plan-badge">Property</span>
-                    </div>
-                    <div class="plan-content">
-                        <div class="plan-title">Property Insurance</div>
-                        <div class="plan-price">Starting <strong>₹1,800</strong> /yr</div>
-                        
-                        <ul class="plan-features">
-                            <li><i class="fa-solid fa-check"></i> Home structure cover</li>
-                            <li><i class="fa-solid fa-check"></i> Contents protection</li>
-                            <li><i class="fa-solid fa-check"></i> Natural disaster cover</li>
-                        </ul>
-                        
-                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Travel Insurance -->
-            <div class="col-md-6 col-lg-4">
-                <div class="plan-card">
-                    <div class="plan-image-wrapper">
-                        <img src="../../assets/images/LandingPage/landing5.png" alt="Travel Insurance">
-                        <span class="plan-badge">Travel</span>
-                    </div>
-                    <div class="plan-content">
-                        <div class="plan-title">Travel Insurance</div>
-                        <div class="plan-price">Starting <strong>₹1,500</strong> /yr</div>
-                        
-                        <ul class="plan-features">
-                            <li><i class="fa-solid fa-check"></i> Global medical cover</li>
-                            <li><i class="fa-solid fa-check"></i> Trip cancellation protection</li>
-                            <li><i class="fa-solid fa-check"></i> Lost baggage assistance</li>
-                        </ul>
-                        
-                        <a href="../policyholder-details/wizard.html" class="btn btn-quote">Get Quote</a>
-                    </div>
-                </div>
-            </div>
-            
+        <div class="row g-4 justify-content-center" id="dynamic-plans-container">
+            <!-- Populated dynamically by javascript -->
         </div>
     </div>
 
@@ -556,5 +451,45 @@
     <script src="../../features/shared/notifications.js"></script>
     <script src="../shared/a11y-core.js"></script>
     <script src="../shared/chatbot.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('dynamic-plans-container');
+            if (!container) return;
+            
+            const data = localStorage.getItem('mockProducts');
+            if (!data) return;
+            
+            const products = JSON.parse(data);
+            
+            let html = '';
+            products.forEach(p => {
+                const featuresHtml = (p.features || []).map(f => `<li><i class="fa-solid fa-check"></i> ${f}</li>`).join('');
+                html += `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="plan-card">
+                            <div class="plan-image-wrapper">
+                                <img src="${p.image}" alt="${p.name}">
+                                <span class="plan-badge">${p.type}</span>
+                            </div>
+                            <div class="plan-content">
+                                <div class="plan-title">${p.name}</div>
+                                <div class="plan-price">Starting <strong>₹${p.price.toLocaleString('en-IN')}</strong> /yr</div>
+                                
+                                <ul class="plan-features">
+                                    ${featuresHtml}
+                                </ul>
+                                
+                                <a href="../policyholder-details/wizard.html?product=${p.id}" class="btn btn-quote">Get Quote</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        });
+    </script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>

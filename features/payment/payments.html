@@ -129,6 +129,7 @@
 
     <link href="../shared/a11y-core.css" rel="stylesheet">
     <link href="../../assets/css/chatbot.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body class="bg-light">
 
@@ -154,7 +155,7 @@
                         <ul class="dropdown-menu shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="../kyc/kyc.html">KYC Verification</a></li>
                             <li><a class="dropdown-item" href="../reports/reports-center.html">Reports Center</a></li>
-                            <li><a class="dropdown-item" href="#">Policy Cancellation</a></li>
+                            <li><a class="dropdown-item" href="../policy-management/policy-cancellation.html">Policy Cancellation</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -165,13 +166,13 @@
                     <div class="dropdown user-dropdown">
                         <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2 glass-pill px-2 py-1 rounded-pill" href="#" role="button" data-bs-toggle="dropdown">
                             <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light" width="32" height="32" style="object-fit: cover;">
-                            <span class="fw-medium small pe-1">Rahul M.</span>
+                            <span class="fw-medium small pe-1">Devaganeshvar</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
                             <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                            <li><a class="dropdown-item text-danger" href="../auth/login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -193,7 +194,7 @@
                     </nav>
                     <h1 class="display-5 fw-bold font-playfair mb-0">Payments Portal</h1>
                 </div>
-                <button class="btn btn-light fw-bold px-4 py-2 text-dark-blue rounded-3 shadow-sm">Pay Premium</button>
+                <button class="btn btn-light fw-bold px-4 py-2 text-dark-blue rounded-3 shadow-sm" onclick="handlePayPremiumClick()">Pay Premium</button>
             </div>
         </div>
     </header>
@@ -234,110 +235,96 @@
         </div>
 
         <!-- Tabs -->
-        <ul class="nav nav-pills mb-4 gap-2 border-bottom pb-3">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Pending Payments</a>
+        <ul class="nav nav-pills mb-4 gap-2 border-bottom pb-3" id="paymentTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active rounded-pill px-4" id="pending-tab" data-bs-toggle="pill" data-bs-target="#pending-payments" type="button" role="tab">Pending Payments</button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link border bg-white text-dark" href="#">Payment History</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link border bg-white text-dark" href="#">Payment Methods</a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link rounded-pill px-4" id="history-tab" data-bs-toggle="pill" data-bs-target="#payment-history" type="button" role="tab">Payment History</button>
             </li>
         </ul>
 
-        <!-- Pending Payments Section -->
-        <div class="mb-5">
-            <h6 class="fw-bold text-dark text-uppercase small tracking-wider mb-3">PENDING PAYMENTS</h6>
-            
-            <div class="list-card p-4">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                    <div>
-                        <h6 class="fw-bold text-dark mb-1 fs-5">Health Insurance (HLT-3321)</h6>
-                        <p class="text-muted small mb-0">Next renewal premium due on 30 June 2026</p>
-                    </div>
-                    <div class="d-flex align-items-center gap-4">
-                        <h4 class="fw-bold text-dark mb-0">₹8,450</h4>
-                        <span class="badge badge-pending px-3 py-2 rounded-pill fw-medium">Pending</span>
-                        <button class="btn btn-dark-blue fw-medium px-4 py-2 rounded-3">Pay Now</button>
-                    </div>
+        <div class="tab-content" id="paymentTabsContent">
+            <!-- Pending Payments Tab -->
+            <div class="tab-pane fade show active" id="pending-payments" role="tabpanel">
+                <div id="dynamic-payments-container">
+                    <!-- Populated by JS -->
                 </div>
             </div>
 
-            <div class="list-card p-4">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                    <div>
-                        <h6 class="fw-bold text-dark mb-1 fs-5">Travel Insurance (TRV-1209)</h6>
-                        <p class="text-muted small mb-0">Premium overdue since 10 June 2026</p>
-                    </div>
-                    <div class="d-flex align-items-center gap-4">
-                        <h4 class="fw-bold text-dark mb-0">₹1,350</h4>
-                        <span class="badge badge-overdue px-3 py-2 rounded-pill fw-medium">Overdue</span>
-                        <button class="btn btn-dark-blue fw-medium px-4 py-2 rounded-3">Pay Now</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Payment History Section -->
-        <div>
-            <h6 class="fw-bold text-dark text-uppercase small tracking-wider mb-3">PAYMENT HISTORY</h6>
+            <!-- Payment History Tab -->
+            <div class="tab-pane fade" id="payment-history" role="tabpanel">
+                <h6 class="fw-bold text-dark text-uppercase small tracking-wider mb-3">PAYMENT HISTORY</h6>
             
             <div class="table-card shadow-sm">
                 <div class="table-responsive">
                     <table class="table table-borderless mb-0">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Policy</th>
-                                <th>Description</th>
-                                <th>Amount</th>
-                                <th>Mode</th>
-                                <th>Status</th>
-                                <th class="text-end">Invoice</th>
+                                <th style="width: 15%;">Date</th>
+                                <th style="width: 15%;">Policy</th>
+                                <th style="width: 30%;">Description</th>
+                                <th style="width: 10%;">Amount</th>
+                                <th style="width: 12%;">Mode</th>
+                                <th style="width: 10%;">Status</th>
+                                <th class="text-end" style="width: 8%;">Invoice</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="fw-medium">24 May 2026</td>
-                                <td class="fw-bold">HLT-3321</td>
-                                <td>Renewal Premium</td>
-                                <td class="fw-bold">₹8,450</td>
-                                <td>Net Banking</td>
-                                <td><span class="badge badge-success-light px-2 py-1 rounded-pill">Successful</span></td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">Download</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="fw-medium">12 Mar 2026</td>
-                                <td class="fw-bold">MOT-5587</td>
-                                <td>Annual Premium</td>
-                                <td class="fw-bold">₹12,300</td>
-                                <td>UPI</td>
-                                <td><span class="badge badge-success-light px-2 py-1 rounded-pill">Successful</span></td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">Download</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="fw-medium">15 Jan 2026</td>
-                                <td class="fw-bold">LIF-1190</td>
-                                <td>Grace Payment</td>
-                                <td class="fw-bold">₹18,200</td>
-                                <td>Credit Card</td>
-                                <td><span class="badge badge-success-light px-2 py-1 rounded-pill">Successful</span></td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">Download</button>
-                                </td>
-                            </tr>
+                        <tbody id="payment-history-tbody">
+                            <!-- Populated dynamically -->
                         </tbody>
                     </table>
                 </div>
             </div>
+            </div>
+        </div>
         </div>
 
     </main>
+
+    <!-- Premium Selection Modal -->
+    <div class="modal fade" id="premiumSelectionModal" tabindex="-1" aria-labelledby="premiumSelectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark" id="premiumSelectionModalLabel">Select Premium to Pay</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3">
+                    <form id="premiumSelectionForm">
+                        <div id="premiumSelectionList" class="d-flex flex-column gap-3">
+                            <!-- Populated by JS -->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4" id="btnProceedToPay">Proceed to Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Preview Modal -->
+    <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark" id="invoiceModalLabel">Invoice Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 mt-3" style="height: 70vh;">
+                    <iframe id="invoiceIframe" src="" width="100%" height="100%" style="border: none;"></iframe>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4" id="btnDownloadActual">
+                        <i class="fas fa-download me-2"></i>Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="../../assets/js/bootstrap.bundle.js"></script>
@@ -347,48 +334,556 @@
     <script src="../shared/chatbot.js"></script>
 
     <script src="../../features/shared/razorpay-integration.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- jsPDF for Invoice Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const payButtons = document.querySelectorAll('.btn-dark-blue, .btn-light');
+        window.handlePayPremiumClick = function() {
+            const apps = JSON.parse(localStorage.getItem('mockApps') || '[]');
+            const profile = JSON.parse(localStorage.getItem('nexsure_customer_profile') || '{}');
+            const customerName = profile.name || 'Devaganeshvar';
+            
+            const history = JSON.parse(localStorage.getItem('mockPaymentHistory') || '[]');
+            const paidPolicyIds = history.filter(h => h.status === 'Successful').map(h => h.policy);
+            
+            const allUserApps = apps.filter(a => {
+                const cName = a.customer || a.name;
+                const isPaidInHistory = paidPolicyIds.includes(a.id);
+                return (cName === customerName || cName === 'Devaganeshvar' || cName === 'Devaganeshvar') && !isPaidInHistory;
+            });
+            
+            const policies = window.PolicySync ? window.PolicySync.getPolicies() : [];
+            const activePoliciesDue = policies.filter(p => p.status === 'Active' && p.dueDate && (p.dueDate.includes('Jul') || p.dueDate.includes('Jun')));
+            const lapsedPolicies = policies.filter(p => p.status === 'Expired');
+            
+            const approvedApps = allUserApps.filter(a => a.status === 'Approved');
+            const unapprovedApps = allUserApps.filter(a => a.status !== 'Approved' && a.status !== 'Paid');
+            
+            if (approvedApps.length === 0 && activePoliciesDue.length === 0 && lapsedPolicies.length === 0) {
+                if (unapprovedApps.length > 0) {
+                    alert("Your policy application has not yet been approved by the Insurance Officer. Premium payment will be available once your application is approved.");
+                } else {
+                    alert("There are no premiums due for payment at this time.");
+                }
+                return;
+            }
+            
+            // Populate the modal list
+            const listContainer = document.getElementById('premiumSelectionList');
+            let html = '';
+            
+            approvedApps.forEach((app, index) => {
+                const isChecked = index === 0 ? 'checked' : '';
+                const rawAmount = parseInt((app.premium || '0').replace(/[^0-9]/g, '')) || 0;
+                html += `
+                    <div class="form-check list-card p-3 border rounded">
+                        <input class="form-check-input mt-1" type="radio" name="selectedPremium" id="premiumRadio_${app.id}" value="${app.id}" data-amount="${rawAmount}" data-desc="Premium for ${app.product}" ${isChecked}>
+                        <label class="form-check-label w-100 ms-2 cursor-pointer" for="premiumRadio_${app.id}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1 fw-bold text-dark">${app.product} (${app.id})</h6>
+                                    <small class="text-muted">Applied: ${app.date} (New Policy)</small>
+                                </div>
+                                <span class="fw-bold fs-5 text-primary">${app.premium}</span>
+                            </div>
+                        </label>
+                    </div>
+                `;
+            });
+            
+            // Add renewals to modal
+            [...activePoliciesDue, ...lapsedPolicies].forEach((p, index) => {
+                const isChecked = (approvedApps.length === 0 && index === 0) ? 'checked' : '';
+                const rawAmount = parseInt((p.premium || '0').replace(/[^0-9]/g, '')) || 0;
+                const statusType = p.status === 'Expired' ? 'Lapsed Renewal' : 'Upcoming Renewal';
+                html += `
+                    <div class="form-check list-card p-3 border rounded mt-2">
+                        <input class="form-check-input mt-1" type="radio" name="selectedPremium" id="premiumRadio_${p.id}" value="${p.id}" data-amount="${rawAmount}" data-desc="Renewal for ${p.type}" ${isChecked}>
+                        <label class="form-check-label w-100 ms-2 cursor-pointer" for="premiumRadio_${p.id}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1 fw-bold text-dark">${p.type} (${p.id})</h6>
+                                    <small class="text-muted">${statusType} Due: ${p.dueDate}</small>
+                                </div>
+                                <span class="fw-bold fs-5 text-primary">₹${p.premium}</span>
+                            </div>
+                        </label>
+                    </div>
+                `;
+            });
+            
+            listContainer.innerHTML = html;
+            
+            const modal = new bootstrap.Modal(document.getElementById('premiumSelectionModal'));
+            modal.show();
+        };
+
+        function renderPendingPayments() {
+            const container = document.getElementById('dynamic-payments-container');
+            if (!container) return;
+            
+            const apps = JSON.parse(localStorage.getItem('mockApps') || '[]');
+            const profile = JSON.parse(localStorage.getItem('nexsure_customer_profile') || '{}');
+            const customerName = profile.name || 'Devaganeshvar';
+            
+            const history = JSON.parse(localStorage.getItem('mockPaymentHistory') || '[]');
+            const paidPolicyIds = history.filter(h => h.status === 'Successful').map(h => h.policy);
+            
+            const userApps = apps.filter(a => {
+                const cName = a.customer || a.name;
+                const isPaidInHistory = paidPolicyIds.includes(a.id);
+                return (cName === customerName || cName === 'Devaganeshvar' || cName === 'Devaganeshvar') && (a.status !== 'Rejected' && a.status !== 'Paid' && !isPaidInHistory);
+            });
+            
+            const policies = window.PolicySync ? window.PolicySync.getPolicies() : [];
+            const activePoliciesDue = policies.filter(p => p.status === 'Active' && p.dueDate && (p.dueDate.includes('Jul') || p.dueDate.includes('Jun')));
+            const lapsedPolicies = policies.filter(p => p.status === 'Expired');
+            
+            let totalDue = 0;
+            let totalOverdue = 0;
+            
+            if (userApps.length === 0 && activePoliciesDue.length === 0 && lapsedPolicies.length === 0) {
+                container.innerHTML = '<p class="text-muted">No pending payments or applications found.</p>';
+            } else {
+                let html = '';
+                
+                // 1. Lapsed Due (Overdue) - move to top
+                lapsedPolicies.forEach(p => {
+                    const amt = parseInt((p.premium || '0').replace(/[^0-9]/g, '')) || 0;
+                    totalDue += amt;
+                    totalOverdue += amt;
+                    html += `
+                        <div class="list-card p-4 mb-3 border-danger" style="border: 1px solid #ef4444;">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-1 fs-5">${p.type} (${p.id})</h6>
+                                    <p class="text-danger small mb-0 fw-medium">Lapsed On: ${p.dueDate}</p>
+                                </div>
+                                <div class="d-flex align-items-center gap-4">
+                                    <h4 class="fw-bold text-danger mb-0">₹${p.premium}</h4>
+                                    <span class="badge bg-danger text-white px-3 py-2 rounded-pill fw-medium">Overdue</span>
+                                    <button class="btn btn-danger fw-medium px-4 py-2 rounded-3 payment-btn text-white" data-policy="${p.id}" data-desc="Lapsed Renewal for ${p.type}" data-amount="${p.premium.replace(/[^0-9]/g, '')}">Pay Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // 2. Renewals Due (Due Soon)
+                activePoliciesDue.forEach(p => {
+                    totalDue += parseInt((p.premium || '0').replace(/[^0-9]/g, '')) || 0;
+                    html += `
+                        <div class="list-card p-4 mb-3 border-warning" style="border: 1px solid #f59e0b;">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-1 fs-5">${p.type} (${p.id})</h6>
+                                    <p class="text-muted small mb-0">Renewal Due: ${p.dueDate}</p>
+                                </div>
+                                <div class="d-flex align-items-center gap-4">
+                                    <h4 class="fw-bold text-dark mb-0">₹${p.premium}</h4>
+                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-medium">Due Soon</span>
+                                    <button class="btn btn-warning fw-medium px-4 py-2 rounded-3 payment-btn text-dark" data-policy="${p.id}" data-desc="Renewal for ${p.type}" data-amount="${p.premium.replace(/[^0-9]/g, '')}">Pay Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // 3. Applications (Pending) - move to bottom
+                userApps.forEach(app => {
+                    const isPending = app.status === 'Pending';
+                    const badgeClass = isPending ? 'badge-pending' : 'badge-success-light';
+                    
+                    if (!isPending) totalDue += parseInt((app.premium || '0').replace(/[^0-9]/g, '')) || 0;
+                    
+                    html += `
+                        <div class="list-card p-4 mb-3">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-1 fs-5">${app.product} (${app.id})</h6>
+                                    <p class="text-muted small mb-0">Application Pending (Applied: ${app.date})</p>
+                                </div>
+                                <div class="d-flex align-items-center gap-4">
+                                    <h4 class="fw-bold text-dark mb-0">${app.premium}</h4>
+                                    <span class="badge ${badgeClass} px-3 py-2 rounded-pill fw-medium">${app.status}</span>
+                                    <button class="btn ${isPending ? 'btn-secondary' : 'btn-dark-blue'} fw-medium px-4 py-2 rounded-3 payment-btn" data-policy="${app.id}" data-desc="Premium for ${app.product}" data-amount="${app.premium.replace(/[^0-9]/g, '')}" ${isPending ? 'disabled title="Awaiting Officer Approval"' : ''}>Pay Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                
+                // Update KPIs
+                const kpiDue = document.querySelector('.kpi-card .kpi-value');
+                if (kpiDue) {
+                    kpiDue.textContent = '₹' + totalDue.toLocaleString('en-IN');
+                }
+                const kpiOverdueList = document.querySelectorAll('.kpi-card .kpi-value.text-danger');
+                if (kpiOverdueList.length > 0) {
+                    kpiOverdueList[0].textContent = '₹' + totalOverdue.toLocaleString('en-IN');
+                    const overdueSubtext = kpiOverdueList[0].nextElementSibling;
+                    if (overdueSubtext) overdueSubtext.textContent = lapsedPolicies.length + ' bill(s) overdue';
+                }
+            }
+            
+            // Re-bind click events for dynamic buttons
+            const payButtons = document.querySelectorAll('.payment-btn');
             payButtons.forEach(btn => {
-                if (btn.textContent.trim().includes('Pay Now') || btn.textContent.trim().includes('Pay Premium')) {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        
-                        // Try to find price
-                        let amount = 5000; // default fallback
-                        const container = btn.closest('.d-flex');
-                        if (container) {
-                            const priceEl = container.querySelector('h4');
-                            if (priceEl) {
-                                amount = parseInt(priceEl.textContent.replace(/[^0-9]/g, ''), 10);
-                            }
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    let amount = 5000; // default fallback
+                    const policyId = btn.getAttribute('data-policy') || 'UNKNOWN';
+                    const policyDesc = btn.getAttribute('data-desc') || 'Payment';
+                    const container = btn.closest('.d-flex');
+                    if (container) {
+                        const priceEl = container.querySelector('h4');
+                        if (priceEl) {
+                            amount = parseInt(priceEl.textContent.replace(/[^0-9]/g, ''), 10);
                         }
+                    }
+                    if (btn.hasAttribute('data-amount')) {
+                        amount = parseInt(btn.getAttribute('data-amount'), 10);
+                    }
+                    
+                    // Show Confirmation Modal Instead of Direct Payment
+                    const modalEl = document.getElementById('paymentConfirmModal');
+                    if (modalEl) {
+                        document.getElementById('confirm-policy-id').textContent = policyId;
+                        document.getElementById('confirm-policy-desc').textContent = policyDesc;
+                        document.getElementById('confirm-amount').textContent = '₹' + amount.toLocaleString('en-IN');
                         
-                        if (window.initiateRazorpayPayment) {
-                            window.initiateRazorpayPayment(amount, {
-                                onSuccess: function(paymentId) {
-                                    // Visual success update
-                                    btn.textContent = 'Paid!';
-                                    btn.classList.replace('btn-dark-blue', 'btn-success');
-                                    btn.classList.replace('btn-light', 'btn-success');
-                                    btn.classList.remove('text-dark-blue');
-                                    btn.disabled = true;
-                                    
-                                    const badge = container.querySelector('.badge');
-                                    if (badge) {
-                                        badge.textContent = 'Successful';
-                                        badge.className = 'badge badge-success-light px-3 py-2 rounded-pill fw-medium';
+                        const confirmBtn = document.getElementById('btn-confirm-pay');
+                        confirmBtn.setAttribute('data-amount', amount);
+                        confirmBtn.setAttribute('data-policy', policyId);
+                        confirmBtn.setAttribute('data-desc', policyDesc);
+                        
+                        const modal = new bootstrap.Modal(modalEl);
+                        modal.show();
+                    }
+                });
+            });
+        }
+        
+        // Modal Confirm Event Listener
+        document.addEventListener('DOMContentLoaded', () => {
+            const confirmBtn = document.getElementById('btn-confirm-pay');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', () => {
+                    const amount = parseInt(confirmBtn.getAttribute('data-amount'), 10);
+                    const policyId = confirmBtn.getAttribute('data-policy');
+                    const policyDesc = confirmBtn.getAttribute('data-desc');
+                    
+                    const modalEl = document.getElementById('paymentConfirmModal');
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                    
+                    if (window.initiateRazorpayPayment) {
+                        window.initiateRazorpayPayment(amount, policyId, policyDesc, function(response) {
+                            const paymentId = response ? response.razorpay_payment_id : '';
+                            // Update mockApps to mark this application as 'Paid'
+                            const apps = JSON.parse(localStorage.getItem('mockApps') || '[]');
+                            const appIndex = apps.findIndex(a => a.id === policyId);
+                            if (appIndex !== -1) {
+                                apps[appIndex].status = 'Paid';
+                                const generatedPolicyId = apps[appIndex].generatedPolicyId;
+                                localStorage.setItem('mockApps', JSON.stringify(apps));
+                                
+                                // Activate the policy if it exists in mockPolicies
+                                if (generatedPolicyId) {
+                                    const policies = JSON.parse(localStorage.getItem('mockPolicies') || '[]');
+                                    const pIndex = policies.findIndex(p => p.id === generatedPolicyId);
+                                    if (pIndex !== -1) {
+                                        policies[pIndex].status = 'Active';
+                                        localStorage.setItem('mockPolicies', JSON.stringify(policies));
+                                        if (window.PolicySync) window.PolicySync.triggerSyncEvent();
                                     }
                                 }
+                            } else {
+                                // It's a renewal payment, update PolicySync
+                                const policies = JSON.parse(localStorage.getItem('mockPolicies') || '[]');
+                                const pIndex = policies.findIndex(p => p.id === policyId);
+                                if (pIndex !== -1) {
+                                    policies[pIndex].status = 'Active';
+                                    
+                                    // Add 1 year to due date
+                                    const oldDateParts = (policies[pIndex].dueDate || '').split(' ');
+                                    if (oldDateParts.length === 3) {
+                                        const y = parseInt(oldDateParts[2], 10);
+                                        policies[pIndex].dueDate = `${oldDateParts[0]} ${oldDateParts[1]} ${y + 1}`;
+                                    }
+                                    
+                                    localStorage.setItem('mockPolicies', JSON.stringify(policies));
+                                    if (window.PolicySync) window.PolicySync.triggerSyncEvent();
+                                }
+                            }
+                            
+                            const history = JSON.parse(localStorage.getItem('mockPaymentHistory') || '[]');
+                            const now = new Date();
+                            const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                            
+                            history.unshift({
+                                id: paymentId || 'TXN-' + Math.floor(Math.random() * 100000),
+                                date: dateStr,
+                                time: timeStr,
+                                policy: policyId,
+                                description: policyDesc,
+                                amount: '₹' + amount.toLocaleString('en-IN'),
+                                mode: 'Razorpay',
+                                status: 'Successful'
                             });
-                        } else {
-                            alert('Razorpay module not loaded.');
-                        }
-                    });
-                }
-            });
+                            localStorage.setItem('mockPaymentHistory', JSON.stringify(history));
+                            
+                            // Re-render both sections
+                            renderPendingPayments();
+                            renderPaymentHistory();
+                        });
+                    } else {
+                        alert('Razorpay module not loaded.');
+                    }
+                });
+            }
         });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPendingPayments();
+        });
+
+        function renderPaymentHistory() {
+            const tbody = document.getElementById('payment-history-tbody');
+            if (!tbody) return;
+            const history = JSON.parse(localStorage.getItem('mockPaymentHistory') || '[]');
+            if (history.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">No payment history found.</td></tr>';
+                return;
+            }
+            let html = '';
+            history.forEach(item => {
+                const isSuccess = item.status === 'Successful';
+                const badgeClass = isSuccess ? 'badge-success-light' : (item.status === 'Failed' ? 'bg-danger text-white' : 'bg-warning text-dark');
+                html += `
+                    <tr>
+                        <td class="fw-medium">${item.date}<br><small class="text-muted" style="font-size: 0.75rem;">${item.time}</small></td>
+                        <td class="fw-bold">${item.policy}</td>
+                        <td>${item.description}<br><small class="text-muted" style="font-size: 0.75rem;">ID: ${item.id}</small></td>
+                        <td class="fw-bold">${item.amount}</td>
+                        <td>${item.mode}</td>
+                        <td><span class="badge ${badgeClass} px-2 py-1 rounded-pill">${item.status}</span></td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="viewInvoice('${item.id}')">Invoice</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+        
+        function generateInvoiceDoc(txnId) {
+            const history = JSON.parse(localStorage.getItem('mockPaymentHistory') || '[]');
+            const txn = history.find(t => t.id === txnId);
+            if (!txn) return null;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Header
+            doc.setFontSize(22);
+            doc.setTextColor(22, 33, 62); // NexSure blue
+            doc.text("NexSure Insurance", 20, 30);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text("123 Tech Park, 4th Block", 20, 38);
+            doc.text("Bangalore, KA 560001", 20, 43);
+            doc.text("contact@nexsure.in | +91 800 123 4567", 20, 48);
+            
+            // Invoice Title
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text("PAYMENT RECEIPT", 140, 30);
+            
+            // Transaction Details
+            doc.setFontSize(11);
+            doc.text("Receipt No: " + txn.id, 140, 40);
+            doc.text("Date: " + txn.date, 140, 46);
+            doc.text("Time: " + txn.time, 140, 52);
+            doc.text("Status: " + txn.status, 140, 58);
+            
+            // Divider
+            doc.setDrawColor(200, 200, 200);
+            doc.line(20, 65, 190, 65);
+            
+            // Billed To (Mock User)
+            const profile = JSON.parse(localStorage.getItem('nexsure_customer_profile') || '{}');
+            const customerName = profile.name || 'Devaganeshvar';
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text("Billed To:", 20, 75);
+            doc.setFont(undefined, 'normal');
+            doc.text(customerName, 20, 82);
+            
+            // Table of items
+            doc.autoTable({
+                startY: 95,
+                head: [['Description', 'Policy / Reference', 'Payment Mode', 'Amount']],
+                body: [
+                    [txn.description, txn.policy, txn.mode, txn.amount]
+                ],
+                theme: 'striped',
+                headStyles: { fillColor: [22, 33, 62] },
+                styles: { fontSize: 11, cellPadding: 5 }
+            });
+            
+            // Total Footer
+            const finalY = doc.lastAutoTable.finalY || 120;
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text("Total Paid:", 120, finalY + 15);
+            doc.setTextColor(33, 150, 83); // Success green
+            doc.text(txn.amount, 160, finalY + 15);
+            
+            // Footer text
+            doc.setFontSize(10);
+            doc.setTextColor(150, 150, 150);
+            doc.setFont(undefined, 'normal');
+            doc.text("This is an electronically generated receipt and does not require a physical signature.", 20, finalY + 40);
+            
+            return { doc, txn };
+        }
+
+        window.viewInvoice = function(txnId) {
+            const result = generateInvoiceDoc(txnId);
+            if (!result) {
+                alert('Transaction not found.');
+                return;
+            }
+            
+            // Generate data URI
+            const dataUri = result.doc.output('datauristring');
+            document.getElementById('invoiceIframe').src = dataUri;
+            
+            // Set up download button
+            window.currentInvoiceDoc = result.doc;
+            window.currentInvoiceId = result.txn.id;
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('invoiceModal'));
+            modal.show();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPendingPayments();
+            
+            const btnDownloadActual = document.getElementById('btnDownloadActual');
+            if (btnDownloadActual) {
+                btnDownloadActual.addEventListener('click', function() {
+                    if (window.currentInvoiceDoc && window.currentInvoiceId) {
+                        window.currentInvoiceDoc.save("NexSure_Receipt_" + window.currentInvoiceId + ".pdf");
+                    }
+                });
+            }
+            
+            const btnProceedToPay = document.getElementById('btnProceedToPay');
+            if (btnProceedToPay) {
+                btnProceedToPay.addEventListener('click', function() {
+                    const selectedRadio = document.querySelector('input[name="selectedPremium"]:checked');
+                    if (!selectedRadio) {
+                        alert("Please select a premium to pay.");
+                        return;
+                    }
+                    
+                    const amountStr = selectedRadio.dataset.amount;
+                    const amount = parseInt(amountStr);
+                    const policyId = selectedRadio.value;
+                    const policyDesc = selectedRadio.dataset.desc;
+                    
+                    // Close the selection modal
+                    const modalEl = document.getElementById('premiumSelectionModal');
+                    const modalInst = bootstrap.Modal.getInstance(modalEl);
+                    if (modalInst) modalInst.hide();
+                    
+                    // Trigger Razorpay payment
+                    if (window.initiateRazorpayPayment) {
+                        window.initiateRazorpayPayment(amount, policyId, policyDesc, function(response) {
+                            const paymentId = response ? response.razorpay_payment_id : '';
+                            // Update mockApps to mark this application as 'Paid'
+                            const apps = JSON.parse(localStorage.getItem('mockApps') || '[]');
+                            const appIndex = apps.findIndex(a => a.id === policyId);
+                            if (appIndex !== -1) {
+                                apps[appIndex].status = 'Paid';
+                                localStorage.setItem('mockApps', JSON.stringify(apps));
+                            }
+                            
+                            // Update Payment History
+                            const history = JSON.parse(localStorage.getItem('mockPaymentHistory') || '[]');
+                            const now = new Date();
+                            const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                            
+                            history.unshift({
+                                id: paymentId || 'TXN-' + Math.floor(Math.random() * 100000),
+                                date: dateStr,
+                                time: timeStr,
+                                policy: policyId,
+                                description: policyDesc,
+                                amount: '₹' + amount.toLocaleString('en-IN'),
+                                mode: 'Razorpay',
+                                status: 'Successful'
+                            });
+                            localStorage.setItem('mockPaymentHistory', JSON.stringify(history));
+                            
+                            // Re-render both sections
+                            renderPendingPayments();
+                            renderPaymentHistory();
+                        });
+                    } else {
+                        alert('Razorpay module not loaded.');
+                    }
+                });
+            }
+        });
+        
+        // Initial render
+        renderPaymentHistory();
     </script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
+    <!-- Payment Confirmation Modal -->
+    <div class="modal fade" id="paymentConfirmModal" tabindex="-1" aria-labelledby="paymentConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-dark-blue text-white">
+                    <h5 class="modal-title" id="paymentConfirmModalLabel">Confirm Payment</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <i class="fa-solid fa-file-invoice-dollar text-primary mb-3" style="font-size: 3rem;"></i>
+                    <h5 class="mb-4 text-dark fw-bold">Review Your Payment Details</h5>
+                    
+                    <div class="d-flex justify-content-between border-bottom pb-2 mb-3">
+                        <span class="text-muted fw-semibold">Policy ID:</span>
+                        <span class="text-dark fw-bold" id="confirm-policy-id"></span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-2 mb-3">
+                        <span class="text-muted fw-semibold">Description:</span>
+                        <span class="text-dark fw-bold" id="confirm-policy-desc"></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="text-muted fw-semibold">Total Amount Due:</span>
+                        <span class="text-dark fw-bold fs-5 text-success" id="confirm-amount"></span>
+                    </div>
+                    
+                    <p class="small text-muted mb-0">By clicking confirm, you authorize NexSure to securely process this premium payment.</p>
+                </div>
+                <div class="modal-footer border-0 pb-4 d-flex justify-content-center gap-2">
+                    <button type="button" class="btn btn-outline-secondary px-4 py-2 fw-medium rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-confirm-pay" class="btn btn-dark-blue px-4 py-2 fw-medium rounded-pill shadow-sm">Confirm Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

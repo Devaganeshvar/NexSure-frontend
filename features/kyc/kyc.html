@@ -25,9 +25,9 @@
 
     <!-- Base Styles -->
 
-    <link href="../landing-page/landing-page.css?v=2" rel="stylesheet">
+    <link href="../landing/landing-page.css?v=2" rel="stylesheet">
 
-    <link href="../home/home.css?v=3" rel="stylesheet">
+    <link href="../customer-dashboard/home.css?v=3" rel="stylesheet">
 
     <style>
 
@@ -237,6 +237,7 @@
 
     <link href="../shared/a11y-core.css" rel="stylesheet">
     <link href="../../assets/css/chatbot.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 
 <body class="bg-light">
@@ -249,7 +250,7 @@
 
         <div class="container-fluid px-4 px-xl-5">
 
-            <a class="navbar-brand" href="../home/home.html">
+            <a class="navbar-brand" href="../customer-dashboard/home.html">
 
                 <img src="../../assets/images/Logo.png" alt="Nexsure" height="75">
 
@@ -267,15 +268,15 @@
 
                 <ul class="navbar-nav mx-auto gap-4">
 
-                    <li class="nav-item"><a class="nav-link" href="../home/home.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../customer-dashboard/home.html">Dashboard</a></li>
 
-                    <li class="nav-item"><a class="nav-link" href="../my-policies/my-policies.html">My Policies</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../policy-management/my-policies.html">My Policies</a></li>
 
-                    <li class="nav-item"><a class="nav-link" href="../dashboard-plans/dashboard-plans.html">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../plan-listings/dashboard-plans.html">Plans</a></li>
 
-                    <li class="nav-item"><a class="nav-link" href="../claims/claims.html">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../policy-management/claims.html">Claims</a></li>
 
-                    <li class="nav-item"><a class="nav-link" href="../payments/payments.html">Payments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../payment/payments.html">Payments</a></li>
 
                     <li class="nav-item dropdown">
 
@@ -417,7 +418,7 @@
 
                             <img src="../../assets/images/LandingPage/landing11.png" alt="User" class="rounded-circle border border-2 border-light profile-sync-img" width="32" height="32" style="object-fit: cover;">
 
-                            <span class="fw-medium small pe-1">Rahul M.</span>
+                            <span class="fw-medium small pe-1">Devaganeshvar</span>
 
                         </a>
 
@@ -425,11 +426,11 @@
 
                             <li><a class="dropdown-item" href="../profile/profile.html"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
 
-                            <li><a class="dropdown-item" href="../settings/settings.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
+                            <li><a class="dropdown-item" href="../profile/settings.html"><i class="fa-solid fa-gear me-2"></i> Settings</a></li>
 
                             <li><hr class="dropdown-divider"></li>
 
-                            <li><a class="dropdown-item text-danger" href="../login/login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                            <li><a class="dropdown-item text-danger" href="../auth/login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
 
                         </ul>
 
@@ -455,7 +456,7 @@
 
                 <ol class="breadcrumb mb-2">
 
-                    <li class="breadcrumb-item"><a href="../home/home.html" class="text-white-50 text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="../customer-dashboard/home.html" class="text-white-50 text-decoration-none">Dashboard</a></li>
 
                     <li class="breadcrumb-item"><span class="text-white-50 text-decoration-none">Account</span></li>
 
@@ -479,18 +480,13 @@
 
         
 
-        <div class="alert bg-warning bg-opacity-25 border border-warning border-opacity-50 d-flex justify-content-between align-items-center p-3 rounded-3 mb-4" role="alert">
-
+        <div class="alert alert-dismissible fade show bg-warning bg-opacity-25 border border-warning border-opacity-50 d-flex justify-content-between align-items-center p-3 rounded-3 mb-4 pe-5" role="alert">
             <div class="d-flex align-items-center text-dark fw-medium">
-
                 <i class="fa-solid fa-triangle-exclamation text-warning fs-5 me-3"></i>
-
                 KYC Partially Complete &mdash; 2 documents pending verification. Please upload the required files to activate claims.
-
             </div>
-
             <span class="small fw-bold text-muted text-uppercase tracking-wider">Pending</span>
-
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
 
@@ -849,6 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <script src="../shared/a11y-core.js"></script>
     <script src="../shared/chatbot.js"></script>
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 
 </html>

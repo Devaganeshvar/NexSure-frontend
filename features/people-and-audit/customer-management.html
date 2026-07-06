@@ -48,11 +48,14 @@
         });
     </script>
 
+    <link rel="stylesheet" href="../../../assets/css/responsive-overrides.css">
 </head>
 <body>
 
     <!-- Top Navbar -->
     <nav class="officer-navbar d-flex justify-content-between align-items-center">
+        <button class="mobile-nav-toggler">&#9776;</button>
+
         <div class="d-flex align-items-center gap-5">
             <a class="navbar-brand" href="../admin-dashboard/officer-dashboard.html">
                 <img src="../../assets/images/Logo.png" alt="NexSure Logo">
@@ -162,12 +165,9 @@
                 </table>
             </div>
 
-            <!-- Pagination and Counts -->
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <div id="records-count" class="text-muted fs-6 fw-medium">Loading records...</div>
-                <div id="pagination-controls" class="pagination-container mt-0">
-                    <!-- Populated by JS -->
-                </div>
+            <!-- Pagination -->
+            <div id="pagination-controls" class="officer-pagination">
+                <!-- Populated by JS -->
             </div>
 
         </main>
@@ -216,7 +216,7 @@
                     paginationContainerId: 'pagination-controls',
                     searchInputId: 'search-input',
                     filterSelectIds: ['filter-status', 'filter-type'],
-                    itemsPerPage: 8,
+                    itemsPerPage: 5,
                     data: mockData,
                     filterLogic: (item, selects) => {
                         const statusFilter = selects[0].value;
@@ -286,5 +286,6 @@
         </div>
     </div>
 
+    <script src="../../../assets/js/responsive-nav.js"></script>
 </body>
 </html>
